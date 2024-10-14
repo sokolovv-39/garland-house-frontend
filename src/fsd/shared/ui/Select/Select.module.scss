@@ -1,0 +1,54 @@
+.wrapper {
+  position: relative;
+  @mixin overview() {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    .type {
+      display: flex;
+      flex-direction: column;
+      .littleType {
+        font-variant-numeric: lining-nums tabular-nums stacked-fractions;
+        font-feature-settings: "liga" off, "clig" off;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px; /* 133.333% */
+        opacity: 0.5;
+      }
+    }
+  }
+  .arrowOverview {
+    @include overview();
+    padding: 18px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(25, 25, 25, 0.1);
+  }
+  .plusOverview {
+    @include overview();
+    padding: 13px 16px;
+    color: #c59b68;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: normal;
+    background-color: white;
+    border-radius: 8px;
+  }
+  .overviewOpen {
+    border: 1px solid rgba(197, 155, 104, 0.68);
+  }
+  .variants {
+    z-index: 1;
+    position: absolute;
+    list-style-type: none;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0px 6px 32px 0px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    li {
+      cursor: pointer;
+      padding: 16px;
+      border-bottom: 1px solid rgba(25, 25, 25, 0.04);
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export {SelectedObject} from './SelectedObject'

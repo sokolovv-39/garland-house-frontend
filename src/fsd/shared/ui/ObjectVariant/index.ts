@@ -1,0 +1,1 @@
+export {ObjectVariant} from './ObjectVariant'

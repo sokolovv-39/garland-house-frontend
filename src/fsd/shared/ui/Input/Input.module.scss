@@ -1,0 +1,31 @@
+.input {
+  border-radius: 16px;
+  border: 1px solid rgba(26, 25, 25, 0.12);
+}
+.input:focus {
+  border-color: #c59b68;
+  outline: none;
+}
+.input::placeholder {
+  font-size: 15px;
+  overflow: hidden;
+  color: #191919;
+  font-variant-numeric: lining-nums tabular-nums stacked-fractions;
+  font-feature-settings: "liga" off, "clig" off;
+  text-overflow: ellipsis;
+  line-height: 24px; /* 150% */
+}
+
+.search {
+  position: relative;
+  .image {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 16px;
+  }
+  .searchInput::placeholder {
+    color: rgba(25, 25, 25, 0.5);
+    line-height: 18px; /* 112.5% */
+  }
+}

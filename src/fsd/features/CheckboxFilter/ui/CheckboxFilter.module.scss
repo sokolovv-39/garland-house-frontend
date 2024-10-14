@@ -1,0 +1,28 @@
+.wrapper {
+  padding: 20px;
+  position: absolute;
+  background: #fff;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100%);
+  box-shadow: 0px 6px 32px 0px rgba(0, 0, 0, 0.08);
+  cursor: auto;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: max-content;
+  div {
+    display: flex;
+    gap: 12px;
+    label {
+      display: block;
+      padding: 4px 0;
+      cursor: pointer;
+    }
+    input {
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --font-color: #191919;
+  --margin-width: 24px;
+  --margin-height: 16px;
+}
+
+html {
+  font-family: var(--font-manrope);
+  line-height: 20px; /* 125% */
+  color: var(--font-color);
+}

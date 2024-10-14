@@ -1,0 +1,97 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  border-spacing: 0;
+  .relative {
+    position: relative;
+  }
+  thead {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px; /* 128.571% */
+    tr {
+      border-radius: 16px;
+      th {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        text-align: left;
+        background: #fafafa;
+        .headers {
+          padding: 13px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          cursor: pointer;
+        }
+      }
+      th:first-child {
+        border-top-left-radius: 16px;
+        border-bottom-left-radius: 16px;
+      }
+      th:last-child {
+        border-top-right-radius: 16px;
+        border-bottom-left-radius: 16px;
+      }
+    }
+  }
+  tbody {
+    .status {
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 18px; /* 128.571% */
+      text-transform: capitalize;
+    }
+    .amoCRM {
+      text-decoration: none;
+      color: #997851;
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(197, 155, 104, 0.3);
+    }
+    .budget {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      div {
+        span {
+          display: block;
+        }
+        span:first-child {
+          color: rgba(25, 25, 25, 0.5);
+          font-family: Manrope;
+          font-size: 12px;
+          line-height: 16px; /* 133.333% */
+        }
+      }
+    }
+    .customer {
+      span {
+        display: block;
+      }
+      span:last-child {
+        font-size: 14px;
+        line-height: 18px; /* 128.571% */
+        color: gray;
+        margin-top: 4px;
+      }
+    }
+    tr {
+      td {
+        text-align: center;
+        border-bottom: 1px solid rgba(25, 25, 25, 0.06);
+        padding: 16px 0;
+      }
+      td:nth-child(1) {
+        width: 3%;
+      }
+      td:nth-child(2),
+      td:nth-child(3) {
+        width: 16%;
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 26px; /* 130% */
+    margin-bottom: 18px;
+  }
+  .comments {
+    flex: 1 0 auto;
+    .empty {
+      line-height: 24px; /* 150% */
+      opacity: 0.5;
+    }
+  }
+  .textareaWrapper {
+    position: relative;
+    .sendSVGWrapper {
+      position: absolute;
+      top: 50%;
+      right: 25px;
+      border-radius: 8px;
+      transform: translateY(-50%);
+      box-sizing: content-box;
+      background: rgba(25, 25, 25, 0.04);
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .send {
+      background: #c59b68;
+      cursor: pointer;
+    }
+    textarea {
+      width: 100%;
+      height: 48px;
+      border-radius: 16px;
+      border: 1px solid rgba(25, 25, 25, 0.1);
+      padding: 18px 16px;
+      resize: none;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #c59b68;
+    }
+    textarea::placeholder {
+      font-size: 16px;
+      font-family: var(--font-manrope);
+      color: var(--font-color);
+      font-variant-numeric: lining-nums tabular-nums stacked-fractions;
+      font-feature-settings: "liga" off, "clig" off;
+      line-height: 24px; /* 150% */
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(197, 155, 104, 0.06);
+  gap: 4px;
+  cursor: pointer;
+  span {
+    color: #c59b68;
+    font-weight: 600;
+    line-height: 16px; /* 100% */
+    letter-spacing: -0.16px;
+  }
+}
+.wrapper:hover {
+  opacity: 0.5;
+}

@@ -1,0 +1,31 @@
+.wrapper {
+  border-radius: 32px;
+  background: #fff;
+  width: 565px;
+  flex: 0 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      .measureId {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 28px;
+      }
+    }
+  }
+  .objectsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}

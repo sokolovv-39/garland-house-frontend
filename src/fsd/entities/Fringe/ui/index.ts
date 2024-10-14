@@ -1,0 +1,1 @@
+export {Fringe} from './Fringe'

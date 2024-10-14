@@ -1,0 +1,14 @@
+.wrapperUpload {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    background: white;
+    cursor: pointer;
+    border-radius: 8px;
+  .title {
+    color: #c59b68;
+    font-weight: 700;
+    line-height: normal;
+  }
+}

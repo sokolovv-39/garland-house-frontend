@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  background: white;
+  border-radius: 16px;
+  .link {
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 100%; /* 16px */
+    color: gray;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+  }
+  .active {
+    color: #191919;
+  }
+}
