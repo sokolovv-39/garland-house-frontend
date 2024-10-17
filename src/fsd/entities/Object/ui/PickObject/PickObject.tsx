@@ -5,8 +5,20 @@ import classes from "./PickObject.module.scss";
 import { useState } from "react";
 import { defaultObjects } from "../../model";
 
-export function PickObject({addObject}:{addObject: (object: string) => void}) {
+export function PickObject({
+  addObject,
+}: {
+  addObject: (object: string) => void;
+}) {
   const [object, setObject] = useState<string>("");
+  const [inputVal, setInputVal] = useState("");
+
+  function handleEnter(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      addObject(object);
+      setInputVal("");
+    }
+  }
 
   return (
     <div className={classes.wrapper}>
@@ -14,9 +26,19 @@ export function PickObject({addObject}:{addObject: (object: string) => void}) {
         <Input
           type="text"
           placeholder="Добавить объект"
-          onChange={(text) => setObject(text)}
+          onChange={(text) => {
+            setObject(text);
+            setInputVal(text);
+          }}
+          placeholderClass={classes.input}
+          onKeyDown={handleEnter}
+          initialValue={inputVal}
         />
         <div
+          onClick={() => {
+            addObject(object);
+            setInputVal("");
+          }}
           className={`${classes.plusSvgWrapper} ${
             object !== "" ? classes.activePlus : ""
           }`}
@@ -41,7 +63,7 @@ export function PickObject({addObject}:{addObject: (object: string) => void}) {
       </div>
       <div className={classes.variants}>
         {defaultObjects.map((obj, i) => (
-          <ObjectVariant variant={obj} key={i} onClick={addObject}/>
+          <ObjectVariant variant={obj} key={i} onClick={addObject} />
         ))}
       </div>
     </div>

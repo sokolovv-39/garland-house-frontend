@@ -10,14 +10,24 @@ export const defaultOrder: OrderType = {
   manager: "",
   executor: "",
   amoCRMLink: "",
-  id: '',
-  measureDate: '10 октября',
+  id: "",
+  measureDate: "",
   measurePrice: 0,
   payer: "",
   clarification: "",
   address: "",
   comments: [],
   numberOfOrder: 0,
+  rfpFork: {
+    maxRfpPrice: 0,
+    minRfpPrice: 0,
+    noData: true,
+  },
 };
 
-export const orderStatuses: OrderStatusType[] = ['Назначен', 'Подписан', 'Проведен', 'Отменен']
+export const orderStatuses: OrderStatusType[] = [
+  "Назначен",
+  "Подписан",
+  "Проведен",
+  "Отменен",
+];

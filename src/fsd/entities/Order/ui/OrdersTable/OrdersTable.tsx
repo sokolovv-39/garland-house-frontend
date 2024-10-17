@@ -2,14 +2,15 @@
 
 import Filter from "./images/filter.svg";
 import classes from "./OrdersTable.module.scss";
-import { mockOrders, OrderStatusType, OrderType } from "../../model";
+import { OrderStatusType, OrderType } from "../../model";
 import Link from "next/link";
-import { IDBContext, StatusTab } from "@/fsd/shared";
+import { DateFormatter, IDBContext, splitPrice, StatusTab } from "@/fsd/shared";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { CheckboxFilter } from "@/fsd/features";
 import Arrow from "./images/arrow.svg";
 import { useRouter } from "nextjs-toploader/app";
+import { generateRFP } from "@/fsd/features/OrderActions/lib";
 
 export function OrdersTable({ searchVal }: { searchVal: string }) {
   const idb = useContext(IDBContext);
@@ -42,27 +43,30 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
   const [createSort, setCreateSort] = useState(false);
   const [budgetSort, setBudgetSort] = useState(false);
 
-  function getOrders() {
-    idb?.orders
-      .getAll()
-      .then((data) => {
-        function orderIdSort(obj1: OrderType, obj2: OrderType) {
-          if (obj1.numberOfOrder > obj2.numberOfOrder) return 1;
-          if (obj1.numberOfOrder < obj2.numberOfOrder) return -1;
-          return 0;
-        }
-        const newOrders = data.sort(orderIdSort);
-        setOrders(newOrders);
-        setFiltOrders(newOrders);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+  async function getOrders() {
+    let newOrders = await idb!.orders.getAll();
 
-  function sortById() {
-    setFiltOrders(filtOrders.reverse());
-    setIdSort(!idSort);
+    newOrders = await Promise.all(
+      newOrders.map(async (order) => {
+        const rfpFork = await getRfpFork(order);
+        return {
+          ...order,
+          rfpFork,
+        };
+      })
+    );
+
+    function orderIdSort(obj1: OrderType, obj2: OrderType) {
+      if (obj1.numberOfOrder > obj2.numberOfOrder) return 1;
+      if (obj1.numberOfOrder < obj2.numberOfOrder) return -1;
+      return 0;
+    }
+
+    newOrders.sort(orderIdSort);
+    console.log("new orders", newOrders);
+
+    setOrders(newOrders);
+    setFiltOrders(newOrders);
   }
 
   function sortByStatus(status: OrderStatusType, checked: boolean) {
@@ -84,7 +88,6 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
   }
 
   function sortByManager(manager: string, checked: boolean) {
-    console.log("sort by  manager");
     if (checked) {
       setManagerFilter((prev) => {
         return {
@@ -121,25 +124,113 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
   }
 
   function sortByBudget() {
-    setBudgetSort(!budgetSort);
+    const newArr = filtOrders;
 
-    const sortedArr = filtOrders;
-
-    if (budgetSort) {
-      sortedArr.sort((order1, order2) => {
-        if (order1.measurePrice > order2.measurePrice) return 1;
-        if (order1.measurePrice < order2.measurePrice) return -1;
-        return 0;
-      }) 
-    } else {
-      sortedArr.sort((order1, order2) => {
-        if (order1.measurePrice < order2.measurePrice) return 1;
-        if (order1.measurePrice > order2.measurePrice) return -1;
-        return 0;
-      }); 
+    function sortASC(order1: OrderType, order2: OrderType) {
+      if (order1.rfpFork.maxRfpPrice > order2.rfpFork.maxRfpPrice) return 1;
+      if (order1.rfpFork.maxRfpPrice < order2.rfpFork.maxRfpPrice) return -1;
+      else return 0;
     }
 
-    setFiltOrders(sortedArr);
+    function sortDESC(order1: OrderType, order2: OrderType) {
+      if (order1.rfpFork.maxRfpPrice > order2.rfpFork.maxRfpPrice) return -1;
+      if (order1.rfpFork.maxRfpPrice < order2.rfpFork.maxRfpPrice) return 1;
+      else return 0;
+    }
+
+    if (budgetSort) newArr.sort(sortASC);
+    else newArr.sort(sortDESC);
+
+    setFiltOrders(newArr);
+    setBudgetSort(!budgetSort);
+  }
+
+  function sortById() {
+    const newArr = filtOrders;
+
+    function sortASC(order1: OrderType, order2: OrderType) {
+      if (order1.numberOfOrder > order2.numberOfOrder) return 1;
+      if (order1.numberOfOrder < order2.numberOfOrder) return -1;
+      else return 0;
+    }
+
+    function sortDESC(order1: OrderType, order2: OrderType) {
+      if (order1.numberOfOrder > order2.numberOfOrder) return -1;
+      if (order1.numberOfOrder < order2.numberOfOrder) return 1;
+      else return 0;
+    }
+
+    if (idSort) newArr.sort(sortASC);
+    else newArr.sort(sortDESC);
+
+    setFiltOrders(newArr);
+    setIdSort(!idSort);
+  }
+
+  function sortByDate() {
+    const newArr = filtOrders;
+
+    function sortASC(order1: OrderType, order2: OrderType) {
+      const dateFormatter = new DateFormatter();
+      const order_1_time = dateFormatter.DMY_to_ms(order1.measureDate);
+      const order_2_time = dateFormatter.DMY_to_ms(order2.measureDate);
+      console.log("order_1_time", order_1_time);
+      console.log("order_2_time", order_2_time);
+
+      if (order_1_time > order_2_time) return 1;
+      if (order_1_time < order_2_time) return -1;
+      return 0;
+    }
+
+    function sortDESC(order1: OrderType, order2: OrderType) {
+      const dateFormatter = new DateFormatter();
+      const order_1_time = dateFormatter.DMY_to_ms(order1.measureDate);
+      const order_2_time = dateFormatter.DMY_to_ms(order2.measureDate);
+
+      if (order_1_time > order_2_time) return -1;
+      if (order_1_time < order_2_time) return 1;
+      return 0;
+    }
+
+    if (createSort) {
+      newArr.sort(sortASC);
+    } else newArr.sort(sortDESC);
+
+    setFiltOrders(newArr);
+    setCreateSort(!createSort);
+  }
+
+  async function getRfpFork(order: OrderType): Promise<{
+    maxRfpPrice: number;
+    minRfpPrice: number;
+    noData: boolean;
+  }> {
+    const measures = await idb!.measures.getOwn(order.numberOfOrder);
+    console.log("measures in table", measures);
+    let maxCost = 0;
+    let minCost = Infinity;
+    await Promise.all(
+      measures.map(async (measure) => {
+        const cost = await generateRFP(idb!, measure.id, false);
+        console.log("cost", cost);
+        if (cost! > maxCost) maxCost = cost!;
+        if (cost! < minCost) minCost = cost!;
+      })
+    );
+
+    if (maxCost === 0 || minCost === Infinity) {
+      return {
+        noData: true,
+        maxRfpPrice: 0,
+        minRfpPrice: 0,
+      };
+    } else {
+      return {
+        noData: false,
+        maxRfpPrice: maxCost,
+        minRfpPrice: minCost,
+      };
+    }
   }
 
   useEffect(() => {
@@ -147,12 +238,28 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
   }, []);
 
   useEffect(() => {
+    console.log("searchVal", searchVal);
     let filteredArr = orders;
 
     filteredArr = orders.filter((order) => {
-      if (order.customerPhone.includes(searchVal)) return true;
-      else if (order.address.includes(searchVal)) return true;
-      else if (order.customer.includes(searchVal)) return true;
+      if (
+        order.customerPhone
+          .toLocaleLowerCase()
+          .includes(searchVal.toLocaleLowerCase())
+      )
+        return true;
+      else if (
+        order.address
+          .toLocaleLowerCase()
+          .includes(searchVal.toLocaleLowerCase())
+      )
+        return true;
+      else if (
+        order.customer
+          .toLocaleLowerCase()
+          .includes(searchVal.toLocaleLowerCase())
+      )
+        return true;
       else return false;
     });
 
@@ -164,8 +271,6 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
 
     if (managerFilter.value.length) {
       filteredArr = filteredArr.filter((order) => {
-        console.log(managerFilter.value);
-        console.log(order.manager);
         return managerFilter.value.includes(order.manager);
       });
     }
@@ -177,6 +282,24 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
     }
     setFiltOrders(filteredArr);
   }, [searchVal, statusFilter, managerFilter, executorFilter, orders]);
+
+  /* useEffect(() => {
+    async function runRfpFork() {
+      const newOrders: OrderType[] = [];
+      await Promise.all(
+        orders.map(async (order) => {
+          const rfpFork = await getRfpFork(order);
+          newOrders.push({
+            ...order,
+            rfpFork,
+          });
+        })
+      );
+      setOrders(newOrders);
+    }
+
+    runRfpFork();
+  }, [orders]); */
 
   return (
     <table className={classes.wrapper}>
@@ -259,7 +382,7 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
               <Image src={Filter} alt="" />
               {managerFilter.isOpen && (
                 <CheckboxFilter
-                  checkeds={statusFilter.value}
+                  checkeds={managerFilter.value}
                   onChange={sortByManager}
                   closeFilter={() =>
                     setManagerFilter((prev) => {
@@ -294,7 +417,7 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
               <Image src={Filter} alt="" />
               {executorFilter.isOpen && (
                 <CheckboxFilter
-                  checkeds={statusFilter.value}
+                  checkeds={executorFilter.value}
                   onChange={sortByExecutor}
                   closeFilter={() =>
                     setExecutorFilter((prev) => {
@@ -310,10 +433,7 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
             </div>
           </th>
           <th>
-            <div
-              className={classes.headers}
-              onClick={() => setCreateSort(!createSort)}
-            >
+            <div className={classes.headers} onClick={sortByDate}>
               <span>Создан</span>
               <Image
                 src={Arrow}
@@ -325,9 +445,7 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
             </div>
           </th>
           <th>
-            <div>
-              <span>AmoCRM</span>
-            </div>
+            <span>AmoCRM</span>
           </th>
           <th>
             <div className={classes.headers} onClick={sortByBudget}>
@@ -355,20 +473,60 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
               <span>{order.customer}</span>
               <span>{order.customerPhone}</span>
             </td>
-            <td>{order.address}</td>
             <td>
-              <StatusTab status={order.status} />
+              <span>{order.address}</span>
+            </td>
+            <td>
+              <StatusTab
+                customStyles={{
+                  padding: "4px 0",
+                }}
+                status={order.status}
+              />
             </td>
             <td>{order.manager}</td>
             <td>{order.executor}</td>
             <td>{order.measureDate}</td>
             <td>
               <Link href="/orders" className={classes.amoCRM}>
-                {order.amoCRMLink}
+                <span>{order.amoCRMLink}</span>
               </Link>
             </td>
             <td className={classes.budget}>
-              <span>{order.measurePrice}</span>
+              {order.rfpFork.noData && (
+                <span
+                  style={{
+                    justifyContent: "center",
+                  }}
+                >
+                  н/д
+                </span>
+              )}
+              {!order.rfpFork.noData &&
+                order.rfpFork.maxRfpPrice === order.rfpFork.minRfpPrice && (
+                  <span
+                    style={{
+                      justifyContent: "center",
+                    }}
+                  >
+                    {splitPrice(order.rfpFork.maxRfpPrice)}
+                  </span>
+                )}
+              {!order.rfpFork.noData &&
+                order.rfpFork.maxRfpPrice !== order.rfpFork.minRfpPrice && (
+                  <div className={classes.centerBudget}>
+                    <div>
+                      <span>
+                        <span className={classes.forkText}>от </span>
+                        {splitPrice(order.rfpFork.minRfpPrice)}
+                      </span>
+                      <span>
+                        <span className={classes.forkText}>до </span>
+                        {splitPrice(order.rfpFork.maxRfpPrice)}
+                      </span>
+                    </div>
+                  </div>
+                )}
             </td>
           </tr>
         ))}

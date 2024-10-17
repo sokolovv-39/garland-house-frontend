@@ -1,7 +1,8 @@
 import { CommonItemType } from "../../Item";
+import { GetItemLengthType } from "../../Item/model";
 import { PVSType } from "../../PVS";
 
-export function getBoxPVSPieces(allItems: CommonItemType[]) {
+export function getBoxPVSPieces(allItems: CommonItemType[]): GetItemLengthType {
   let pvsLength = 0;
 
   allItems.forEach((itemObj) => {
@@ -13,5 +14,6 @@ export function getBoxPVSPieces(allItems: CommonItemType[]) {
 
   const piece = 2;
   const piecesQuantity = Math.ceil(pvsLength / piece);
-  return piecesQuantity;
+  const piecesMeters = piece * piecesQuantity;
+  return { skeinsQuantity: piecesQuantity, skeinsMeters: piecesMeters };
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import Calendar from "react-calendar";
 import classes from "./OrderBasicInfo.module.scss";
 import {
   StatusTab,
@@ -9,15 +10,23 @@ import {
   Button,
   Comments,
   IDBContext,
+  DateFormatter,
 } from "@/fsd/shared";
 import { defaultOrder, OrderType } from "../../model";
 import { OrderActions } from "@/fsd/features";
 
 const workersMocks = ["Александр П.", "Сергей А.", "Олег И.", "Антон У."];
 
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 export function OrderBasicInfo({ orderId }: { orderId: number }) {
   const idb = useContext(IDBContext);
   const [order, setOrder] = useState<OrderType>(defaultOrder);
+  const [date, changeDate] = useState<Value>(new Date());
+  const [isShowCalendar, setIsShowCalendar] = useState(false);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   function getOrder() {
     idb?.orders
@@ -41,6 +50,44 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
   useEffect(() => {
     updateOrder();
   }, [order]);
+
+  useEffect(() => {
+    let formattedDate;
+    if (date instanceof Date) {
+      formattedDate = new DateFormatter(date).dateToDMY();
+    } else if (Array.isArray(date)) {
+      const validDates = date.filter((d): d is Date => d instanceof Date);
+      if (validDates.length > 0) {
+        formattedDate = new DateFormatter(validDates[0]).dateToDMY(); // или обработать по-другому
+      }
+    }
+
+    if (formattedDate) {
+      setOrder({
+        ...order,
+        measureDate: formattedDate,
+      });
+    }
+    console.log("DATE", formattedDate);
+  }, [date]);
+
+  useEffect(() => {
+    const el = calendarRef.current;
+
+    function handleClick(e: MouseEvent) {
+      if (el) {
+        if (!el.contains(e.target as Node)) {
+          setIsShowCalendar(false);
+        }
+      }
+    }
+
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
 
   return (
     <div className={classes.wrapper}>
@@ -96,6 +143,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
         </div>
         <div className={classes.info}>
           <Input
+            littleType
             type="text"
             placeholder="ФИО заказчика"
             initialValue={order.customer}
@@ -107,6 +155,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             }
           />
           <Input
+            littleType
             type="text"
             placeholder="Телефон заказчика"
             initialValue={order.customerPhone}
@@ -118,6 +167,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             }
           />
           <Input
+            littleType
             type="text"
             placeholder="Адрес"
             initialValue={order.address}
@@ -129,6 +179,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             }
           />
           <Input
+            littleType
             type="text"
             placeholder="Ссылка на Яндекс карты"
             initialValue={order.mapsLink}
@@ -140,6 +191,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             }
           />
           <Input
+            littleType
             type="text"
             placeholder="Номер договора"
             initialValue={order.contractNumber}
@@ -181,6 +233,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             />
           </div>
           <Input
+            littleType
             type="text"
             placeholder="Ссылка на AmoCRM"
             initialValue={order.amoCRMLink}
@@ -195,7 +248,8 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
         <OrderActions idb={idb!} orderId={orderId} />
       </form>
       <div className={classes.right}>
-        <Input
+        {/* <Input
+          littleType
           type="text"
           placeholder="Дата замера"
           initialValue={order.measureDate}
@@ -205,20 +259,24 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
               measureDate: text,
             })
           }
-        />
+        /> */}
+        <div className={classes.calendarWrapper} ref={calendarRef}>
+          <div
+            className={classes.calendarTab}
+            onClick={() => setIsShowCalendar(!isShowCalendar)}
+          >
+            <span className={classes.little}>Дата замера</span>
+            <span className={classes.calendarInfo}>{order.measureDate}</span>
+          </div>
+          {isShowCalendar && (
+            <Calendar onChange={changeDate} className={classes.calendar} />
+          )}
+        </div>
         <div className={classes.pay}>
+          <Select type="Кто платит за замер" values={workersMocks} />
           <Input
-            type="text"
-            placeholder="Кто платит за замер"
-            initialValue={order.payer}
-            onChange={(text) =>
-              setOrder({
-                ...order,
-                payer: text,
-              })
-            }
-          />
-          <Input
+            littleType
+            isPrice
             type="text"
             placeholder="Сумма за замер"
             initialValue={
@@ -226,12 +284,20 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             }
             onChange={(text) => {
               if (text) {
-                const toNum = +text;
-                if (toNum)
-                  setOrder({
-                    ...order,
-                    measurePrice: toNum,
-                  });
+                const toNum = parseInt(text.replace(/\s/g, ""));
+                if (toNum) {
+                  if (!isFinite(toNum)) {
+                    setOrder({
+                      ...order,
+                      measurePrice: 0,
+                    });
+                  } else {
+                    setOrder({
+                      ...order,
+                      measurePrice: toNum,
+                    });
+                  }
+                }
               } else {
                 setOrder({
                   ...order,

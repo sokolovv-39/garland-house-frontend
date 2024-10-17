@@ -28,4 +28,5 @@ export const curtainDefault: CurtainType = {
   teeQuantity: 0,
   extensionQuantity: 0,
   surface: CurtainSurfaceEnum.Wood,
+  price: 2342
 };

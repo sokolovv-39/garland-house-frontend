@@ -4,4 +4,8 @@ export type RelaysSwitchesType = {
   wirelessRadio: number;
   wirelessWifi: number;
   astroRelay: number;
+  wired_price: number;
+  wirelessRadio_price: number;
+  wirelessWifi_price: number;
+  astroRelay_price: number;
 };

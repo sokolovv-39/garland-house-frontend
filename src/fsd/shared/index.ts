@@ -15,4 +15,10 @@ export {
   Comments,
   ErrorPage,
 } from "./ui";
-export { IDBContext, MonthEnum, DateFormatter, debounce } from './lib'
+export {
+  IDBContext,
+  MonthEnum,
+  DateFormatter,
+  debounce,
+  splitPrice,
+} from "./lib";

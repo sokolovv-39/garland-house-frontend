@@ -18,6 +18,20 @@ export class IndexedDB {
   constructor() {
     this.db = null;
     this.orders = {
+      delete: (range: IDBKeyRange | IDBValidKey) => {
+        return new Promise<undefined>((resolve, reject) => {
+          this.transactionHandler(
+            "orders",
+            "readwrite",
+            this.deleteHandler,
+            range
+          )
+            .then((data) => {
+              resolve(data as undefined);
+            })
+            .catch((err) => reject(err));
+        });
+      },
       getAll: (range?: IDBKeyRange) => {
         return new Promise<OrderType[]>((resolve, reject) => {
           this.transactionHandler(

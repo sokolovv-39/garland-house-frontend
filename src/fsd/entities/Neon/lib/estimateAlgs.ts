@@ -2,7 +2,8 @@ export function getNeonLength(length: number) {
   const skein = 50;
   const reserved = length * 0.1;
   const skeinsQuantity = Math.ceil(length + reserved / skein);
-  return skeinsQuantity;
+  const skeinMeters = skein * skeinsQuantity
+  return { skeinsQuantity, skeinMeters };
 }
 
 export function getNeonProfile(length: number) {

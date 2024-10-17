@@ -8,6 +8,12 @@
   border-radius: 16px;
   .inputWrapper {
     position: relative;
+    .input::placeholder {
+      font-variant-numeric: lining-nums tabular-nums stacked-fractions;
+      font-feature-settings: "liga" off, "clig" off;
+      font-weight: 700;
+      line-height: 24px; /* 150% */
+    }
     .plusSvgWrapper {
       position: absolute;
       top: 50%;
@@ -21,8 +27,8 @@
       padding: 8px 16px;
     }
     .activePlus {
-        cursor: pointer;
-        background: #C59B68;
+      cursor: pointer;
+      background: #c59b68;
     }
   }
   .variants {

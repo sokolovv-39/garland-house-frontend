@@ -12,13 +12,13 @@ export function CheckboxFilter<T>({
   type,
   workers,
   onChange,
-  checkeds
+  checkeds,
 }: {
   closeFilter: () => void;
   type: "status" | "workers";
   workers?: string[];
   onChange?: (status: T, checked: boolean) => void;
-  checkeds: Array<T>
+  checkeds: Array<T>;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 

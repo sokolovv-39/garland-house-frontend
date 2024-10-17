@@ -11,8 +11,8 @@ export function Select({
   variant = "arrow",
   callback,
   initialValue,
-  saveType = false,
   littleType,
+  saveType = false,
 }: {
   type: string;
   values: string[];
@@ -20,8 +20,8 @@ export function Select({
   variant?: "arrow" | "plus";
   callback?: (val: string) => void;
   initialValue?: string;
-  saveType?: boolean;
   littleType?: boolean;
+  saveType?: boolean;
 }) {
   const [hover, setHover] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -62,8 +62,10 @@ export function Select({
       >
         {
           <div className={classes.type}>
-            {littleType && <span className={classes.littleType}>{type}</span>}
-            <span>{saveType ? type : checkedValue}</span>
+            {initialValue && littleType && (
+              <span className={classes.littleType}>{type}</span>
+            )}
+            <span>{saveType ? type : checkedValue ? checkedValue : type}</span>
           </div>
         }
         {variant === "arrow" && (
@@ -105,6 +107,16 @@ export function Select({
               );
             }
           })}
+          <li
+            onClick={() => {
+              setCheckedValue("");
+              if (callback) {
+                callback("");
+              }
+            }}
+          >
+            Нет варианта
+          </li>
         </ul>
       )}
     </div>

@@ -12,7 +12,9 @@ export function getFringeLength(length: number) {
     skeinQuantity += reservedSkeinQuantity;
   }
 
-  return skeinQuantity;
+  const skeinMeters = skeinQuantity * skeinLength;
+
+  return { skeinQuantity, skeinMeters };
 }
 
 export function getFringeBracketsPacks(length: number) {

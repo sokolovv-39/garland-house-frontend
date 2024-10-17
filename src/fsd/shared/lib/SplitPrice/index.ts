@@ -1,0 +1,1 @@
+export { splitPrice } from "./splitPrice";

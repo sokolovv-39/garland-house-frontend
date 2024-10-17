@@ -7,14 +7,14 @@ export function AddMedia({
   width,
   height,
 }: {
-  callback: (file: File) => void;
+  callback: (files: FileList) => void;
   width?: number;
   height?: number;
 }) {
   function addMedia() {
     uploadMedia()
-      .then((file) => {
-        callback(file);
+      .then((files) => {
+        callback(files);
       })
       .catch((err) => {
         console.error(err);

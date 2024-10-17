@@ -42,7 +42,8 @@ export type AllItemsTypes =
   | RelaysSwitchesType
   | SolderBoxType
   | VagiType
-  | Screed_480_500_Type| Screed_200_Type
+  | Screed_480_500_Type
+  | Screed_200_Type;
 
 export type ItemType<T extends AllItemsTypes> = {
   id: string;
@@ -53,3 +54,8 @@ export type ItemType<T extends AllItemsTypes> = {
 };
 
 export type CommonItemType = ItemType<AllItemsTypes>;
+
+export type GetItemLengthType = {
+  skeinsQuantity: number;
+  skeinsMeters: number;
+};

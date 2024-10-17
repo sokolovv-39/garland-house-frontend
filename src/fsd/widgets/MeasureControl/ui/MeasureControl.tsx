@@ -45,7 +45,15 @@ export function MeasureControl({ orderId }: { orderId: string }) {
           <span>Визуализации и отчет</span>
         </Link>
       </div>
-      <Button goto="/orders">Сохранить и закрыть</Button>
+      <Button
+        goto="/orders"
+        type="button"
+        click={() => {
+          console.log("click");
+        }}
+      >
+        Сохранить и закрыть
+      </Button>
     </div>
   );
 }

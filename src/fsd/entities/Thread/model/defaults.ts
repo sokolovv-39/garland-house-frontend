@@ -27,5 +27,6 @@ export const defaultThread: ThreadType = {
   extensionQuantity: 0,
   teeQuantity: 0,
   surface: ThreadSurfaceEnum.Wood,
-  contours: 0
+  contours: 0,
+  price: 4214
 };

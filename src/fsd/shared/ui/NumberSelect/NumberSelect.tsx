@@ -12,7 +12,13 @@ export function NumberSelect({
   initialValue: number;
   callback: (val: number) => void;
 }) {
-  const [number, setNumber] = useState<number | "">(initialValue);
+  const [number, setNumber] = useState<number | "">(
+    initialValue ? initialValue : ""
+  );
+  if (type === "Длина, м") {
+    console.log("length");
+    console.log(number);
+  }
 
   return (
     <div className={classes.wrapper}>
@@ -42,6 +48,7 @@ export function NumberSelect({
       >
         -
       </div>
+      {number && <span className={classes.type}>{type}</span>}
       <input
         type="text"
         className={classes.number}
@@ -60,6 +67,9 @@ export function NumberSelect({
           }
         }}
         value={number || ""}
+        style={{
+          paddingTop: number && "13px",
+        }}
       />
       <div
         className={classes.operand}
@@ -69,11 +79,10 @@ export function NumberSelect({
             setNumber(newVal);
             callback(newVal);
           } else {
-            const newVal = number + 1
-            setNumber(newVal)
-            callback(newVal)
+            const newVal = number + 1;
+            setNumber(newVal);
+            callback(newVal);
           }
-
         }}
         onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
           e.currentTarget.style.opacity = "1";

@@ -9,4 +9,5 @@ export const ropeDefault: RopeType = {
   contours: 0,
   length: 0,
   surface: RopeSurfaceEnum.Wood,
+  price: 432
 };

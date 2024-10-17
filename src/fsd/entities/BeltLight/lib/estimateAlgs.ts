@@ -3,7 +3,8 @@ import { BeltLightLampStepEnum } from "../model";
 export function getBeltLightLength(length: number) {
   const skein = 50;
   const skeinsQuantity = Math.ceil(length / skein);
-  return skeinsQuantity;
+  const skeinMeters = skein * skeinsQuantity
+  return { skeinsQuantity, skeinMeters };
 }
 
 export function getBeltLightLamps(step: BeltLightLampStepEnum, length: number) {

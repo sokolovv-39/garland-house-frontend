@@ -15,6 +15,11 @@ export type OrderType = {
   address: string;
   comments: CommentType[];
   numberOfOrder: number;
+  rfpFork: {
+    noData: boolean;
+    maxRfpPrice: number;
+    minRfpPrice: number;
+  };
 };
 
 type CommentType = {

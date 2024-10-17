@@ -1,1 +1,1 @@
-export {OrderActions} from './ui'
+export { OrderActions } from './ui'

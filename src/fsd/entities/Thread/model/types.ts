@@ -42,5 +42,6 @@ export type ThreadType = {
   extensionQuantity: number;
   teeQuantity: number;
   surface: ThreadSurfaceEnum;
-  contours: number
+  contours: number;
+  price: number
 };

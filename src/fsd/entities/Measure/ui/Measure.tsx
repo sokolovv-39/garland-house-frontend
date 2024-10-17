@@ -5,20 +5,23 @@ import classes from "./Measure.module.scss";
 import CopySVG from "./images/copy.svg";
 import { MeasureType, PickObject, SelectedObject } from "@/fsd/entities";
 import { useEffect, useState, useContext } from "react";
-import { CloseSVG, IDBContext } from "@/fsd/shared";
+import { Button, CloseSVG, IDBContext } from "@/fsd/shared";
 import { ObjectType } from "../../Object";
 import { nanoid } from "nanoid";
+import { generateRFP } from "@/fsd/features/OrderActions/lib";
 
 export function Measure({
   measure,
   isFavourite,
   deleteMeasure,
   addToFav,
+  copyMeasure,
 }: {
   measure: MeasureType;
   isFavourite: boolean;
   deleteMeasure: () => void;
   addToFav: () => void;
+  copyMeasure: (measure: MeasureType) => void;
 }) {
   const idb = useContext(IDBContext);
   const [objects, setObjects] = useState<ObjectType[]>([]);
@@ -100,6 +103,9 @@ export function Measure({
             viewBox="0 0 28 28"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            style={{
+              cursor: "pointer",
+            }}
           >
             <g opacity={isFavourite ? "1" : "0.5"}>
               <path
@@ -110,7 +116,12 @@ export function Measure({
               />
             </g>
           </svg>
-          <Image src={CopySVG} alt="" />
+          <Image
+            src={CopySVG}
+            alt=""
+            style={{ cursor: "pointer" }}
+            onClick={() => copyMeasure(measure)}
+          />
         </div>
         <CloseSVG onClick={() => deleteMeasure()} />
       </div>
@@ -124,6 +135,9 @@ export function Measure({
         ))}
       </div>
       <PickObject addObject={(variant) => addObject(variant)} />
+      <Button type="button" click={() => generateRFP(idb!, measure.id)}>
+        Скачать КП
+      </Button>
     </div>
   );
 }

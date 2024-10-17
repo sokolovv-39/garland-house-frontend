@@ -7,11 +7,13 @@ export function StatusTab({
   inactive = false,
   onClick,
   button = false,
+  customStyles,
 }: {
   status: OrderStatusType;
   inactive?: boolean;
   onClick?: () => void;
   button?: boolean;
+  customStyles?: CSSProperties;
 }) {
   let statusStyle: CSSProperties = {
     borderRadius: button ? "999px" : "8px",
@@ -66,6 +68,11 @@ export function StatusTab({
         break;
     }
   }
+
+  statusStyle = {
+    ...statusStyle,
+    ...customStyles,
+  };
 
   return (
     <span

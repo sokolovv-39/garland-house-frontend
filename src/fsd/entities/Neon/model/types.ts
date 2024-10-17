@@ -29,4 +29,5 @@ export type NeonType = {
   needles: number;
   powerQuantity: number;
   contours: number;
+  price: number
 };

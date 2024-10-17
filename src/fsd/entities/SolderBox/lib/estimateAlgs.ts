@@ -1,4 +1,5 @@
 import { CommonItemType } from "../../Item";
+import { GetItemLengthType } from "../../Item/model";
 
 export function getSolderBoxPieces(allItems: CommonItemType[]) {
   let contours = 0;

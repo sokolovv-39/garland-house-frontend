@@ -6,4 +6,5 @@ export enum SolderBoxColorEnum {
 export type SolderBoxType = {
   title: "Распаячная коробка";
   color: SolderBoxColorEnum;
+  price: number
 };

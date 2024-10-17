@@ -23,4 +23,5 @@ export type BeltLightType = {
   glowShade: BeltLightGlowShadeEnum;
   lampStep: BeltLightLampStepEnum;
   cable: BeltLightCableEnum;
+  price: number
 };

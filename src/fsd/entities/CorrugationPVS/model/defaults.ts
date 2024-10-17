@@ -7,4 +7,5 @@ export const corrugationDefault: CorrugationType = {
   title: "Гофра для кабеля ПВС",
   thickness: CorrThicknessEnum.mm_16,
   color: CorrColorsEnum.Black,
+  price: 124
 };

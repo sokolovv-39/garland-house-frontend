@@ -58,5 +58,6 @@ export type FringeType = {
   led: FringeLedEnum;
   contours: number;
   surface: FringeSurfaceEnum;
-  extensionColor: FringeExtensionColorEnum
+  extensionColor: FringeExtensionColorEnum;
+  price: number
 };

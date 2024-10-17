@@ -14,4 +14,5 @@ export type RopeType = {
   thickness: RopeThicknessEnum;
   contours: number;
   surface: RopeSurfaceEnum;
+  price: number
 };

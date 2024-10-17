@@ -37,4 +37,5 @@ export const defaultFringe: FringeType = {
   contours: 0,
   surface: FringeSurfaceEnum.Wood,
   extensionColor: FringeExtensionColorEnum.Black,
+  price: 5321
 };

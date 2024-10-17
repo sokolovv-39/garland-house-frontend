@@ -1,6 +1,7 @@
 export function uploadMedia() {
-  return new Promise<File>((resolve, reject) => {
+  return new Promise<FileList>((resolve, reject) => {
     const input = document.createElement("input");
+    input.multiple = true;
     input.type = "file";
     input.click();
     input.addEventListener("change", processUpload, { once: true });
@@ -11,7 +12,7 @@ export function uploadMedia() {
       if (input.files && input.files.length > 0) {
         input.removeEventListener("change", processUpload);
 
-        const file = input.files[0];
+        const files = input.files;
 
         const allowedImageTypes = [
           "image/jpeg",
@@ -20,12 +21,17 @@ export function uploadMedia() {
           "image/webp",
         ];
         const allowedVideoTypes = ["video/mp4", "video/webm", "video/ogg"];
-        if (
-          allowedImageTypes.includes(file.type) ||
-          allowedVideoTypes.includes(file.type)
-        ) {
-          resolve(file);
+
+        for (const file of files) {
+          if (
+            !(
+              allowedImageTypes.includes(file.type) ||
+              allowedVideoTypes.includes(file.type)
+            )
+          )
+            reject("Недопустимый формат файла");
         }
+        resolve(files);
       } else reject("Error uploading the file");
     }
   });

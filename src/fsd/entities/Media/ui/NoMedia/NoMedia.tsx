@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { PlusSVG } from "@/fsd/shared";
 import classes from "./NoMedia.module.scss";
@@ -10,8 +10,12 @@ export function NoMedia() {
   const [hover, setHover] = useState(false);
   const [mediaURLs, setMediaURLs] = useState<string[]>([]);
 
-  function addMedia(file: File) {
-    setMediaURLs([...mediaURLs, URL.createObjectURL(file)]);
+  function addMedia(files: FileList) {
+    const newFiles = [];
+    for (const file of files) {
+      newFiles.push(URL.createObjectURL(file));
+    }
+    setMediaURLs([...mediaURLs, ...newFiles]);
   }
 
   function deleteMedia(delUrl: string) {
@@ -21,8 +25,13 @@ export function NoMedia() {
 
   function addFirstMedia() {
     uploadMedia()
-      .then((file) => {
-        setMediaURLs([URL.createObjectURL(file)]);
+      .then((files) => {
+        console.log(files);
+        const newFiles = [];
+        for (const file of files) {
+          newFiles.push(URL.createObjectURL(file));
+        }
+        setMediaURLs([...mediaURLs, ...newFiles]);
       })
       .catch((err) => {
         console.error(err);

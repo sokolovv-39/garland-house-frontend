@@ -1,3 +1,2 @@
-export type { OrderType, OrderStatusType } from './types'
-export { mockOrders } from './mocks'
-export {defaultOrder, orderStatuses} from './defaults'
+export type { OrderType, OrderStatusType } from "./types";
+export { defaultOrder, orderStatuses } from "./defaults";

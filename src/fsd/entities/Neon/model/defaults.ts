@@ -20,4 +20,5 @@ export const defaultNeon: NeonType = {
   needles: 0,
   powerQuantity: 0,
   contours: 0,
+  price: 4214
 };

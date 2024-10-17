@@ -5,6 +5,7 @@ export enum VagiModelEnum {
 }
 
 export type VagiType = {
-    title: "Ваги (клемма)";
-    model: VagiModelEnum
+  title: "Ваги (клемма)";
+  model: VagiModelEnum;
+  price: number;
 };

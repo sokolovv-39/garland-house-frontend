@@ -1,6 +1,13 @@
 "use client";
 
-import { Measure, MeasureType } from "@/fsd/entities";
+import {
+  AllItemsTypes,
+  CommonItemType,
+  ItemType,
+  Measure,
+  MeasureType,
+  ObjectType,
+} from "@/fsd/entities";
 import classes from "./AllMeasures.module.scss";
 import { useContext, useEffect, useState } from "react";
 import { IDBContext } from "@/fsd/shared";
@@ -27,13 +34,23 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
       });
   }
 
-  function deleteMeasure(id: string) {
-    idb?.measures
-      .delete(id)
-      .then(() => {
-        getMeasures();
-      })
-      .catch((err) => console.error(err));
+  async function deleteMeasure(id: string) {
+    console.log("DELETE MEASURE");
+    let newMeasures = measures.filter((measure) => measure.id !== id);
+    console.log(newMeasures);
+    newMeasures = newMeasures.map((measure, index) => {
+      return {
+        ...measure,
+        orderId: index + 1,
+      };
+    });
+    console.log("final measures");
+    const favMeasure = newMeasures.findIndex((measure) => measure.isFavourite);
+
+    if (favMeasure === -1) newMeasures[0].isFavourite = true;
+
+    await idb?.measures.rewrite(newMeasures);
+    getMeasures();
   }
 
   function addMeasure() {
@@ -44,7 +61,6 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
     const newMeasure: MeasureType = {
       id: nanoid(),
       orderId,
-      objectIds: [],
       isFavourite: orderId === 1,
       ownOrder: numberOfOrder,
     };
@@ -55,6 +71,48 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
       .catch((err) => {
         console.error(err);
       });
+  }
+
+  async function copyMeasure(measure: MeasureType) {
+    const newMeasure: MeasureType = {
+      id: nanoid(),
+      orderId: measures[measures.length - 1].orderId + 1,
+      isFavourite: false,
+      ownOrder: numberOfOrder,
+    };
+    await idb?.measures.add(newMeasure);
+    const objects = await idb?.objects.getOwn(measure.id);
+    await Promise.all(
+      objects!.map(async (obj) => {
+        const newObj: ObjectType = {
+          ...obj,
+          id: nanoid(),
+          measureId: newMeasure.id,
+        };
+        await idb?.objects.add(newObj);
+        const items = await idb!.items.getOwn(obj.id);
+        await Promise.all(
+          items.map(async (item) => {
+            const newItem: CommonItemType = {
+              ...item,
+              id: nanoid(),
+              objectId: newObj.id,
+            };
+            await idb!.items.add(newItem);
+          })
+        );
+      })
+    );
+    let allItems: CommonItemType[] = [];
+    await Promise.all(
+      objects!.map(async (obj) => {
+        if (idb) {
+          const items = await idb.items.getOwn(obj.id);
+          allItems = [...allItems, ...items];
+        }
+      })
+    );
+    getMeasures();
   }
 
   function addToFav(id: string) {
@@ -93,6 +151,7 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
           isFavourite={measure.isFavourite}
           key={measure.id}
           deleteMeasure={() => deleteMeasure(measure.id)}
+          copyMeasure={copyMeasure}
         />
       ))}
       <div className={classes.addMeasure} onClick={() => addMeasure()}>

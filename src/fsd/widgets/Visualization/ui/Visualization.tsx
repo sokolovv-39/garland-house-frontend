@@ -7,8 +7,10 @@ import { MediaList } from "@/fsd/entities";
 export function Visualization() {
   const [urls, setUrls] = useState<string[]>([]);
 
-  function addMedia(file: File) {
-    setUrls([...urls, URL.createObjectURL(file)]);
+  function addMedia(files: FileList) {
+    const newFiles = [];
+    for (const file of files) newFiles.push(URL.createObjectURL(file));
+    setUrls([...urls, ...newFiles]);
   }
 
   function deleteMedia(delUrl: string) {

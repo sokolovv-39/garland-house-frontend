@@ -348,7 +348,9 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     writingArray.push({
       desc: `Стяжки / белые / 480-500 мм`,
       keyValue: `${
-        white_screeds_480_500mm_packs + screeds_480_500 / 100 + screedsPacks
+        white_screeds_480_500mm_packs +
+        Math.ceil(screeds_480_500) / 100 +
+        screedsPacks
       } уп`,
     });
     writingArray.push({
@@ -492,7 +494,7 @@ function getItemEstimateInfo(
       powerQuantity += fringe.powerQuantity;
       return {
         desc: `${fringe.title} / ${fringe.glowShade} / ${fringe.glowMode} / ${fringe.cable} / ${fringe.bracing} / ${fringe.led}`,
-        keyValue: `${getFringeLength(fringe.length)} м`,
+        keyValue: `${getFringeLength(fringe.length).skeinQuantity} бухт`,
       };
     }
     case "Белт-лайт": {
@@ -501,7 +503,7 @@ function getItemEstimateInfo(
 
       return {
         desc: `${beltLight.title} / ${beltLight.glowShade} / Шаг между цоколями ламп: ${beltLight.lampStep} / ${beltLight.cable}`,
-        keyValue: `${getBeltLightLength(beltLight.length)} м`,
+        keyValue: `${getBeltLightLength(beltLight.length).skeinsQuantity} бухт`,
       };
     }
     case "Гибкий неон": {
@@ -518,7 +520,7 @@ function getItemEstimateInfo(
         desc: `${neon.title} / ${neon.glowShade} / ${neon.thickness} / ${
           neon.bracing
         } / Покраска: ${neon.painting ? "Да" : "Нет"}`,
-        keyValue: `${getNeonLength(neon.length)} м`,
+        keyValue: `${getNeonLength(neon.length)} бухт`,
       };
     }
     case "Гофра для кабеля ПВС": {
@@ -672,7 +674,7 @@ function getItemEstimateInfo(
 
       return {
         desc: `${thread.title} / ${thread.glowShade} / ${thread.glowMode} / ${thread.wire}`,
-        keyValue: `${getThreadLength(thread.length)} м`,
+        keyValue: `${getThreadLength(thread.length).skeinsQuantity} бухт`,
       };
     }
     case "Трос": {
