@@ -20,16 +20,12 @@ import {
   fringeGlowModes,
   FringeGlowShadeEnum,
   fringeGlowShades,
-  fringeExtMults,
-  FringeExtensionMultEnum,
   fringeTeeColour,
   FringeTeeColourEnum,
   fringeLeds,
   FringeLedEnum,
   fringeSurfaces,
   FringeSurfaceEnum,
-  fringeExtensionColor,
-  FringeExtensionColorEnum,
 } from "../model";
 import { ItemType } from "../../Item";
 
@@ -45,7 +41,7 @@ export function Fringe({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(true);
   const [fringe, setFringe] = useState<FringeType>(itemObj.item);
-  let initialPowers = itemObj.item.contours
+  let initialPowers = itemObj.item.contours;
 
   function updateFringe() {
     idb?.items
@@ -170,41 +166,46 @@ export function Fringe({
               }
             />
           </div>
-          <Select
-            type="Кратность удлинителя"
-            values={fringeExtMults}
-            initialValue={itemObj.item.extensionMult}
-            littleType
+          <NumberSelect
+            type="Удлинители, 1м"
             callback={(val) =>
               setFringe({
                 ...fringe,
-                extensionMult: val as FringeExtensionMultEnum,
+                extensions_1m: val,
               })
             }
+            initialValue={itemObj.item.extensions_1m}
           />
           <NumberSelect
-            type="Удлинители, шт"
+            type="Удлинители, 3м"
             callback={(val) =>
               setFringe({
                 ...fringe,
-                extensionQuantity: val,
+                extensions_3m: val,
               })
             }
-            initialValue={itemObj.item.extensionQuantity}
+            initialValue={itemObj.item.extensions_3m}
           />
-          <div className={classes.tabs}>
-            <h5 className={classes.tabsTitle}>Цвет удлинителей</h5>
-            <ItemsAdjust
-              list={fringeExtensionColor}
-              active={itemObj.item.extensionColor}
-              callback={(val) =>
-                setFringe({
-                  ...fringe,
-                  extensionColor: val as FringeExtensionColorEnum,
-                })
-              }
-            />
-          </div>
+          <NumberSelect
+            type="Удлинители, 5м"
+            callback={(val) =>
+              setFringe({
+                ...fringe,
+                extensions_5m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_5m}
+          />
+          <NumberSelect
+            type="Удлинители, 10м"
+            callback={(val) =>
+              setFringe({
+                ...fringe,
+                extensions_10m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_10m}
+          />
           <div className={classes.tabs}>
             <h5 className={classes.tabsTitle}>Цвет тройников</h5>
             <ItemsAdjust

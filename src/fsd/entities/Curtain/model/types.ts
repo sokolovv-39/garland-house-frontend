@@ -28,26 +28,29 @@ export enum CurtainCableEnum {
   Transparent = "Прозрачный",
 }
 
-export enum CurtainExtensionMultEnum {
-  m_1 = "1 м",
-  m_3 = "3 м",
+export enum CurtainSurfaceEnum {
+  Wood = "Дерево",
+  Concrete = "Бетон",
 }
 
-export enum CurtainSurfaceEnum {
-  Wood = 'Дерево',
-  Concrete = 'Бетон'
+export enum CurtainExtColorEnum {
+  Black = "Черный",
+  White = "Белый",
 }
 
 export type CurtainType = {
   title: string;
   size: string;
   bracing: CurtainBracingEnum;
-  extensionQuantity: number;
   teeQuantity: number;
   glowShade: CurtainGlowShadeEnum;
   glowMode: CurtainGlowModeEnum;
   cable: CurtainCableEnum;
-  extensionMult: CurtainExtensionMultEnum;
   surface: CurtainSurfaceEnum;
-  price: number
+  price: number;
+  extensions_1m: number;
+  extensions_3m: number;
+  extensions_5m: number;
+  extensions_10m: number;
+  extColor: CurtainExtColorEnum;
 };

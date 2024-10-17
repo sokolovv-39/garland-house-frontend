@@ -16,13 +16,6 @@ export enum FringeBracingEnum {
   Rope = "Трос",
 }
 
-export enum FringeExtensionMultEnum {
-  m_1 = "1 м",
-  m_3 = "3 м",
-  m_5 = "5 м",
-  m_10 = "10 м",
-}
-
 export enum FringeTeeColourEnum {
   Black = "Черный",
   White = "Белый",
@@ -38,11 +31,6 @@ export enum FringeSurfaceEnum {
   Concrete = "Бетон",
 }
 
-export enum FringeExtensionColorEnum {
-  Black = "Черный",
-  White = "Белый",
-}
-
 export type FringeType = {
   title: "Бахрома";
   length: number;
@@ -50,14 +38,15 @@ export type FringeType = {
   glowMode: FringeGlowModeEnum;
   cable: FringeCableEnum;
   bracing: FringeBracingEnum;
-  extensionQuantity: number;
   teeQuantity: number;
   powerQuantity: number;
-  extensionMult: FringeExtensionMultEnum;
   teeColour: FringeTeeColourEnum;
   led: FringeLedEnum;
   contours: number;
   surface: FringeSurfaceEnum;
-  extensionColor: FringeExtensionColorEnum;
-  price: number
+  price: number;
+  extensions_1m: number;
+  extensions_3m: number;
+  extensions_5m: number;
+  extensions_10m: number;
 };

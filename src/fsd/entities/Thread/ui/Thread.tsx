@@ -20,8 +20,6 @@ import {
   ThreadWireEnum,
   threadBracings,
   ThreadBracingEnum,
-  threadExtensionMults,
-  ThreadExtensionMultEnum,
   threadSurfaces,
   ThreadSurfaceEnum,
 } from "../model";
@@ -150,6 +148,46 @@ export function Thread({
             />
           </div>
           <NumberSelect
+            type="Удлинители, 1м"
+            callback={(val) =>
+              setThread({
+                ...thread,
+                extensions_1m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_1m}
+          />
+          <NumberSelect
+            type="Удлинители, 3м"
+            callback={(val) =>
+              setThread({
+                ...thread,
+                extensions_3m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_3m}
+          />
+          <NumberSelect
+            type="Удлинители, 5м"
+            callback={(val) =>
+              setThread({
+                ...thread,
+                extensions_5m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_5m}
+          />
+          <NumberSelect
+            type="Удлинители, 10м"
+            callback={(val) =>
+              setThread({
+                ...thread,
+                extensions_10m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_10m}
+          />
+          <NumberSelect
             type="Количество контуров"
             callback={(val) =>
               setThread({
@@ -168,29 +206,6 @@ export function Thread({
               })
             }
             initialValue={itemObj.item.powerQuantity}
-          />
-          <div className={classes.tabs}>
-            <h5 className={classes.tabsTitle}>Кратность удлинителя</h5>
-            <ItemsAdjust
-              list={threadExtensionMults}
-              active={itemObj.item.extensionMult}
-              callback={(val) =>
-                setThread({
-                  ...thread,
-                  extensionMult: val as ThreadExtensionMultEnum,
-                })
-              }
-            />
-          </div>
-          <NumberSelect
-            type="Удлинители, шт"
-            initialValue={itemObj.item.extensionQuantity}
-            callback={(val) =>
-              setThread({
-                ...thread,
-                extensionQuantity: val,
-              })
-            }
           />
           <NumberSelect
             type="Тройники, шт"

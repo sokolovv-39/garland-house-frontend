@@ -26,12 +26,10 @@ import {
   getRopeLanyards,
   getRopeDuplexClamps,
   ThreadSurfaceEnum,
-  ThreadExtensionMultEnum,
   CurtainBracingEnum,
   CurtainSurfaceEnum,
   getCurtainScreedsPacks,
   CurtainCableEnum,
-  CurtainExtensionMultEnum,
   RopeThicknessEnum,
   RopeSurfaceEnum,
   getCorrPVSClips,
@@ -44,15 +42,13 @@ import {
   getVagiModel,
   ThreadWireEnum,
   FringeBracingEnum,
+  BeltLightCableEnum,
+  CurtainExtColorEnum,
 } from "@/fsd/entities";
 import fontkit from "@pdf-lib/fontkit";
-import { NeonType } from "@/fsd/entities/Neon/model";
+import { NeonExtColorEnum, NeonType } from "@/fsd/entities/Neon/model";
 import { getBeltLightLamps } from "@/fsd/entities/BeltLight/lib/estimateAlgs";
-import {
-  FringeExtensionColorEnum,
-  FringeExtensionMultEnum,
-  FringeTeeColourEnum,
-} from "@/fsd/entities/Fringe";
+import { FringeCableEnum, FringeTeeColourEnum } from "@/fsd/entities/Fringe";
 import { getRelaysSwitches } from "@/fsd/entities/RelaysSwitches/lib/estimateAlgs";
 import { WritingArrayType } from "../model";
 import robotoFontUrl from "./fonts/Roboto-Regular.ttf";
@@ -447,46 +443,19 @@ function getItemEstimateInfo(
         lanyard += getRopeLanyards(fringe.contours);
         duplex_clamp += getRopeDuplexClamps(fringe.contours);
       }
-      if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_1 &&
-        fringe.extensionColor === FringeExtensionColorEnum.Black
-      )
-        black_extensions_1m += fringe.extensionQuantity;
-      else if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_3 &&
-        fringe.extensionColor === FringeExtensionColorEnum.Black
-      )
-        black_extensions_3m += fringe.extensionQuantity;
-      else if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_5 &&
-        fringe.extensionColor === FringeExtensionColorEnum.Black
-      )
-        black_extensions_5m += fringe.extensionQuantity;
-      else if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_10 &&
-        fringe.extensionColor === FringeExtensionColorEnum.Black
-      )
-        black_extensions_10m += fringe.extensionQuantity;
-      else if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_1 &&
-        fringe.extensionColor === FringeExtensionColorEnum.White
-      )
-        white_extensions_1m += fringe.extensionQuantity;
-      else if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_3 &&
-        fringe.extensionColor === FringeExtensionColorEnum.White
-      )
-        white_extensions_3m += fringe.extensionQuantity;
-      else if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_5 &&
-        fringe.extensionColor === FringeExtensionColorEnum.White
-      )
-        white_extensions_5m += fringe.extensionQuantity;
-      else if (
-        fringe.extensionMult === FringeExtensionMultEnum.m_10 &&
-        fringe.extensionColor === FringeExtensionColorEnum.White
-      )
-        white_extensions_10m += fringe.extensionQuantity;
+
+      if (fringe.cable === FringeCableEnum.Black) {
+        black_extensions_1m += fringe.extensions_1m;
+        black_extensions_3m += fringe.extensions_3m;
+        black_extensions_5m += fringe.extensions_5m;
+        black_extensions_10m += fringe.extensions_10m;
+      } else if (fringe.cable === FringeCableEnum.White) {
+        white_extensions_1m += fringe.extensions_1m;
+        white_extensions_3m += fringe.extensions_3m;
+        white_extensions_5m += fringe.extensions_5m;
+        white_extensions_10m += fringe.extensions_10m;
+      }
+
       if (fringe.teeColour === FringeTeeColourEnum.Black)
         black_tee += fringe.teeQuantity;
       else if (fringe.teeColour === FringeTeeColourEnum.White)
@@ -501,6 +470,18 @@ function getItemEstimateInfo(
       const beltLight = itemObj.item as BeltLightType;
       lamps += getBeltLightLamps(beltLight.lampStep, beltLight.length);
 
+      if (beltLight.cable === BeltLightCableEnum.Black) {
+        black_extensions_1m += beltLight.extension_1m;
+        black_extensions_3m += beltLight.extension_3m;
+        black_extensions_5m += beltLight.extension_5m;
+        black_extensions_10m += beltLight.extension_10m;
+      } else if (beltLight.cable === BeltLightCableEnum.White) {
+        white_extensions_1m += beltLight.extension_1m;
+        white_extensions_3m += beltLight.extension_3m;
+        white_extensions_5m += beltLight.extension_5m;
+        white_extensions_10m += beltLight.extension_10m;
+      }
+
       return {
         desc: `${beltLight.title} / ${beltLight.glowShade} / Шаг между цоколями ламп: ${beltLight.lampStep} / ${beltLight.cable}`,
         keyValue: `${getBeltLightLength(beltLight.length).skeinsQuantity} бухт`,
@@ -510,11 +491,22 @@ function getItemEstimateInfo(
       const neon = itemObj.item as NeonType;
 
       metal_profile += getNeonProfile(neon.length);
-      white_extensions_1m += neon.extensionQuantity;
       connecting_needles += neon.needles;
       powerQuantity += neon.powerQuantity;
       plugs += neon.contours;
       connecting_needles += neon.contours;
+
+      if (neon.extensionColor === NeonExtColorEnum.Black) {
+        black_extensions_1m += neon.extensions_1m;
+        black_extensions_3m += neon.extensions_3m;
+        black_extensions_5m += neon.extensions_5m;
+        black_extensions_10m += neon.extensions_10m;
+      } else if (neon.extensionColor === NeonExtColorEnum.White) {
+        white_extensions_1m += neon.extensions_1m;
+        white_extensions_3m += neon.extensions_3m;
+        white_extensions_5m += neon.extensions_5m;
+        white_extensions_10m += neon.extensions_10m;
+      }
 
       return {
         desc: `${neon.title} / ${neon.glowShade} / ${neon.thickness} / ${
@@ -545,73 +537,33 @@ function getItemEstimateInfo(
         lanyard += getRopeLanyards(2);
         duplex_clamp += getRopeDuplexClamps(2);
       } else if (curtain.bracing === CurtainBracingEnum.Screed) {
-        if (curtain.cable === CurtainCableEnum.Black) {
+        if (curtain.extColor === CurtainExtColorEnum.Black) {
           black_screeds_480_500mm_packs += getCurtainScreedsPacks(4);
         }
-      } else if (curtain.cable === CurtainCableEnum.White) {
+      } else if (curtain.extColor === CurtainExtColorEnum.White) {
         white_screeds_480_500mm_packs += getCurtainScreedsPacks(4);
-      } else if (curtain.cable === CurtainCableEnum.Transparent) {
-        if (Math.random() > 0.495) {
-          black_screeds_480_500mm_packs += getCurtainScreedsPacks(4);
-        } else {
-          white_screeds_480_500mm_packs += getCurtainScreedsPacks(4);
-        }
       }
 
-      if (curtain.cable === CurtainCableEnum.Black) {
+      if (curtain.extColor === CurtainExtColorEnum.Black) {
         black_tee += curtain.teeQuantity;
-      } else if (curtain.cable === CurtainCableEnum.White) {
+      } else if (curtain.extColor === CurtainExtColorEnum.White) {
         white_tee += curtain.teeQuantity;
-      } else if (curtain.cable === CurtainCableEnum.Transparent) {
-        if (Math.random() > 0.495) {
-          black_tee += curtain.teeQuantity;
-        } else {
-          white_tee += curtain.teeQuantity;
-        }
       }
 
-      if (
-        curtain.extensionMult === CurtainExtensionMultEnum.m_1 &&
-        curtain.cable === CurtainCableEnum.White
-      ) {
-        white_extensions_1m += curtain.extensionQuantity;
-      } else if (
-        curtain.extensionMult === CurtainExtensionMultEnum.m_3 &&
-        curtain.cable === CurtainCableEnum.White
-      ) {
-        white_extensions_3m += curtain.extensionQuantity;
-      } else if (
-        curtain.extensionMult === CurtainExtensionMultEnum.m_1 &&
-        curtain.cable === CurtainCableEnum.Black
-      ) {
-        black_extensions_1m += curtain.extensionQuantity;
-      } else if (
-        curtain.extensionMult === CurtainExtensionMultEnum.m_3 &&
-        curtain.cable === CurtainCableEnum.Black
-      ) {
-        black_extensions_3m += curtain.extensionQuantity;
-      } else if (
-        curtain.extensionMult === CurtainExtensionMultEnum.m_1 &&
-        curtain.cable === CurtainCableEnum.Transparent
-      ) {
-        if (Math.random() > 0.495) {
-          black_extensions_1m += curtain.extensionQuantity;
-        } else {
-          white_extensions_1m += curtain.extensionQuantity;
-        }
-      } else if (
-        curtain.extensionMult === CurtainExtensionMultEnum.m_3 &&
-        curtain.cable === CurtainCableEnum.Transparent
-      ) {
-        if (Math.random() > 0.495) {
-          black_extensions_3m += curtain.extensionQuantity;
-        } else {
-          white_extensions_3m += curtain.extensionQuantity;
-        }
+      if (curtain.extColor === CurtainExtColorEnum.Black) {
+        black_extensions_1m += curtain.extensions_1m;
+        black_extensions_3m += curtain.extensions_3m;
+        black_extensions_5m += curtain.extensions_5m;
+        black_extensions_10m += curtain.extensions_10m;
+      } else if (curtain.extColor === CurtainExtColorEnum.White) {
+        white_extensions_1m += curtain.extensions_1m;
+        white_extensions_3m += curtain.extensions_3m;
+        white_extensions_5m += curtain.extensions_5m;
+        white_extensions_10m += curtain.extensions_10m;
       }
 
       return {
-        desc: `${curtain.title} / ${curtain.size} / ${curtain.glowMode} / ${curtain.glowShade} / ${curtain.cable} / Кратность удлинителя: ${curtain.extensionMult} / Удлинители ${curtain.extensionQuantity} шт/ Тройники ${curtain.teeQuantity} шт`,
+        desc: `${curtain.title} / ${curtain.size} / ${curtain.glowMode} / ${curtain.glowShade} / ${curtain.cable}`,
         keyValue: `${curtain.size}`,
       };
     }
@@ -644,26 +596,17 @@ function getItemEstimateInfo(
         lanyard += getRopeLanyards(thread.contours);
       }
       powerQuantity += thread.powerQuantity;
-      if (
-        thread.extensionMult === ThreadExtensionMultEnum.m_1 &&
-        thread.wire === ThreadWireEnum.Black
-      ) {
-        black_extensions_1m += thread.extensionQuantity;
-      } else if (
-        thread.extensionMult === ThreadExtensionMultEnum.m_3 &&
-        thread.wire === ThreadWireEnum.Black
-      ) {
-        black_extensions_3m += thread.extensionQuantity;
-      } else if (
-        thread.extensionMult === ThreadExtensionMultEnum.m_1 &&
-        thread.wire === ThreadWireEnum.White
-      ) {
-        white_extensions_1m += thread.extensionQuantity;
-      } else if (
-        thread.extensionMult === ThreadExtensionMultEnum.m_3 &&
-        thread.wire === ThreadWireEnum.White
-      ) {
-        white_extensions_3m += thread.extensionQuantity;
+
+      if (thread.wire === ThreadWireEnum.Black) {
+        black_extensions_1m += thread.extensions_1m;
+        black_extensions_3m += thread.extensions_3m;
+        black_extensions_5m += thread.extensions_5m;
+        black_extensions_10m += thread.extensions_10m;
+      } else if (thread.wire === ThreadWireEnum.White) {
+        white_extensions_1m += thread.extensions_1m;
+        white_extensions_3m += thread.extensions_3m;
+        white_extensions_5m += thread.extensions_5m;
+        white_extensions_10m += thread.extensions_10m;
       }
 
       if (thread.wire === ThreadWireEnum.Black) {

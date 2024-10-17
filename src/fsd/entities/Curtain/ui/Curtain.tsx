@@ -15,8 +15,8 @@ import {
   curtainBracings,
   curtainCable,
   CurtainCableEnum,
-  CurtainExtensionMultEnum,
-  curtainExtensionMults,
+  CurtainExtColorEnum,
+  curtainExtColors,
   curtainGlowMode,
   CurtainGlowModeEnum,
   CurtainGlowShadeEnum,
@@ -149,25 +149,56 @@ export function Curtain({
               }
             />
           </div>
-          <Select
-            type="Кратность удлинителя"
-            littleType
-            values={curtainExtensionMults}
-            initialValue={itemObj.item.extensionMult}
+          <div className={classes.tabs}>
+            <h5 className={classes.tabsTitle}>Цвет удлинителей</h5>
+            <ItemsAdjust
+              list={curtainExtColors}
+              active={itemObj.item.extColor}
+              callback={(val) =>
+                setCurtain({
+                  ...curtain,
+                  extColor: val as CurtainExtColorEnum,
+                })
+              }
+            />
+          </div>
+          <NumberSelect
+            type="Удлинители, 1м"
+            initialValue={itemObj.item.extensions_1m}
             callback={(val) =>
               setCurtain({
                 ...curtain,
-                extensionMult: val as CurtainExtensionMultEnum,
+                extensions_1m: val,
               })
             }
           />
           <NumberSelect
-            type="Удлинители, шт"
-            initialValue={itemObj.item.extensionQuantity}
+            type="Удлинители, 3м"
+            initialValue={itemObj.item.extensions_3m}
             callback={(val) =>
               setCurtain({
                 ...curtain,
-                extensionQuantity: val,
+                extensions_3m: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Удлинители, 5м"
+            initialValue={itemObj.item.extensions_5m}
+            callback={(val) =>
+              setCurtain({
+                ...curtain,
+                extensions_5m: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Удлинители, 10м"
+            initialValue={itemObj.item.extensions_10m}
+            callback={(val) =>
+              setCurtain({
+                ...curtain,
+                extensions_10m: val,
               })
             }
           />

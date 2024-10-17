@@ -24,11 +24,11 @@ import {
 export function BeltLight({
   deleteItem,
   itemObj,
-  getItems
+  getItems,
 }: {
   deleteItem: () => void;
-    itemObj: ItemType<BeltLightType>;
-  getItems: () => void
+  itemObj: ItemType<BeltLightType>;
+  getItems: () => void;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(true);
@@ -45,7 +45,7 @@ export function BeltLight({
 
   useEffect(() => {
     updateBeltLight();
-    getItems()
+    getItems();
   }, [beltLight]);
 
   return (
@@ -120,6 +120,46 @@ export function BeltLight({
               }
             />
           </div>
+          <NumberSelect
+            type="Удлинители, 1м"
+            callback={(val) =>
+              setBeltLight({
+                ...beltLight,
+                extension_1m: val,
+              })
+            }
+            initialValue={itemObj.item.extension_1m}
+          />
+          <NumberSelect
+            type="Удлинители, 3м"
+            callback={(val) =>
+              setBeltLight({
+                ...beltLight,
+                extension_3m: val,
+              })
+            }
+            initialValue={itemObj.item.extension_3m}
+          />
+          <NumberSelect
+            type="Удлинители, 5м"
+            callback={(val) =>
+              setBeltLight({
+                ...beltLight,
+                extension_5m: val,
+              })
+            }
+            initialValue={itemObj.item.extension_5m}
+          />
+          <NumberSelect
+            type="Удлинители, 10м"
+            callback={(val) =>
+              setBeltLight({
+                ...beltLight,
+                extension_10m: val,
+              })
+            }
+            initialValue={itemObj.item.extension_10m}
+          />
         </div>
       )}
     </div>

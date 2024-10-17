@@ -1,10 +1,22 @@
-export type { FringeGlowShadeEnum, FringeGlowModeEnum, FringeCableEnum, FringeType} from './types'
+export type {
+  FringeGlowShadeEnum,
+  FringeGlowModeEnum,
+  FringeType,
+} from "./types";
 export {
   FringeLedEnum,
   FringeSurfaceEnum,
-  FringeExtensionColorEnum,
-  FringeExtensionMultEnum,
   FringeTeeColourEnum,
-  FringeBracingEnum
+  FringeBracingEnum,
+  FringeCableEnum,
 } from "./types";
-export { defaultFringe, fringeLeds,fringeGlowShades, fringeGlowModes, fringeSurfaces, fringeCables, fringeBracings, fringeExtMults, fringeTeeColour, fringeExtensionColor } from './defaults'
+export {
+  defaultFringe,
+  fringeLeds,
+  fringeGlowShades,
+  fringeGlowModes,
+  fringeSurfaces,
+  fringeCables,
+  fringeBracings,
+  fringeTeeColour,
+} from "./defaults";

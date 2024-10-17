@@ -2,7 +2,6 @@ export { Fringe } from "./ui";
 export {
   fringeBracings,
   fringeCables,
-  fringeExtMults,
   fringeGlowModes,
   fringeGlowShades,
   fringeTeeColour,
@@ -11,19 +10,13 @@ export {
   fringeLeds,
   FringeSurfaceEnum,
   fringeSurfaces,
-  fringeExtensionColor,
-  FringeExtensionColorEnum,
-  FringeExtensionMultEnum,
   FringeTeeColourEnum,
-  FringeBracingEnum
+  FringeBracingEnum,
+  FringeCableEnum,
 } from "./model";
 export type {
   FringeType,
   FringeGlowShadeEnum,
   FringeGlowModeEnum,
-  FringeCableEnum,
 } from "./model";
-export {
-  getFringeLength,
-  getFringeBracketsPacks,
-} from "./lib";
+export { getFringeLength, getFringeBracketsPacks } from "./lib";

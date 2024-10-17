@@ -7,6 +7,7 @@ import {
   ItemsAdjust,
   IDBContext,
   Select,
+  Toggler,
 } from "@/fsd/shared";
 import classes from "./Neon.module.scss";
 import { useContext, useState, useEffect } from "react";
@@ -122,15 +123,55 @@ export function Neon({
               }
             />
           </div>
+          <Toggler
+            type="Покраска профиля"
+            isActive={neon.painting}
+            callback={(isActive) => {
+              setNeon({
+                ...neon,
+                painting: isActive,
+              });
+            }}
+          />
           <NumberSelect
-            type="Удлинители, шт"
+            type="Удлинители, 1м"
             callback={(val) =>
               setNeon({
                 ...neon,
-                extensionQuantity: val,
+                extensions_1m: val,
               })
             }
-            initialValue={itemObj.item.extensionQuantity}
+            initialValue={itemObj.item.extensions_1m}
+          />
+          <NumberSelect
+            type="Удлинители, 3м"
+            callback={(val) =>
+              setNeon({
+                ...neon,
+                extensions_3m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_3m}
+          />
+          <NumberSelect
+            type="Удлинители, 5м"
+            callback={(val) =>
+              setNeon({
+                ...neon,
+                extensions_5m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_5m}
+          />
+          <NumberSelect
+            type="Удлинители, 10м"
+            callback={(val) =>
+              setNeon({
+                ...neon,
+                extensions_10m: val,
+              })
+            }
+            initialValue={itemObj.item.extensions_10m}
           />
           <NumberSelect
             type="Соединительные иглы, шт"

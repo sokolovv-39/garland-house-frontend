@@ -23,5 +23,9 @@ export type BeltLightType = {
   glowShade: BeltLightGlowShadeEnum;
   lampStep: BeltLightLampStepEnum;
   cable: BeltLightCableEnum;
-  price: number
+  price: number;
+  extension_1m: number;
+  extension_3m: number;
+  extension_5m: number;
+  extension_10m: number;
 };

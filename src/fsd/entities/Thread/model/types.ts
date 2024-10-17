@@ -2,7 +2,7 @@ export enum ThreadGlowShadeEnum {
   Warm = "Теплый",
   Cold = "Холодный",
   RGB = "RGB",
-  Other = '7 цветов'
+  Other = "7 цветов",
 }
 
 export enum ThreadGlowModeEnum {
@@ -17,17 +17,12 @@ export enum ThreadWireEnum {
 
 export enum ThreadBracingEnum {
   Screeds = "Стяжки",
-  Rope = 'Трос'
-}
-
-export enum ThreadExtensionMultEnum {
-  m_1 = "1 м",
-  m_3 = "3 м"
+  Rope = "Трос",
 }
 
 export enum ThreadSurfaceEnum {
-  Wood = 'Дерево',
-  Concrete = 'Бетон'
+  Wood = "Дерево",
+  Concrete = "Бетон",
 }
 
 export type ThreadType = {
@@ -38,10 +33,12 @@ export type ThreadType = {
   wire: ThreadWireEnum;
   bracing: ThreadBracingEnum;
   powerQuantity: number;
-  extensionMult: ThreadExtensionMultEnum;
-  extensionQuantity: number;
   teeQuantity: number;
   surface: ThreadSurfaceEnum;
   contours: number;
-  price: number
+  price: number;
+  extensions_1m: number;
+  extensions_3m: number;
+  extensions_5m: number;
+  extensions_10m: number;
 };

@@ -21,11 +21,9 @@ export {
   fringeLeds,
   FringeSurfaceEnum,
   fringeSurfaces,
-  fringeExtensionColor,
-  FringeExtensionColorEnum,
-  FringeExtensionMultEnum,
   FringeTeeColourEnum,
   FringeBracingEnum,
+  FringeCableEnum,
 } from "./Fringe";
 export {
   Neon,
@@ -37,6 +35,8 @@ export {
   getNeonNeedles,
   getNeonPlugs,
   getNeonProfile,
+  neonExtColor,
+  NeonExtColorEnum,
 } from "./Neon";
 export { NoMedia, MediaList, Media, AddMedia } from "./Media";
 export { type MeasureType, Measure } from "./Measure";
@@ -47,7 +47,7 @@ export {
   OrdersTableControl,
   defaultOrder,
   OrderBasicInfo,
-  orderStatuses
+  orderStatuses,
 } from "./Order";
 export {
   Thread,
@@ -56,13 +56,11 @@ export {
   threadGlowMode,
   threadGlowShades,
   defaultThread,
-  threadExtensionMults,
   getThreadLength,
   getThreadScreedsPacks,
   ThreadBracingEnum,
   ThreadSurfaceEnum,
   threadSurfaces,
-  ThreadExtensionMultEnum,
   ThreadWireEnum,
 } from "./Thread";
 
@@ -79,12 +77,9 @@ export {
   beltLightLampSteps,
   getBeltLightLength,
   BeltLightLampStepEnum,
-} from "./BeltLight";
-export type {
-  BeltLightType,
-  BeltLightGlowShadeEnum,
   BeltLightCableEnum,
 } from "./BeltLight";
+export type { BeltLightType, BeltLightGlowShadeEnum } from "./BeltLight";
 export {
   Curtain,
   curtainBracings,
@@ -92,14 +87,14 @@ export {
   curtainSizes,
   curtainCable,
   curtainGlowMode,
-  curtainExtensionMults,
   curtainGlowShades,
   getCurtainScreedsPacks,
   CurtainBracingEnum,
   CurtainSurfaceEnum,
   curtainSurfaces,
   CurtainCableEnum,
-  CurtainExtensionMultEnum,
+  curtainExtColors,
+  CurtainExtColorEnum,
 } from "./Curtain";
 export type {
   CurtainType,

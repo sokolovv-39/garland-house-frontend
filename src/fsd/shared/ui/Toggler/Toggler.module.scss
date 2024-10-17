@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  .type {
+    overflow: hidden;
+    font-variant-numeric: lining-nums tabular-nums stacked-fractions;
+    font-feature-settings: "liga" off, "clig" off;
+    line-height: 24px; /* 150% */
+  }
+  .outer {
+    width: 68px;
+    height: 40px;
+    border-radius: 19998px;
+    background: rgba(25, 25, 25, 0.1);
+    position: relative;
+    .inner {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 32px;
+      background-color: white;
+    }
+    .innerOn {
+      right: 4px;
+      left: auto;
+    }
+  }
+  .outerOn {
+    background: #c59b68;
+  }
+}

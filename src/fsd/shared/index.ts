@@ -14,6 +14,7 @@ export {
   IndexedDBProvider,
   Comments,
   ErrorPage,
+  Toggler,
 } from "./ui";
 export {
   IDBContext,

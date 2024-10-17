@@ -1,7 +1,7 @@
 import {
   CurtainBracingEnum,
   CurtainCableEnum,
-  CurtainExtensionMultEnum,
+  CurtainExtColorEnum,
   CurtainGlowModeEnum,
   CurtainGlowShadeEnum,
   CurtainSizeEnum,
@@ -14,8 +14,8 @@ export const curtainSizes = Object.values(CurtainSizeEnum);
 export const curtainGlowShades = Object.values(CurtainGlowShadeEnum);
 export const curtainGlowMode = Object.values(CurtainGlowModeEnum);
 export const curtainCable = Object.values(CurtainCableEnum);
-export const curtainExtensionMults = Object.values(CurtainExtensionMultEnum);
 export const curtainSurfaces = Object.values(CurtainSurfaceEnum);
+export const curtainExtColors = Object.values(CurtainExtColorEnum);
 
 export const curtainDefault: CurtainType = {
   title: "Занавес",
@@ -24,9 +24,12 @@ export const curtainDefault: CurtainType = {
   glowShade: CurtainGlowShadeEnum.Warm,
   glowMode: CurtainGlowModeEnum.Flickering,
   cable: CurtainCableEnum.Black,
-  extensionMult: CurtainExtensionMultEnum.m_1,
   teeQuantity: 0,
-  extensionQuantity: 0,
   surface: CurtainSurfaceEnum.Wood,
-  price: 2342
+  price: 2342,
+  extensions_1m: 0,
+  extensions_3m: 0,
+  extensions_5m: 0,
+  extensions_10m: 0,
+  extColor: CurtainExtColorEnum.Black,
 };

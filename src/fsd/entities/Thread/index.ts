@@ -5,12 +5,10 @@ export {
   threadGlowMode,
   threadGlowShades,
   defaultThread,
-  threadExtensionMults,
   ThreadBracingEnum,
   threadSurfaces,
   ThreadSurfaceEnum,
-  ThreadExtensionMultEnum,
-  ThreadWireEnum
+  ThreadWireEnum,
 } from "./model";
 export type {
   ThreadGlowModeEnum,
