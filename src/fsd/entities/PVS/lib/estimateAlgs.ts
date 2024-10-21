@@ -54,7 +54,9 @@ export function getEsPVS(allItems: CommonItemType[]) {
   pvses.forEach((item) => {
     esPvses.push({
       desc: `${item.title} / ${item.color}`,
-      keyValue: `${get_PVS_Skeins_Meters(item.length, item.color)}`,
+      keyValue: `${
+        get_PVS_Skeins_Meters(item.length, item.color).skeinsMeters
+      }`,
     });
   });
 
