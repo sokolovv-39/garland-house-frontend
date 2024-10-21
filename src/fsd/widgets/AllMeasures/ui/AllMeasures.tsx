@@ -18,20 +18,23 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
   const [measures, setMeasures] = useState<MeasureType[]>([]);
 
   function getMeasures() {
-    idb?.measures
-      .getOwn(numberOfOrder)
-      .then((data) => {
-        function orderIdSort(obj1: MeasureType, obj2: MeasureType) {
-          if (obj1.orderId > obj2.orderId) return 1;
-          if (obj1.orderId < obj2.orderId) return -1;
-          return 0;
-        }
-        const newMeasures = data.sort(orderIdSort);
-        setMeasures(newMeasures);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    return new Promise<void>((resolve, reject) => {
+      idb?.measures
+        .getOwn(numberOfOrder)
+        .then((data) => {
+          function orderIdSort(obj1: MeasureType, obj2: MeasureType) {
+            if (obj1.orderId > obj2.orderId) return 1;
+            if (obj1.orderId < obj2.orderId) return -1;
+            return 0;
+          }
+          const newMeasures = data.sort(orderIdSort);
+          setMeasures(newMeasures);
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   async function deleteMeasure(id: string) {
@@ -149,7 +152,7 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
           measure={measure}
           isFavourite={measure.isFavourite}
           key={measure.id}
-          deleteMeasure={() => deleteMeasure(measure.id)}
+          deleteMeasure={() => deleteMeasure}
           copyMeasure={copyMeasure}
         />
       ))}

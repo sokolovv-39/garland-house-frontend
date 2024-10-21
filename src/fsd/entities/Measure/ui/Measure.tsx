@@ -91,10 +91,12 @@ export function Measure({
 
   function updateCost() {
     console.log("updating cost...");
-    generateRFP(idb!, measure.id, false).then((overall) => {
-      console.log(`new cost ${overall}`);
-      setCost(splitPrice(overall!));
-    });
+    generateRFP(idb!, measure.id, false)
+      .then((overall) => {
+        console.log(`new cost ${overall}`);
+        setCost(splitPrice(overall!));
+      })
+      .catch((err) => console.error(err));
   }
 
   async function updateObjectName(obj: ObjectType) {
@@ -105,6 +107,9 @@ export function Measure({
   useEffect(() => {
     getObjects();
   }, []);
+  useEffect(() => {
+    if (objects.length === 0) setCost(splitPrice(0));
+  }, [objects]);
 
   return (
     <div className={classes.wrapper}>
