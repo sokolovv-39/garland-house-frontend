@@ -1,4 +1,5 @@
 import { CommonItemType } from "../../Item";
+import { RopeType } from "../../Rope";
 
 export function getEsLanyards(allItems: CommonItemType[]) {
   let lanyards = 0;
@@ -8,6 +9,13 @@ export function getEsLanyards(allItems: CommonItemType[]) {
       if (item.bracing === "Трос") {
         lanyards += item.contours;
       }
+    }
+  });
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Трос") {
+      const rope = itemObj.item as RopeType;
+      lanyards += rope.contours;
     }
   });
 
