@@ -152,7 +152,7 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
           measure={measure}
           isFavourite={measure.isFavourite}
           key={measure.id}
-          deleteMeasure={() => deleteMeasure}
+          deleteMeasure={() => deleteMeasure(measure.id)}
           copyMeasure={copyMeasure}
         />
       ))}
