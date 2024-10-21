@@ -1,12 +1,9 @@
-export type {
+export type { FringeType } from "./types";
+export {
   FringeGlowShadeEnum,
   FringeGlowModeEnum,
-  FringeType,
-} from "./types";
-export {
   FringeLedEnum,
   FringeSurfaceEnum,
-  FringeTeeColourEnum,
   FringeBracingEnum,
   FringeCableEnum,
 } from "./types";
@@ -18,5 +15,4 @@ export {
   fringeSurfaces,
   fringeCables,
   fringeBracings,
-  fringeTeeColour,
 } from "./defaults";

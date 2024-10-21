@@ -16,7 +16,6 @@ export function MediaList({
   mediaWidth?: number;
   mediaHeight?: number;
 }) {
-  console.log("mediaURLS", urls);
   return (
     <div className={classes.wrapper}>
       {urls.map((url, i) => (

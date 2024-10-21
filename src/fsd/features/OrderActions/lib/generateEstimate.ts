@@ -10,17 +10,15 @@ import {
   getFringeBracketsPacks,
   getCorrPVSLength,
   getFringeLength,
-  PVSType,
   RopeType,
   ThreadType,
   getNeonLength,
   getNeonProfile,
   getThreadLength,
   getBeltLightLength,
-  getPVSLength,
+  getEsPVS,
   FringeSurfaceEnum,
   ThreadBracingEnum,
-  getThreadScreedsPacks,
   getRopeLength,
   getRopeRings,
   getRopeLanyards,
@@ -28,30 +26,45 @@ import {
   ThreadSurfaceEnum,
   CurtainBracingEnum,
   CurtainSurfaceEnum,
-  getCurtainScreedsPacks,
-  CurtainCableEnum,
   RopeThicknessEnum,
   RopeSurfaceEnum,
   getCorrPVSClips,
-  getBoxPVSPieces,
   SolderBoxType,
   getSolderBoxPieces,
   getAllVagi,
-  get_Screed_200_packs,
-  get_Screeds_480_500_quantity,
   getVagiModel,
-  ThreadWireEnum,
   FringeBracingEnum,
-  BeltLightCableEnum,
-  CurtainExtColorEnum,
+  Screed_480_500_Type,
+  Screed_200_Type,
+  get_Screeds_480_500_packs,
+  getEsNeon,
+  getEsCurtains,
+  getEsThread,
+  getEsCorrPVS,
+  getEsBoxPvs,
+  getEsRope,
+  getEsCableBrackets,
+  getEsScrewRings,
+  getEsAnchorRings,
+  getEsLanyards,
+  getEsDuplexClamps,
+  getEsExtensions,
+  getEsTees,
+  getEsPowerUnits,
+  getEsMetalProfile,
+  getEsConnectingNeedles,
+  getEsPlugs,
+  getEsLamps,
+  getEsCorrClips,
+  get_screeds_200_packs,
 } from "@/fsd/entities";
 import fontkit from "@pdf-lib/fontkit";
-import { NeonExtColorEnum, NeonType } from "@/fsd/entities/Neon/model";
-import { getBeltLightLamps } from "@/fsd/entities/BeltLight/lib/estimateAlgs";
-import { FringeCableEnum, FringeTeeColourEnum } from "@/fsd/entities/Fringe";
+import { NeonType } from "@/fsd/entities/Neon/model";
+import { getEsBeltLight } from "@/fsd/entities/BeltLight/lib/estimateAlgs";
+import { FringeCableEnum, getEsFringe } from "@/fsd/entities/Fringe";
 import { getRelaysSwitches } from "@/fsd/entities/RelaysSwitches/lib/estimateAlgs";
-import { WritingArrayType } from "../model";
 import robotoFontUrl from "./fonts/Roboto-Regular.ttf";
+import { EsWritingArrayType } from "../model";
 
 export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   const allItems = await getItems(idb, orderId);
@@ -77,32 +90,39 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   let yPosition = pageHeight - margin;
 
   // Позиции в смете
-  let cableBracketPacks = 0;
-  let rope_2mm_length = 0;
-  let screw_ring_4x50 = 0;
-  let anchor_ring_6x50 = 0;
-  let lanyard = 0;
-  let duplex_clamp = 0;
-  let white_extensions_1m = 0;
-  let white_extensions_3m = 0;
-  let white_extensions_5m = 0;
-  let white_extensions_10m = 0;
-  let black_extensions_1m = 0;
-  let black_extensions_3m = 0;
-  let black_extensions_5m = 0;
-  let black_extensions_10m = 0;
-  let black_tee = 0;
-  let white_tee = 0;
-  let powerQuantity = 0;
-  let metal_profile = 0;
-  let connecting_needles = 0;
-  let plugs = 0;
-  let screedsPacks = 0;
-  let lamps = 0;
-  let rope_3mm_length = 0;
-  let white_screeds_480_500mm_packs = 0;
-  let black_screeds_480_500mm_packs = 0;
-  let corr_clips = 0;
+  const fringes = getEsFringe(allItems);
+  const beltLights = getEsBeltLight(allItems);
+  const neons = getEsNeon(allItems);
+  const curtains = getEsCurtains(allItems);
+  const threads = getEsThread(allItems);
+  const pvses = getEsPVS(allItems);
+  const corrPvs = getEsCorrPVS(allItems);
+  const boxPvs = getEsBoxPvs(allItems);
+  const ropes = getEsRope(allItems);
+  const cableBracketPacks = getEsCableBrackets(allItems);
+  let screw_ring_4x50 = getEsScrewRings(allItems);
+  let anchor_ring_6x50 = getEsAnchorRings(allItems);
+  let lanyards = getEsLanyards(allItems);
+  let duplex_clamps = getEsDuplexClamps(allItems);
+  let {
+    white_extensions_1m,
+    white_extensions_3m,
+    white_extensions_5m,
+    white_extensions_10m,
+    black_extensions_1m,
+    black_extensions_3m,
+    black_extensions_5m,
+    black_extensions_10m,
+  } = getEsExtensions(allItems);
+  let { black_tees, white_tees } = getEsTees(allItems);
+  let powerUnits = getEsPowerUnits(allItems);
+  let metal_profile = getEsMetalProfile(allItems);
+  let connecting_needles = getEsConnectingNeedles(allItems);
+  let plugs = getEsPlugs(allItems);
+  let lamps = getEsLamps(allItems);
+  let screeds_480_500_mm = get_Screeds_480_500_packs(allItems);
+  let screeds_200_mm = get_screeds_200_packs(allItems);
+  let corr_clips = getEsCorrClips(allItems);
   let street_shield_ip65 = 1;
   let automat_10A = 1;
   let voltage_relay = 1;
@@ -113,49 +133,9 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     astroRelay,
   } = getRelaysSwitches(allItems);
   const vagi = getAllVagi(allItems);
-  const screeds_200 = get_Screed_200_packs(allItems);
-  const screeds_480_500 = get_Screeds_480_500_quantity(allItems);
+  const solderBoxes = getSolderBoxPieces(allItems);
 
-  const writingArray: WritingArrayType = [];
-
-  allItems.forEach((item) => {
-    const writtenItem = getItemEstimateInfo(
-      item,
-      allItems,
-      cableBracketPacks,
-      rope_2mm_length,
-      screw_ring_4x50,
-      anchor_ring_6x50,
-      lanyard,
-      duplex_clamp,
-      white_extensions_1m,
-      white_extensions_3m,
-      white_extensions_5m,
-      white_extensions_10m,
-      black_extensions_1m,
-      black_extensions_3m,
-      black_extensions_5m,
-      black_extensions_10m,
-      white_tee,
-      black_tee,
-      powerQuantity,
-      metal_profile,
-      connecting_needles,
-      plugs,
-      screedsPacks,
-      lamps,
-      rope_3mm_length,
-      white_screeds_480_500mm_packs,
-      black_screeds_480_500mm_packs,
-      corr_clips
-    );
-    writingArray.push({
-      desc: writtenItem.desc,
-      keyValue: writtenItem.keyValue,
-    });
-  });
-
-  getPositionsEstimateInfo(writingArray);
+  const writingArray = getPositionsEstimateInfo();
 
   writingArray.forEach((item) => writeItem(item.desc, item.keyValue));
 
@@ -252,31 +232,63 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     yPosition -= lineHeight; // Зазор после разделителя
   }
 
-  function getPositionsEstimateInfo(writingArray: WritingArrayType) {
-    writingArray.push({
-      desc: `Скоба кабельная`,
-      keyValue: `${cableBracketPacks} уп`,
+  function getPositionsEstimateInfo(): EsWritingArrayType[] {
+    const writingArray: EsWritingArrayType[] = [];
+
+    fringes.forEach((fringe) => {
+      writingArray.push(fringe);
     });
-    writingArray.push({
-      desc: `Трос / 2 мм`,
-      keyValue: `${rope_2mm_length} м`,
+
+    beltLights.forEach((beltLight) => {
+      writingArray.push(beltLight);
     });
+
+    neons.forEach((neon) => {
+      writingArray.push(neon);
+    });
+
+    curtains.forEach((curtain) => {
+      writingArray.push(curtain);
+    });
+
+    threads.forEach((thread) => {
+      writingArray.push(thread);
+    });
+
+    pvses.forEach((pvs) => {
+      writingArray.push(pvs);
+    });
+
+    writingArray.push(corrPvs);
+
+    writingArray.push(boxPvs);
+
+    ropes.forEach((rope) => {
+      writingArray.push(rope);
+    });
+
+    writingArray.push(cableBracketPacks);
+
     writingArray.push({
-      desc: `Шуруп-кольцо / 4x50`,
+      desc: "Шуруп-кольцо / 4x50",
       keyValue: `${screw_ring_4x50} шт`,
     });
+
     writingArray.push({
       desc: `Анкер-кольцо / 6x50`,
       keyValue: `${anchor_ring_6x50} шт`,
     });
+
     writingArray.push({
       desc: `Талреп`,
-      keyValue: `${lanyard} шт`,
+      keyValue: `${lanyards} шт`,
     });
+
     writingArray.push({
       desc: `Дуплексный зажим`,
-      keyValue: `${duplex_clamp} шт`,
+      keyValue: `${duplex_clamps} шт`,
     });
+
     writingArray.push({
       desc: `Удлинитель / 1 м / белый`,
       keyValue: `${white_extensions_1m} шт`,
@@ -311,15 +323,15 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     });
     writingArray.push({
       desc: `Тройник / черный`,
-      keyValue: `${black_tee} шт`,
+      keyValue: `${black_tees} шт`,
     });
     writingArray.push({
       desc: `Тройник / белый`,
-      keyValue: `${white_tee} шт`,
+      keyValue: `${white_tees} шт`,
     });
     writingArray.push({
       desc: `Блок питания`,
-      keyValue: `${powerQuantity} шт`,
+      keyValue: `${powerUnits} шт`,
     });
     writingArray.push({
       desc: `Профиль металлический / 2 м`,
@@ -337,21 +349,13 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       desc: `Лампы`,
       keyValue: `${lamps} шт`,
     });
-    writingArray.push({
-      desc: `Трос / 3 мм`,
-      keyValue: `${rope_3mm_length} м`,
+
+    screeds_200_mm.forEach((screed) => {
+      writingArray.push(screed);
     });
-    writingArray.push({
-      desc: `Стяжки / белые / 480-500 мм`,
-      keyValue: `${
-        white_screeds_480_500mm_packs +
-        Math.ceil(screeds_480_500) / 100 +
-        screedsPacks
-      } уп`,
-    });
-    writingArray.push({
-      desc: `Стяжки / черные / 480-500 мм`,
-      keyValue: `${black_screeds_480_500mm_packs} уп`,
+
+    screeds_480_500_mm.forEach((screed) => {
+      writingArray.push(screed);
     });
     writingArray.push({
       desc: `Клипсы для гофры`,
@@ -382,276 +386,15 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       keyValue: `${wireless_switch_radio} шт`,
     });
     writingArray.push({
-      desc: `Беспроводной радио выключатель с Wi-Fi реле `,
+      desc: `Беспроводной радио выключатель с Wi-Fi реле`,
       keyValue: `${wireless_switch_wifi} шт`,
     });
     writingArray.push({
       desc: `Астрономическое реле времени`,
       keyValue: `${astroRelay} шт`,
     });
-    writingArray.push({
-      desc: `Стяжки / 200 мм`,
-      keyValue: `${screeds_200} уп`,
-    });
-  }
-}
-
-function getItemEstimateInfo(
-  itemObj: CommonItemType,
-  allItems: CommonItemType[],
-  cableBrackets: number,
-  rope_2mm_length: number,
-  screw_ring_4x50: number,
-  anchor_ring_6x50: number,
-  lanyard: number,
-  duplex_clamp: number,
-  white_extensions_1m: number,
-  white_extensions_3m: number,
-  white_extensions_5m: number,
-  white_extensions_10m: number,
-  black_extensions_1m: number,
-  black_extensions_3m: number,
-  black_extensions_5m: number,
-  black_extensions_10m: number,
-  white_tee: number,
-  black_tee: number,
-  powerQuantity: number,
-  metal_profile: number,
-  connecting_needles: number,
-  plugs: number,
-  screedsPacks: number,
-  lamps: number,
-  rope_3mm_length: number,
-  white_screeds_480_500mm_packs: number,
-  black_screeds_480_500mm_packs: number,
-  corr_clips: number
-): {
-  desc: string;
-  keyValue: string;
-} {
-  switch (itemObj.itemTitle) {
-    case "Бахрома": {
-      const fringe = itemObj.item as FringeType;
-      if (fringe.bracing === FringeBracingEnum.Bracket)
-        cableBrackets += getFringeBracketsPacks(fringe.length);
-      else if (fringe.bracing === FringeBracingEnum.Rope) {
-        rope_2mm_length += getRopeLength(fringe.length, fringe.contours);
-        if (fringe.surface === FringeSurfaceEnum.Wood)
-          screw_ring_4x50 += getRopeRings(fringe.length, fringe.contours);
-        else if (fringe.surface === FringeSurfaceEnum.Concrete)
-          anchor_ring_6x50 += getRopeRings(fringe.length, fringe.contours);
-        lanyard += getRopeLanyards(fringe.contours);
-        duplex_clamp += getRopeDuplexClamps(fringe.contours);
-      }
-
-      if (fringe.cable === FringeCableEnum.Black) {
-        black_extensions_1m += fringe.extensions_1m;
-        black_extensions_3m += fringe.extensions_3m;
-        black_extensions_5m += fringe.extensions_5m;
-        black_extensions_10m += fringe.extensions_10m;
-      } else if (fringe.cable === FringeCableEnum.White) {
-        white_extensions_1m += fringe.extensions_1m;
-        white_extensions_3m += fringe.extensions_3m;
-        white_extensions_5m += fringe.extensions_5m;
-        white_extensions_10m += fringe.extensions_10m;
-      }
-
-      if (fringe.teeColour === FringeTeeColourEnum.Black)
-        black_tee += fringe.teeQuantity;
-      else if (fringe.teeColour === FringeTeeColourEnum.White)
-        white_tee += fringe.teeQuantity;
-      powerQuantity += fringe.powerQuantity;
-      return {
-        desc: `${fringe.title} / ${fringe.glowShade} / ${fringe.glowMode} / ${fringe.cable} / ${fringe.bracing} / ${fringe.led}`,
-        keyValue: `${getFringeLength(fringe.length).skeinQuantity} бухт`,
-      };
-    }
-    case "Белт-лайт": {
-      const beltLight = itemObj.item as BeltLightType;
-      lamps += getBeltLightLamps(beltLight.lampStep, beltLight.length);
-
-      if (beltLight.cable === BeltLightCableEnum.Black) {
-        black_extensions_1m += beltLight.extension_1m;
-        black_extensions_3m += beltLight.extension_3m;
-        black_extensions_5m += beltLight.extension_5m;
-        black_extensions_10m += beltLight.extension_10m;
-      } else if (beltLight.cable === BeltLightCableEnum.White) {
-        white_extensions_1m += beltLight.extension_1m;
-        white_extensions_3m += beltLight.extension_3m;
-        white_extensions_5m += beltLight.extension_5m;
-        white_extensions_10m += beltLight.extension_10m;
-      }
-
-      return {
-        desc: `${beltLight.title} / ${beltLight.glowShade} / Шаг между цоколями ламп: ${beltLight.lampStep} / ${beltLight.cable}`,
-        keyValue: `${getBeltLightLength(beltLight.length).skeinsQuantity} бухт`,
-      };
-    }
-    case "Гибкий неон": {
-      const neon = itemObj.item as NeonType;
-
-      metal_profile += getNeonProfile(neon.length);
-      connecting_needles += neon.needles;
-      powerQuantity += neon.powerQuantity;
-      plugs += neon.contours;
-      connecting_needles += neon.contours;
-
-      if (neon.extensionColor === NeonExtColorEnum.Black) {
-        black_extensions_1m += neon.extensions_1m;
-        black_extensions_3m += neon.extensions_3m;
-        black_extensions_5m += neon.extensions_5m;
-        black_extensions_10m += neon.extensions_10m;
-      } else if (neon.extensionColor === NeonExtColorEnum.White) {
-        white_extensions_1m += neon.extensions_1m;
-        white_extensions_3m += neon.extensions_3m;
-        white_extensions_5m += neon.extensions_5m;
-        white_extensions_10m += neon.extensions_10m;
-      }
-
-      return {
-        desc: `${neon.title} / ${neon.glowShade} / ${neon.thickness} / ${
-          neon.bracing
-        } / Покраска: ${neon.painting ? "Да" : "Нет"}`,
-        keyValue: `${getNeonLength(neon.length)} бухт`,
-      };
-    }
-    case "Гофра для кабеля ПВС": {
-      const corrPvs = itemObj.item as CorrugationType;
-      corr_clips += getCorrPVSClips(allItems);
-
-      return {
-        desc: `${corrPvs.title} / ${corrPvs.thickness} / ${corrPvs.color}`,
-        keyValue: `${getCorrPVSLength(allItems)} бухт`,
-      };
-    }
-    case "Занавес": {
-      const curtain = itemObj.item as CurtainType;
-      powerQuantity += 1;
-
-      if (curtain.bracing === CurtainBracingEnum.Rope) {
-        rope_3mm_length += getRopeLength(4, 2);
-        if (curtain.surface === CurtainSurfaceEnum.Wood)
-          screw_ring_4x50 += getRopeRings(4, 2);
-        else if (curtain.surface === CurtainSurfaceEnum.Concrete)
-          anchor_ring_6x50 += getRopeRings(4, 2);
-        lanyard += getRopeLanyards(2);
-        duplex_clamp += getRopeDuplexClamps(2);
-      } else if (curtain.bracing === CurtainBracingEnum.Screed) {
-        if (curtain.extColor === CurtainExtColorEnum.Black) {
-          black_screeds_480_500mm_packs += getCurtainScreedsPacks(4);
-        }
-      } else if (curtain.extColor === CurtainExtColorEnum.White) {
-        white_screeds_480_500mm_packs += getCurtainScreedsPacks(4);
-      }
-
-      if (curtain.extColor === CurtainExtColorEnum.Black) {
-        black_tee += curtain.teeQuantity;
-      } else if (curtain.extColor === CurtainExtColorEnum.White) {
-        white_tee += curtain.teeQuantity;
-      }
-
-      if (curtain.extColor === CurtainExtColorEnum.Black) {
-        black_extensions_1m += curtain.extensions_1m;
-        black_extensions_3m += curtain.extensions_3m;
-        black_extensions_5m += curtain.extensions_5m;
-        black_extensions_10m += curtain.extensions_10m;
-      } else if (curtain.extColor === CurtainExtColorEnum.White) {
-        white_extensions_1m += curtain.extensions_1m;
-        white_extensions_3m += curtain.extensions_3m;
-        white_extensions_5m += curtain.extensions_5m;
-        white_extensions_10m += curtain.extensions_10m;
-      }
-
-      return {
-        desc: `${curtain.title} / ${curtain.size} / ${curtain.glowMode} / ${curtain.glowShade} / ${curtain.cable}`,
-        keyValue: `${curtain.size}`,
-      };
-    }
-    case "Кабель ПВС": {
-      const pvs = itemObj.item as PVSType;
-      return {
-        desc: `${pvs.title} / ${pvs.color}`,
-        keyValue: `${getPVSLength(pvs.length, pvs.color)} бухт`,
-      };
-    }
-    case "Кабель-канал (короб) для кабеля ПВС": {
-      const boxPVS = itemObj.item as BoxPVSType;
-      return {
-        desc: `${boxPVS.title} / 25x16мм / ${boxPVS.color}`,
-        keyValue: `${getBoxPVSPieces(allItems)} шт`,
-      };
-    }
-    case "Нить": {
-      const thread = itemObj.item as ThreadType;
-      if (thread.bracing === ThreadBracingEnum.Screeds)
-        screedsPacks += getThreadScreedsPacks(thread.length);
-      else if (thread.bracing === ThreadBracingEnum.Rope) {
-        rope_2mm_length += getRopeLength(thread.length, thread.contours);
-        if (thread.surface === ThreadSurfaceEnum.Wood) {
-          screw_ring_4x50 += getRopeRings(thread.length, thread.contours);
-        } else if (thread.surface === ThreadSurfaceEnum.Concrete) {
-          anchor_ring_6x50 += getRopeRings(thread.length, thread.contours);
-        }
-        duplex_clamp += getRopeDuplexClamps(thread.contours);
-        lanyard += getRopeLanyards(thread.contours);
-      }
-      powerQuantity += thread.powerQuantity;
-
-      if (thread.wire === ThreadWireEnum.Black) {
-        black_extensions_1m += thread.extensions_1m;
-        black_extensions_3m += thread.extensions_3m;
-        black_extensions_5m += thread.extensions_5m;
-        black_extensions_10m += thread.extensions_10m;
-      } else if (thread.wire === ThreadWireEnum.White) {
-        white_extensions_1m += thread.extensions_1m;
-        white_extensions_3m += thread.extensions_3m;
-        white_extensions_5m += thread.extensions_5m;
-        white_extensions_10m += thread.extensions_10m;
-      }
-
-      if (thread.wire === ThreadWireEnum.Black) {
-        black_tee += thread.teeQuantity;
-      } else if (thread.wire === ThreadWireEnum.White) {
-        white_tee += thread.teeQuantity;
-      }
-
-      return {
-        desc: `${thread.title} / ${thread.glowShade} / ${thread.glowMode} / ${thread.wire}`,
-        keyValue: `${getThreadLength(thread.length).skeinsQuantity} бухт`,
-      };
-    }
-    case "Трос": {
-      const rope = itemObj.item as RopeType;
-      if (rope.thickness === RopeThicknessEnum.mm_2) {
-        rope_2mm_length = getRopeLength(rope.length, rope.contours);
-      } else if (rope.thickness === RopeThicknessEnum.mm_3) {
-        rope_3mm_length = getRopeLength(rope.length, rope.contours);
-      }
-      if (rope.surface === RopeSurfaceEnum.Wood)
-        screw_ring_4x50 += getRopeRings(rope.length, rope.contours);
-      else if (rope.surface === RopeSurfaceEnum.Concrete)
-        anchor_ring_6x50 += getRopeRings(rope.length, rope.contours);
-      lanyard += getRopeLanyards(rope.contours);
-      duplex_clamp += getRopeDuplexClamps(rope.contours);
-
-      return {
-        desc: "",
-        keyValue: "0",
-      };
-    }
-    case "Распаячная коробка": {
-      const solderBox = itemObj.item as SolderBoxType;
-      return {
-        desc: `${solderBox.title} / 100x100x50 / ${solderBox.color}`,
-        keyValue: `${getSolderBoxPieces(allItems)} шт`,
-      };
-    }
-    default: {
-      return {
-        desc: "",
-        keyValue: "0",
-      };
-    }
+    writingArray.push(solderBoxes);
+    return writingArray;
   }
 }
 

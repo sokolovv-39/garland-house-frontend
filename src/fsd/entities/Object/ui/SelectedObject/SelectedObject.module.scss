@@ -11,10 +11,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .object {
+    .titleInput {
       font-size: 20px;
       font-weight: 700;
       line-height: normal;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
     }
   }
   .pickers {

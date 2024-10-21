@@ -1,9 +1,4 @@
-export type {
-  CurtainSizeEnum,
-  CurtainType,
-  CurtainGlowShadeEnum,
-  CurtainGlowModeEnum,
-} from "./types";
+export type { CurtainType } from "./types";
 export {
   curtainBracings,
   curtainDefault,
@@ -12,11 +7,12 @@ export {
   curtainGlowMode,
   curtainGlowShades,
   curtainSurfaces,
-  curtainExtColors,
 } from "./defaults";
 export {
+  CurtainGlowShadeEnum,
+  CurtainGlowModeEnum,
+  CurtainSizeEnum,
   CurtainBracingEnum,
   CurtainSurfaceEnum,
   CurtainCableEnum,
-  CurtainExtColorEnum,
 } from "./types";

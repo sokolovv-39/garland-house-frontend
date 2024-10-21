@@ -1,1 +1,5 @@
-export {getCorrPVSLength, getCorrPVSClips} from './estimateAlgs'
+export {
+  getCorrPVSLength,
+  getCorrPVSClips,
+  getEsCorrPVS,
+} from "./estimateAlgs";

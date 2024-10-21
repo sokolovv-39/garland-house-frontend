@@ -1,14 +1,17 @@
-export type {
+export type { ThreadType } from "./types";
+export {
+  ThreadBracingEnum,
+  ThreadSurfaceEnum,
   ThreadGlowModeEnum,
   ThreadGlowShadeEnum,
-  ThreadType,
+  ThreadScreedsTypeEnum,
 } from "./types";
-export { ThreadBracingEnum, ThreadSurfaceEnum, ThreadWireEnum } from "./types";
 export {
   threadBracings,
-  threadWires,
+  threadCables,
   threadGlowMode,
   threadGlowShades,
   defaultThread,
   threadSurfaces,
+  threadScreedTypes,
 } from "./defaults";

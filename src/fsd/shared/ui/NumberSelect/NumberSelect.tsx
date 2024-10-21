@@ -16,8 +16,6 @@ export function NumberSelect({
     initialValue ? initialValue : ""
   );
   if (type === "Длина, м") {
-    console.log("length");
-    console.log(number);
   }
 
   return (

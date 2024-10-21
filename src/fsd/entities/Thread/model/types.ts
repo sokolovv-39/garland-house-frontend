@@ -1,18 +1,15 @@
+import { PVSColorEnum } from "../../PVS";
+
 export enum ThreadGlowShadeEnum {
   Warm = "Теплый",
   Cold = "Холодный",
   RGB = "RGB",
-  Other = "7 цветов",
+  colors_7 = "7 цветов",
 }
 
 export enum ThreadGlowModeEnum {
   Flickering = "Мерцание",
   Static_glow = "Статичное свечение",
-}
-
-export enum ThreadWireEnum {
-  Black = "Черный",
-  White = "Белый",
 }
 
 export enum ThreadBracingEnum {
@@ -25,15 +22,20 @@ export enum ThreadSurfaceEnum {
   Concrete = "Бетон",
 }
 
+export enum ThreadScreedsTypeEnum {
+  Screed_200 = "Стяжка 200мм",
+  Screed_480_500 = "Стяжка 48-500мм",
+}
+
 export type ThreadType = {
   title: "Нить";
   length: number;
   glowShade: ThreadGlowShadeEnum;
   glowMode: ThreadGlowModeEnum;
-  wire: ThreadWireEnum;
+  cable: PVSColorEnum;
   bracing: ThreadBracingEnum;
-  powerQuantity: number;
-  teeQuantity: number;
+  powerUnits: number;
+  tees: number;
   surface: ThreadSurfaceEnum;
   contours: number;
   price: number;
@@ -41,4 +43,5 @@ export type ThreadType = {
   extensions_3m: number;
   extensions_5m: number;
   extensions_10m: number;
+  screedsType: ThreadScreedsTypeEnum;
 };

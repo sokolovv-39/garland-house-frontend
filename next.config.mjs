@@ -12,7 +12,10 @@ const nextConfig = {
         },
       },
     });
-
+    config.module.rules.push({
+      test: /\.pdf$/,
+      type: "asset/resource",
+    });
     return config;
   },
 };

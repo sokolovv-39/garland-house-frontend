@@ -16,11 +16,6 @@ export enum FringeBracingEnum {
   Rope = "Трос",
 }
 
-export enum FringeTeeColourEnum {
-  Black = "Черный",
-  White = "Белый",
-}
-
 export enum FringeLedEnum {
   led_100 = "100 led",
   led_200 = "200 led",
@@ -38,9 +33,8 @@ export type FringeType = {
   glowMode: FringeGlowModeEnum;
   cable: FringeCableEnum;
   bracing: FringeBracingEnum;
-  teeQuantity: number;
-  powerQuantity: number;
-  teeColour: FringeTeeColourEnum;
+  tees: number;
+  powerUnits: number;
   led: FringeLedEnum;
   contours: number;
   surface: FringeSurfaceEnum;

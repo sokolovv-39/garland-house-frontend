@@ -1,5 +1,5 @@
-export type { BeltLightGlowShadeEnum, BeltLightType } from "./types";
-export { BeltLightLampStepEnum, BeltLightCableEnum } from "./types";
+export type { BeltLightType } from "./types";
+export { BeltLightLampStepEnum, BeltLightGlowShadeEnum } from "./types";
 export {
   beltLightCables,
   beltLightDefault,

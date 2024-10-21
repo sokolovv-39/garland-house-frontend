@@ -20,8 +20,6 @@ import {
   fringeGlowModes,
   FringeGlowShadeEnum,
   fringeGlowShades,
-  fringeTeeColour,
-  FringeTeeColourEnum,
   fringeLeds,
   FringeLedEnum,
   fringeSurfaces,
@@ -32,16 +30,19 @@ import { ItemType } from "../../Item";
 export function Fringe({
   deleteItem,
   itemObj,
+  updateCost,
   getItems,
+  openedId,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<FringeType>;
   getItems: () => void;
+  updateCost: () => void;
+  openedId: string;
 }) {
   const idb = useContext(IDBContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [fringe, setFringe] = useState<FringeType>(itemObj.item);
-  let initialPowers = itemObj.item.contours;
 
   function updateFringe() {
     idb?.items
@@ -55,7 +56,19 @@ export function Fringe({
   useEffect(() => {
     updateFringe();
     getItems();
+    updateCost();
   }, [fringe]);
+
+  useEffect(() => {
+    setIsOpen(openedId === itemObj.id);
+  }, [openedId]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 400,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <div className={classes.wrapper}>
@@ -206,38 +219,25 @@ export function Fringe({
             }
             initialValue={itemObj.item.extensions_10m}
           />
-          <div className={classes.tabs}>
-            <h5 className={classes.tabsTitle}>Цвет тройников</h5>
-            <ItemsAdjust
-              list={fringeTeeColour}
-              active={itemObj.item.teeColour}
-              callback={(val) =>
-                setFringe({
-                  ...fringe,
-                  teeColour: val as FringeTeeColourEnum,
-                })
-              }
-            />
-          </div>
           <NumberSelect
             type="Тройники, шт"
             callback={(val) =>
               setFringe({
                 ...fringe,
-                teeQuantity: val,
+                tees: val,
               })
             }
-            initialValue={itemObj.item.teeQuantity}
+            initialValue={itemObj.item.tees}
           />
           <NumberSelect
             type="Блоки питания, шт"
             callback={(val) =>
               setFringe({
                 ...fringe,
-                powerQuantity: val,
+                powerUnits: val,
               })
             }
-            initialValue={itemObj.item.powerQuantity}
+            initialValue={itemObj.item.powerUnits}
           />
           <NumberSelect
             type="Количество контуров"

@@ -12,7 +12,6 @@ import classes from "./BeltLight.module.scss";
 import { useContext, useState, useEffect } from "react";
 import { ItemType } from "../../Item";
 import {
-  BeltLightCableEnum,
   beltLightCables,
   BeltLightGlowShadeEnum,
   beltLightGlowShades,
@@ -20,18 +19,23 @@ import {
   beltLightLampSteps,
   BeltLightType,
 } from "../model";
+import { PVSColorEnum } from "../../PVS";
 
 export function BeltLight({
   deleteItem,
   itemObj,
   getItems,
+  updateCost,
+  openedId,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<BeltLightType>;
   getItems: () => void;
+  updateCost: () => void;
+  openedId: string;
 }) {
   const idb = useContext(IDBContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [beltLight, setBeltLight] = useState<BeltLightType>(itemObj.item);
 
   function updateBeltLight() {
@@ -46,7 +50,19 @@ export function BeltLight({
   useEffect(() => {
     updateBeltLight();
     getItems();
+    updateCost();
   }, [beltLight]);
+
+  useEffect(() => {
+    setIsOpen(openedId === itemObj.id);
+  }, [openedId]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 400,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <div className={classes.wrapper}>
@@ -115,50 +131,30 @@ export function BeltLight({
               callback={(val) =>
                 setBeltLight({
                   ...beltLight,
-                  cable: val as BeltLightCableEnum,
+                  cable: val as PVSColorEnum,
                 })
               }
             />
           </div>
           <NumberSelect
-            type="Удлинители, 1м"
+            type="Удлинитель, кол-во метров кабеля ПВС"
             callback={(val) =>
               setBeltLight({
                 ...beltLight,
-                extension_1m: val,
+                pvsLength: val,
               })
             }
-            initialValue={itemObj.item.extension_1m}
+            initialValue={itemObj.item.pvsLength}
           />
           <NumberSelect
-            type="Удлинители, 3м"
+            type="Количество контуров"
             callback={(val) =>
               setBeltLight({
                 ...beltLight,
-                extension_3m: val,
+                contours: val,
               })
             }
-            initialValue={itemObj.item.extension_3m}
-          />
-          <NumberSelect
-            type="Удлинители, 5м"
-            callback={(val) =>
-              setBeltLight({
-                ...beltLight,
-                extension_5m: val,
-              })
-            }
-            initialValue={itemObj.item.extension_5m}
-          />
-          <NumberSelect
-            type="Удлинители, 10м"
-            callback={(val) =>
-              setBeltLight({
-                ...beltLight,
-                extension_10m: val,
-              })
-            }
-            initialValue={itemObj.item.extension_10m}
+            initialValue={itemObj.item.contours}
           />
         </div>
       )}

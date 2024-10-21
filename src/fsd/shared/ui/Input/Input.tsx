@@ -65,7 +65,6 @@ export function Input({
     }; */
 
   useEffect(() => {
-    console.log("init val", initialValue);
     if (initialValue) setVal(initialValue);
     else setVal("");
   }, [initialValue]);
@@ -86,7 +85,6 @@ export function Input({
         onChange={(e) => {
           if (onChange) {
             let newVal = e.currentTarget.value;
-            console.log("new val before", newVal);
             if (isPrice) {
               if (newVal.length !== 1) {
                 if (newVal.indexOf("₽") > -1) {
@@ -99,7 +97,6 @@ export function Input({
                 }
               }
             }
-            console.log("new val after", newVal);
             onChange(newVal);
           }
         }}

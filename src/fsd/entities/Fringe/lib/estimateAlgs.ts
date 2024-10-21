@@ -1,3 +1,7 @@
+import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
+import { CommonItemType } from "../../Item";
+import { FringeType } from "../model";
+
 export function getFringeLength(length: number) {
   const skeinLength = 5;
   let skeinQuantity = Math.ceil(length / 5);
@@ -22,4 +26,39 @@ export function getFringeBracketsPacks(length: number) {
   const pack = 50;
   const quantity = Math.ceil(brackets / pack);
   return quantity;
+}
+
+export function getEsFringe(allItems: CommonItemType[]): EsWritingArrayType[] {
+  const fringes: FringeType[] = [];
+  const esFringes: EsWritingArrayType[] = [];
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Бахрома") {
+      const fringe = itemObj.item as FringeType;
+      let existIndex = fringes.findIndex((item) => {
+        if (
+          item.glowShade === fringe.glowShade &&
+          item.glowMode === fringe.glowMode &&
+          item.cable === fringe.cable &&
+          item.led === fringe.led
+        )
+          return true;
+        else return false;
+      });
+      if (existIndex !== -1) {
+        fringes[existIndex].length += fringe.length;
+      } else {
+        fringes.push(fringe);
+      }
+    }
+  });
+
+  fringes.forEach((fringe) => {
+    esFringes.push({
+      desc: `${fringe.title} / ${fringe.glowShade} / ${fringe.glowMode} / ${fringe.cable} / ${fringe.led}`,
+      keyValue: `${getFringeLength(fringe.length).skeinMeters} м`,
+    });
+  });
+
+  return esFringes;
 }

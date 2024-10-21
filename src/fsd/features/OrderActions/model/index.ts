@@ -1,1 +1,1 @@
-export type {WritingArrayType} from './types'
+export type { EsWritingArrayType } from "./types";

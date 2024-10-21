@@ -107,16 +107,6 @@ export function Select({
               );
             }
           })}
-          <li
-            onClick={() => {
-              setCheckedValue("");
-              if (callback) {
-                callback("");
-              }
-            }}
-          >
-            Нет варианта
-          </li>
         </ul>
       )}
     </div>

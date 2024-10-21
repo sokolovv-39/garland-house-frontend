@@ -4,7 +4,6 @@ import {
   FringeCableEnum,
   FringeBracingEnum,
   FringeType,
-  FringeTeeColourEnum,
   FringeLedEnum,
   FringeSurfaceEnum,
 } from "./types";
@@ -13,7 +12,6 @@ export const fringeGlowShades = Object.values(FringeGlowShadeEnum);
 export const fringeGlowModes = Object.values(FringeGlowModeEnum);
 export const fringeCables = Object.values(FringeCableEnum);
 export const fringeBracings = Object.values(FringeBracingEnum);
-export const fringeTeeColour = Object.values(FringeTeeColourEnum);
 export const fringeLeds = Object.values(FringeLedEnum);
 export const fringeSurfaces = Object.values(FringeSurfaceEnum);
 
@@ -24,9 +22,8 @@ export const defaultFringe: FringeType = {
   glowMode: FringeGlowModeEnum.Flickering,
   cable: FringeCableEnum.Black,
   bracing: FringeBracingEnum.Bracket,
-  teeQuantity: 0,
-  powerQuantity: 0,
-  teeColour: FringeTeeColourEnum.Black,
+  tees: 0,
+  powerUnits: 0,
   led: FringeLedEnum.led_100,
   contours: 0,
   surface: FringeSurfaceEnum.Wood,

@@ -1,3 +1,5 @@
+import { PVSColorEnum } from "../../PVS";
+
 export enum BeltLightGlowShadeEnum {
   Warm = "Теплый",
   Cold = "Холодный",
@@ -12,20 +14,13 @@ export enum BeltLightLampStepEnum {
   cm_40 = "40 см",
 }
 
-export enum BeltLightCableEnum {
-  Black = "Черный",
-  White = "Белый",
-}
-
 export type BeltLightType = {
   title: "Белт-лайт";
   length: number;
   glowShade: BeltLightGlowShadeEnum;
   lampStep: BeltLightLampStepEnum;
-  cable: BeltLightCableEnum;
+  cable: PVSColorEnum;
   price: number;
-  extension_1m: number;
-  extension_3m: number;
-  extension_5m: number;
-  extension_10m: number;
+  contours: number;
+  pvsLength: number;
 };

@@ -16,14 +16,18 @@ import { VagiModelEnum, vagiModels, VagiType } from "../model";
 export function Vagi({
   deleteItem,
   itemObj,
+  updateCost,
   getItems,
+  openedId,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<VagiType>;
   getItems: () => void;
+  updateCost: () => void;
+  openedId: string;
 }) {
   const idb = useContext(IDBContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [vagi, setVagi] = useState<VagiType>(itemObj.item);
 
   function updateVagi() {
@@ -38,7 +42,19 @@ export function Vagi({
   useEffect(() => {
     updateVagi();
     getItems();
+    updateCost();
   }, [vagi]);
+
+  useEffect(() => {
+    setIsOpen(openedId === itemObj.id);
+  }, [openedId]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 400,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <div className={classes.wrapper}>

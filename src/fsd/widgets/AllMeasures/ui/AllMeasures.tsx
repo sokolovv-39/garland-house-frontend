@@ -35,19 +35,18 @@ export function AllMeasures({ numberOfOrder }: { numberOfOrder: number }) {
   }
 
   async function deleteMeasure(id: string) {
-    console.log("DELETE MEASURE");
     let newMeasures = measures.filter((measure) => measure.id !== id);
-    console.log(newMeasures);
     newMeasures = newMeasures.map((measure, index) => {
       return {
         ...measure,
         orderId: index + 1,
       };
     });
-    console.log("final measures");
     const favMeasure = newMeasures.findIndex((measure) => measure.isFavourite);
 
-    if (favMeasure === -1) newMeasures[0].isFavourite = true;
+    if (newMeasures.length) {
+      if (favMeasure === -1) newMeasures[0].isFavourite = true;
+    }
 
     await idb?.measures.rewrite(newMeasures);
     getMeasures();

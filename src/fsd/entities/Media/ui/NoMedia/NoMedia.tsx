@@ -26,7 +26,6 @@ export function NoMedia() {
   function addFirstMedia() {
     uploadMedia()
       .then((files) => {
-        console.log(files);
         const newFiles = [];
         for (const file of files) {
           newFiles.push(URL.createObjectURL(file));

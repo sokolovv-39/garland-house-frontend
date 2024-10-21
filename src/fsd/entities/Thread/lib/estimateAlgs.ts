@@ -1,4 +1,6 @@
-import { ThreadBracingEnum } from "../model";
+import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
+import { CommonItemType } from "../../Item";
+import { ThreadBracingEnum, ThreadType } from "../model";
 
 export function getThreadLength(length: number) {
   const skein = 10;
@@ -7,9 +9,41 @@ export function getThreadLength(length: number) {
   return { skeinsQuantity, skeinMeters };
 }
 
-export function getThreadScreedsPacks(length: number) {
-  const pack = 100;
+export function getThreadScreedsQuantity(length: number) {
   const screeds = length * 5;
-  const packsQuantity = Math.ceil(screeds / pack);
-  return packsQuantity;
+  return screeds;
+}
+
+export function getEsThread(allItems: CommonItemType[]) {
+  const threads: ThreadType[] = [];
+  const esThreads: EsWritingArrayType[] = [];
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Нить") {
+      const thread = itemObj.item as ThreadType;
+      let existIndex = threads.findIndex((item) => {
+        if (
+          item.glowShade === thread.glowShade &&
+          item.glowMode === thread.glowMode &&
+          item.cable === thread.cable
+        )
+          return true;
+        else return false;
+      });
+      if (existIndex !== -1) {
+        threads[existIndex].length += thread.length;
+      } else {
+        threads.push(thread);
+      }
+    }
+  });
+
+  threads.forEach((item) => {
+    esThreads.push({
+      desc: `${item.title} / ${item.glowShade} / ${item.glowMode} / ${item.cable}`,
+      keyValue: `${getThreadLength(item.length).skeinMeters} м`,
+    });
+  });
+
+  return esThreads;
 }

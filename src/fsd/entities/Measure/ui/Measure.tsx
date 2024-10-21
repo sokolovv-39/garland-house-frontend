@@ -5,7 +5,7 @@ import classes from "./Measure.module.scss";
 import CopySVG from "./images/copy.svg";
 import { MeasureType, PickObject, SelectedObject } from "@/fsd/entities";
 import { useEffect, useState, useContext } from "react";
-import { Button, CloseSVG, IDBContext } from "@/fsd/shared";
+import { Button, CloseSVG, IDBContext, splitPrice } from "@/fsd/shared";
 import { ObjectType } from "../../Object";
 import { nanoid } from "nanoid";
 import { generateRFP } from "@/fsd/features/OrderActions/lib";
@@ -25,6 +25,7 @@ export function Measure({
 }) {
   const idb = useContext(IDBContext);
   const [objects, setObjects] = useState<ObjectType[]>([]);
+  const [cost, setCost] = useState("");
 
   function deleteObject(id: string) {
     idb?.objects
@@ -60,6 +61,7 @@ export function Measure({
         }
         const newObjects = data.sort(orderIdSort);
         setObjects(newObjects);
+        updateCost();
       })
       .catch((err) => {
         console.error(err);
@@ -85,6 +87,19 @@ export function Measure({
       .catch((err) => {
         console.error(err);
       });
+  }
+
+  function updateCost() {
+    console.log("updating cost...");
+    generateRFP(idb!, measure.id, false).then((overall) => {
+      console.log(`new cost ${overall}`);
+      setCost(splitPrice(overall!));
+    });
+  }
+
+  async function updateObjectName(obj: ObjectType) {
+    await idb?.objects.update(obj);
+    getObjects();
   }
 
   useEffect(() => {
@@ -123,11 +138,16 @@ export function Measure({
             onClick={() => copyMeasure(measure)}
           />
         </div>
-        <CloseSVG onClick={() => deleteMeasure()} />
+        <div className={classes.right}>
+          <span className={classes.price}>{cost}</span>
+          <CloseSVG onClick={() => deleteMeasure()} />
+        </div>
       </div>
       <div className={classes.objectsWrapper}>
         {objects.map((obj, i) => (
           <SelectedObject
+            updateObject={updateObjectName}
+            updateCost={updateCost}
             object={obj}
             key={i}
             deleteObject={() => deleteObject(obj.id)}

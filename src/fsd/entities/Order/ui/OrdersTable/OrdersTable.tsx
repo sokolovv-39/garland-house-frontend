@@ -63,7 +63,6 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
     }
 
     newOrders.sort(orderIdSort);
-    console.log("new orders", newOrders);
 
     setOrders(newOrders);
     setFiltOrders(newOrders);
@@ -174,8 +173,6 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
       const dateFormatter = new DateFormatter();
       const order_1_time = dateFormatter.DMY_to_ms(order1.measureDate);
       const order_2_time = dateFormatter.DMY_to_ms(order2.measureDate);
-      console.log("order_1_time", order_1_time);
-      console.log("order_2_time", order_2_time);
 
       if (order_1_time > order_2_time) return 1;
       if (order_1_time < order_2_time) return -1;
@@ -206,13 +203,11 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
     noData: boolean;
   }> {
     const measures = await idb!.measures.getOwn(order.numberOfOrder);
-    console.log("measures in table", measures);
     let maxCost = 0;
     let minCost = Infinity;
     await Promise.all(
       measures.map(async (measure) => {
         const cost = await generateRFP(idb!, measure.id, false);
-        console.log("cost", cost);
         if (cost! > maxCost) maxCost = cost!;
         if (cost! < minCost) minCost = cost!;
       })
@@ -238,7 +233,6 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
   }, []);
 
   useEffect(() => {
-    console.log("searchVal", searchVal);
     let filteredArr = orders;
 
     filteredArr = orders.filter((order) => {

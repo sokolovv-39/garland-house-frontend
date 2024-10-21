@@ -33,24 +33,14 @@ export enum CurtainSurfaceEnum {
   Concrete = "Бетон",
 }
 
-export enum CurtainExtColorEnum {
-  Black = "Черный",
-  White = "Белый",
-}
-
 export type CurtainType = {
   title: string;
   size: string;
   bracing: CurtainBracingEnum;
-  teeQuantity: number;
   glowShade: CurtainGlowShadeEnum;
   glowMode: CurtainGlowModeEnum;
   cable: CurtainCableEnum;
   surface: CurtainSurfaceEnum;
   price: number;
-  extensions_1m: number;
-  extensions_3m: number;
-  extensions_5m: number;
-  extensions_10m: number;
-  extColor: CurtainExtColorEnum;
+  quantity: number;
 };

@@ -58,12 +58,18 @@ import { defaultNeon, NeonType } from "@/fsd/entities/Neon/model";
 export function SelectedObject({
   object,
   deleteObject,
+  updateCost,
+  updateObject,
 }: {
   object: ObjectType;
   deleteObject: () => void;
+  updateCost: () => void;
+  updateObject: (obj: ObjectType) => void;
 }) {
   const [items, setItems] = useState<CommonItemType[]>([]);
   const idb = useContext(IDBContext);
+  const [objName, setObjName] = useState(object.title);
+  const [openedId, setOpenedId] = useState("");
 
   function getItems() {
     idb?.items
@@ -77,9 +83,7 @@ export function SelectedObject({
         const newItems = data.sort(orderIdSort);
         setItems(newItems);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch();
   }
 
   function deleteItem(id: string) {
@@ -97,6 +101,7 @@ export function SelectedObject({
           .rewrite(newItems)
           .then(() => {
             getItems();
+            updateCost();
           })
           .catch((err) => {
             console.error(err);
@@ -270,18 +275,19 @@ export function SelectedObject({
     }
 
     function addToDB<T extends AllItemsTypes>(newItem: ItemType<T>) {
+      setOpenedId(newItem.id);
       idb?.items
         .add<T>(newItem!)
-        .then(() => getItems())
-        .catch((err) => {
-          console.error(err);
-        });
+        .then(() => {
+          getItems();
+        })
+        .catch();
     }
   }
 
   useEffect(() => {
     getItems();
-  }, []);
+  }, [openedId]);
 
   return (
     <div className={classes.wrapper}>
@@ -291,7 +297,19 @@ export function SelectedObject({
           marginBottom: `${items.length === 0 ? "16px" : "0"}`,
         }}
       >
-        <h3 className={classes.object}>{object.title}</h3>
+        <input
+          className={classes.titleInput}
+          type="text"
+          value={objName}
+          onChange={(e) => {
+            setObjName(e.currentTarget.value);
+            updateObject({
+              ...object,
+              title: e.currentTarget.value,
+            });
+          }}
+        />
+        {/* <h3 className={classes.object}>{object.title}</h3> */}
         <CloseSVG onClick={() => deleteObject()} />
       </div>
       <div
@@ -302,18 +320,23 @@ export function SelectedObject({
       >
         {items.map((itemObj, i) => {
           switch (itemObj.itemTitle) {
-            case "Бахрома":
+            case "Бахрома": {
               return (
                 <Fringe
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   deleteItem={() => deleteItem(itemObj.id)}
                   itemObj={itemObj as ItemType<FringeType>}
                 />
               );
+            }
             case "Гибкий неон":
               return (
                 <Neon
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   itemObj={itemObj as ItemType<NeonType>}
                   key={i}
@@ -323,6 +346,8 @@ export function SelectedObject({
             case "Нить":
               return (
                 <Thread
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   itemObj={itemObj as ItemType<ThreadType>}
                   key={i}
@@ -332,6 +357,8 @@ export function SelectedObject({
             case "Белт-лайт":
               return (
                 <BeltLight
+                  openedId={openedId}
+                  updateCost={updateCost}
                   key={i}
                   getItems={() => getItems()}
                   itemObj={itemObj as ItemType<BeltLightType>}
@@ -341,6 +368,8 @@ export function SelectedObject({
             case "Занавес":
               return (
                 <Curtain
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<CurtainType>}
@@ -350,15 +379,19 @@ export function SelectedObject({
             case "Трос":
               return (
                 <Rope
+                  openedId={openedId}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<RopeType>}
                   deleteItem={() => deleteItem(itemObj.id)}
+                  updateCost={updateCost}
                 />
               );
             case "Кабель ПВС":
               return (
                 <PVS
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<PVSType>}
@@ -368,6 +401,8 @@ export function SelectedObject({
             case "Гофра для кабеля ПВС":
               return (
                 <CorrugationPVS
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<CorrugationType>}
@@ -377,6 +412,8 @@ export function SelectedObject({
             case "Кабель-канал (короб) для кабеля ПВС":
               return (
                 <BoxPVS
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<BoxPVSType>}
@@ -386,6 +423,8 @@ export function SelectedObject({
             case "Реле и выключатели":
               return (
                 <RelaysSwitches
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<RelaysSwitchesType>}
@@ -395,6 +434,8 @@ export function SelectedObject({
             case "Распаячная коробка": {
               return (
                 <SolderBox
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<SolderBoxType>}
@@ -405,6 +446,8 @@ export function SelectedObject({
             case "Ваги (клемма)":
               return (
                 <Vagi
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<VagiType>}
@@ -414,6 +457,8 @@ export function SelectedObject({
             case "Стяжка 480-500мм":
               return (
                 <Screed_480_500
+                  openedId={openedId}
+                  updateCost={updateCost}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<Screed_480_500_Type>}
@@ -423,9 +468,11 @@ export function SelectedObject({
             case "Стяжка 200мм":
               return (
                 <Screed_200
+                  openedId={openedId}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<Screed_200_Type>}
+                  updateCost={updateCost}
                   deleteItem={() => deleteItem(itemObj.id)}
                 />
               );

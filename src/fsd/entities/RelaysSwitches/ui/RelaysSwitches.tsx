@@ -10,13 +10,17 @@ export function RelaysSwitches({
   deleteItem,
   itemObj,
   getItems,
+  updateCost,
+  openedId,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<RelaysSwitchesType>;
   getItems: () => void;
+  updateCost: () => void;
+  openedId: string;
 }) {
   const idb = useContext(IDBContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [switches, setSwitches] = useState<RelaysSwitchesType>(itemObj.item);
 
   function updateSwitches() {
@@ -31,7 +35,19 @@ export function RelaysSwitches({
   useEffect(() => {
     updateSwitches();
     getItems();
+    updateCost();
   }, [switches]);
+
+  useEffect(() => {
+    setIsOpen(openedId === itemObj.id);
+  }, [openedId]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 400,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <div className={classes.wrapper}>
@@ -63,7 +79,7 @@ export function RelaysSwitches({
             }
           />
           <NumberSelect
-            type="Беспроводной радио выключатель с радио реле"
+            type="Бес. радио выкл. с радио реле"
             initialValue={itemObj.item.wirelessRadio}
             callback={(val) =>
               setSwitches({
@@ -73,7 +89,7 @@ export function RelaysSwitches({
             }
           />
           <NumberSelect
-            type="Беспроводной радио выключатель с wi-fi реле "
+            type="Бес. радио выкл. с wi-fi реле "
             initialValue={itemObj.item.wirelessWifi}
             callback={(val) =>
               setSwitches({

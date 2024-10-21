@@ -1,1 +1,1 @@
-export {get_Screeds_480_500_quantity} from './estimateAlgs'
+export { get_Screeds_480_500_packs } from "./estimateAlgs";

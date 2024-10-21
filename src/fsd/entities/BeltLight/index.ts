@@ -1,11 +1,11 @@
 export { BeltLight } from "./ui";
-export type { BeltLightType, BeltLightGlowShadeEnum } from "./model";
+export type { BeltLightType } from "./model";
 export {
+  BeltLightGlowShadeEnum,
   beltLightCables,
   beltLightDefault,
   beltLightGlowShades,
   BeltLightLampStepEnum,
   beltLightLampSteps,
-  BeltLightCableEnum,
 } from "./model";
-export { getBeltLightLength } from "./lib";
+export { getBeltLightLength, getEsBeltLight } from "./lib";

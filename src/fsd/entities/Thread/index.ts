@@ -1,18 +1,17 @@
 export { Thread } from "./ui";
 export {
   threadBracings,
-  threadWires,
+  threadCables,
   threadGlowMode,
   threadGlowShades,
   defaultThread,
   ThreadBracingEnum,
   threadSurfaces,
   ThreadSurfaceEnum,
-  ThreadWireEnum,
-} from "./model";
-export type {
+  threadScreedTypes,
+  ThreadScreedsTypeEnum,
   ThreadGlowModeEnum,
   ThreadGlowShadeEnum,
-  ThreadType,
 } from "./model";
-export { getThreadLength, getThreadScreedsPacks } from "./lib";
+export type { ThreadType } from "./model";
+export { getThreadLength, getThreadScreedsQuantity, getEsThread } from "./lib";

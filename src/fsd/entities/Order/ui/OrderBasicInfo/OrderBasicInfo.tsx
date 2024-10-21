@@ -68,7 +68,6 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
         measureDate: formattedDate,
       });
     }
-    console.log("DATE", formattedDate);
   }, [date]);
 
   useEffect(() => {

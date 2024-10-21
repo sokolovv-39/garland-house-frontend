@@ -1,1 +1,1 @@
-export {getCurtainScreedsPacks} from './estimateAlgs'
+export { getCurtainScreedsPacks, getEsCurtains } from "./estimateAlgs";

@@ -1,7 +1,10 @@
+import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
 import { CommonItemType } from "../../Item";
-import { GetItemLengthType } from "../../Item/model";
+import { SolderBoxColorEnum, SolderBoxType } from "../model";
 
-export function getSolderBoxPieces(allItems: CommonItemType[]) {
+export function getSolderBoxPieces(
+  allItems: CommonItemType[]
+): EsWritingArrayType {
   let contours = 0;
 
   allItems.forEach((itemObj) => {
@@ -12,6 +15,19 @@ export function getSolderBoxPieces(allItems: CommonItemType[]) {
       contours += itemWithContours.contours;
     }
   });
-    
-    return contours
+
+  let solderBoxColor = SolderBoxColorEnum.Black;
+
+  const result = allItems.find(
+    (itemObj) => itemObj.itemTitle === "Распаячная коробка"
+  );
+  if (result) {
+    const solderBox = result.item as SolderBoxType;
+    solderBoxColor = solderBox.color;
+  }
+
+  return {
+    desc: `Распаячная коробка / 100х100х50 / ${solderBoxColor}`,
+    keyValue: `${contours} шт`,
+  };
 }

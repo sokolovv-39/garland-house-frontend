@@ -1,5 +1,5 @@
 import { CommonItemType } from "../../Item";
-import { VagiType } from "../model";
+import { VagiModelEnum, VagiType } from "../model";
 
 export function getAllVagi(allItems: CommonItemType[]) {
   let vagi = 8;
@@ -23,5 +23,5 @@ export function getVagiModel(allItems: CommonItemType[]) {
   if (result) {
     const vagi = result.item as VagiType;
     return vagi.model;
-  } else return "НЕ УКАЗАН ТИП КЛЕММ";
+  } else return VagiModelEnum.wire_2;
 }

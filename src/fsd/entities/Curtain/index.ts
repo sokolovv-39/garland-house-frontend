@@ -1,10 +1,5 @@
 export { Curtain } from "./ui";
-export type {
-  CurtainType,
-  CurtainSizeEnum,
-  CurtainGlowShadeEnum,
-  CurtainGlowModeEnum,
-} from "./model";
+export type { CurtainType } from "./model";
 export {
   curtainBracings,
   curtainDefault,
@@ -15,8 +10,9 @@ export {
   CurtainBracingEnum,
   CurtainSurfaceEnum,
   curtainSurfaces,
+  CurtainGlowShadeEnum,
+  CurtainGlowModeEnum,
+  CurtainSizeEnum,
   CurtainCableEnum,
-  curtainExtColors,
-  CurtainExtColorEnum,
 } from "./model";
-export { getCurtainScreedsPacks } from "./lib";
+export { getCurtainScreedsPacks, getEsCurtains } from "./lib";

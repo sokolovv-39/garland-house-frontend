@@ -22,13 +22,17 @@ export function Rope({
   deleteItem,
   itemObj,
   getItems,
+  updateCost,
+  openedId,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<RopeType>;
   getItems: () => void;
+  updateCost: () => void;
+  openedId: string;
 }) {
   const idb = useContext(IDBContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [rope, setRope] = useState<RopeType>(itemObj.item);
 
   function updateRope() {
@@ -43,7 +47,19 @@ export function Rope({
   useEffect(() => {
     updateRope();
     getItems();
+    updateCost();
   }, [rope]);
+
+  useEffect(() => {
+    setIsOpen(openedId === itemObj.id);
+  }, [openedId]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 400,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <div className={classes.wrapper}>

@@ -36,10 +36,6 @@ export class DateFormatter {
     const month = dmy.slice(3, 5);
     const day = dmy.slice(0, 2);
 
-    console.log(parseInt(year));
-    console.log(parseInt(month));
-    console.log(parseInt(day));
-
     date.setFullYear(parseInt(year));
     date.setMonth(parseInt(month) - 1);
     date.setDate(parseInt(day));

@@ -174,6 +174,20 @@ export class IndexedDB {
       },
     };
     this.objects = {
+      update: (object: ObjectType) => {
+        return new Promise<IDBValidKey>((resolve, reject) => {
+          this.transactionHandler(
+            "objects",
+            "readwrite",
+            this.putHandler,
+            object
+          )
+            .then((key) => {
+              resolve(key as IDBValidKey);
+            })
+            .catch((err) => reject(err));
+        });
+      },
       add: (object: ObjectType) => {
         return new Promise<IDBValidKey>((resolve, reject) => {
           this.transactionHandler(

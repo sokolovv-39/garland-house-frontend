@@ -10,19 +10,29 @@ import {
 import classes from "./CorrugationPVS.module.scss";
 import { useContext, useEffect, useState } from "react";
 import { ItemType } from "../../Item";
-import { CorrColorsEnum, corrColours, CorrThicknessEnum, corrThicknesses, CorrugationType } from "../model";
+import {
+  CorrColorsEnum,
+  corrColours,
+  CorrThicknessEnum,
+  corrThicknesses,
+  CorrugationType,
+} from "../model";
 
 export function CorrugationPVS({
   deleteItem,
   itemObj,
-  getItems
+  getItems,
+  updateCost,
+  openedId,
 }: {
   deleteItem: () => void;
-    itemObj: ItemType<CorrugationType>;
-  getItems: () => void
+  itemObj: ItemType<CorrugationType>;
+  getItems: () => void;
+  updateCost: () => void;
+  openedId: string;
 }) {
   const idb = useContext(IDBContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [corr, setCorr] = useState<CorrugationType>(itemObj.item);
 
   function updateCorr() {
@@ -36,8 +46,20 @@ export function CorrugationPVS({
 
   useEffect(() => {
     updateCorr();
-    getItems()
+    getItems();
+    updateCost();
   }, [corr]);
+
+  useEffect(() => {
+    setIsOpen(openedId === itemObj.id);
+  }, [openedId]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 400,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <div className={classes.wrapper}>

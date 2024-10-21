@@ -21,7 +21,6 @@ export function OrdersTableControl({
 
   async function addOrder() {
     const orders = await idb!.orders.getAll();
-    console.log(orders);
     const sorted = orders.sort((order1, order2) => {
       if (order1.numberOfOrder > order2.numberOfOrder) return 1;
       else if (order1.numberOfOrder < order2.numberOfOrder) return -1;

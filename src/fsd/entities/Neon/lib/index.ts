@@ -1,1 +1,7 @@
-export {getNeonLength, getNeonNeedles, getNeonPlugs, getNeonProfile} from './estimateAlgs'
+export {
+  getNeonLength,
+  getNeonNeedles,
+  getNeonPlugs,
+  getNeonProfile,
+  getEsNeon,
+} from "./estimateAlgs";
