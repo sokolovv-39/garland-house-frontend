@@ -2,9 +2,16 @@ import { CommonItemType } from "../../Item";
 import { getPVSLength } from "../../PVS";
 
 export function getEsCorrClips(allItems: CommonItemType[]) {
-  const corrLength = getPVSLength(allItems);
-  const clips = corrLength * 5;
+  let clips = 0;
   const pack = 50;
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Гофра для кабеля ПВС") {
+      const corrLength = getPVSLength(allItems);
+      clips += corrLength * 5;
+    }
+  });
+
   const packsQuantity = Math.ceil(clips / pack);
   return packsQuantity;
 }
