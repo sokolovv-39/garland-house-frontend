@@ -3,7 +3,7 @@ import { CommonItemType } from "../../Item";
 import { BeltLightLampStepEnum, BeltLightType } from "../model";
 
 export function getBeltLightLength(length: number) {
-  const skein = 50;
+  const skein = 10;
   const skeinsQuantity = Math.ceil(length / skein);
   const skeinMeters = skein * skeinsQuantity;
   return { skeinsQuantity, skeinMeters };
