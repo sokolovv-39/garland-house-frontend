@@ -12,6 +12,8 @@ import { RelaysSwitchesType } from "../../RelaysSwitches";
 import { VagiType } from "../../Vagi";
 import { Screed_480_500_Type } from "../../Screed_480_500";
 import { Screed_200_Type } from "../../Screed_200";
+import { MontageType } from "../../Montage";
+import { ElectricShieldType } from "../../ElectricShield";
 
 export type ItemTitleType =
   | "Бахрома"
@@ -27,7 +29,9 @@ export type ItemTitleType =
   | "Распаячная коробка"
   | "Ваги (клемма)"
   | "Стяжка 480-500мм"
-  | "Стяжка 200мм";
+  | "Стяжка 200мм"
+  | "Монтаж"
+  | "Электрический щиток";
 
 export type AllItemsTypes =
   | FringeType
@@ -43,7 +47,9 @@ export type AllItemsTypes =
   | SolderBoxType
   | VagiType
   | Screed_480_500_Type
-  | Screed_200_Type;
+  | Screed_200_Type
+  | MontageType
+  | ElectricShieldType;
 
 export type ItemType<T extends AllItemsTypes> = {
   id: string;

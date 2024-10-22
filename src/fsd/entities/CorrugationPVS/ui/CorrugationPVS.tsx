@@ -9,7 +9,7 @@ import {
 } from "@/fsd/shared";
 import classes from "./CorrugationPVS.module.scss";
 import { useContext, useEffect, useState } from "react";
-import { ItemType } from "../../Item";
+import { CommonItemType, ItemType } from "../../Item";
 import {
   CorrColorsEnum,
   corrColours,
@@ -17,6 +17,8 @@ import {
   corrThicknesses,
   CorrugationType,
 } from "../model";
+import { generateRFP } from "@/fsd/features/OrderActions/lib";
+import { getPVSLength } from "../../PVS";
 
 export function CorrugationPVS({
   deleteItem,
@@ -24,12 +26,14 @@ export function CorrugationPVS({
   getItems,
   updateCost,
   openedId,
+  pvsLength,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<CorrugationType>;
-  getItems: () => void;
+  getItems: () => Promise<CommonItemType[]>;
   updateCost: () => void;
   openedId: string;
+  pvsLength: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +65,15 @@ export function CorrugationPVS({
     });
   }, []);
 
+  useEffect(() => {
+    if (pvsLength > corr.length) {
+      setCorr({
+        ...corr,
+        length: pvsLength,
+      });
+    }
+  }, [pvsLength]);
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
@@ -71,6 +84,9 @@ export function CorrugationPVS({
           )}
         </div>
         <div className={classes.arrowWrapper}>
+          {!isOpen && itemObj.item.length !== 0 && (
+            <span>{itemObj.item.length} м</span>
+          )}
           <ArrowSVG
             style={{
               transform: `${isOpen ? "" : "rotate(180deg)"}`,
@@ -80,6 +96,17 @@ export function CorrugationPVS({
       </div>
       {isOpen && (
         <div className={classes.adjust}>
+          <NumberSelect
+            type="Длина"
+            initialValue={corr.length}
+            callback={(val) => {
+              setCorr({
+                ...corr,
+                length: val,
+              });
+            }}
+            minValue={pvsLength}
+          />
           <div className={classes.tabs}>
             <h5 className={classes.tabsTitle}>Толщина</h5>
             <ItemsAdjust

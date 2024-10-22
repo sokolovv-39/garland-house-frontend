@@ -2,7 +2,7 @@ import { CommonItemType } from "../../Item";
 import { VagiModelEnum, VagiType } from "../model";
 
 export function getAllVagi(allItems: CommonItemType[]) {
-  let vagi = 8;
+  let vagi = 0;
 
   allItems.forEach((itemObj) => {
     if (Object.hasOwn(itemObj.item, "contours")) {

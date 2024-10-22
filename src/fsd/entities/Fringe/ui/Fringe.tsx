@@ -24,6 +24,8 @@ import {
   FringeLedEnum,
   fringeSurfaces,
   FringeSurfaceEnum,
+  fringeMultiplicities,
+  FringeMultiplicityEnum,
 } from "../model";
 import { ItemType } from "../../Item";
 
@@ -92,6 +94,19 @@ export function Fringe({
       </div>
       {isOpen && (
         <div className={classes.adjust}>
+          <div className={classes.tabs}>
+            <h5 className={classes.tabsTitle}>Кратность</h5>
+            <ItemsAdjust
+              list={fringeMultiplicities}
+              active={itemObj.item.multiplicity}
+              callback={(val) =>
+                setFringe({
+                  ...fringe,
+                  multiplicity: val as FringeMultiplicityEnum,
+                })
+              }
+            />
+          </div>
           <NumberSelect
             type="Длина, м"
             callback={(val) =>
@@ -231,23 +246,31 @@ export function Fringe({
           />
           <NumberSelect
             type="Блоки питания, шт"
-            callback={(val) =>
-              setFringe({
-                ...fringe,
-                powerUnits: val,
-              })
-            }
+            callback={(val) => {
+              if (val >= fringe.contours)
+                setFringe({
+                  ...fringe,
+                  powerUnits: val,
+                });
+            }}
             initialValue={itemObj.item.powerUnits}
+            minValue={itemObj.item.contours}
           />
           <NumberSelect
             type="Количество контуров"
-            callback={(val) =>
+            callback={(val) => {
+              let powerUnits = fringe.powerUnits;
+              if (powerUnits < val) {
+                powerUnits = val;
+              }
               setFringe({
                 ...fringe,
                 contours: val,
-              })
-            }
+                powerUnits,
+              });
+            }}
             initialValue={itemObj.item.contours}
+            minValue={1}
           />
         </div>
       )}

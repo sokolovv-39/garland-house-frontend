@@ -5,5 +5,6 @@ export const boxPvsColours = Object.values(BoxPVSColourEnum);
 export const boxPvsDefault: BoxPVSType = {
   title: "Кабель-канал (короб) для кабеля ПВС",
   color: BoxPVSColourEnum.Black,
-  price: 421
+  price: 421,
+  length: 0,
 };

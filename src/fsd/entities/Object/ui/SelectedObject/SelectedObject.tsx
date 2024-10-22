@@ -49,6 +49,18 @@ import {
   Screed_200_Type,
   screed_200_default,
   Screed_200,
+  getPVSLength,
+  getAllVagi,
+  getSolderBoxPieces,
+  getEsRope,
+  get_Screeds_480_500_packs,
+  get_screeds_200_packs,
+  MontageType,
+  montageDefault,
+  Montage,
+  ElectricShieldType,
+  electricShieldDefault,
+  ElectricShield,
 } from "@/fsd/entities";
 import { useState, useContext, useEffect } from "react";
 import { ObjectType } from "../../model";
@@ -70,20 +82,29 @@ export function SelectedObject({
   const idb = useContext(IDBContext);
   const [objName, setObjName] = useState(object.title);
   const [openedId, setOpenedId] = useState("");
+  const [pvsLength, setPvsLength] = useState(0);
+  const [vagi, setVagi] = useState(0);
+  const [solderBoxes, setSolderBoxes] = useState(0);
+  const [screeds_480_500, set_screeds_480_500] = useState(0);
+  const [screeds_200, setScreeds_200] = useState(0);
+  const [ropeMeters, setRopeMeters] = useState(0);
 
   function getItems() {
-    idb?.items
-      .getOwn(object.id)
-      .then((data) => {
-        function orderIdSort(obj1: CommonItemType, obj2: CommonItemType) {
-          if (obj1.orderId > obj2.orderId) return 1;
-          if (obj1.orderId < obj2.orderId) return -1;
-          return 0;
-        }
-        const newItems = data.sort(orderIdSort);
-        setItems(newItems);
-      })
-      .catch();
+    return new Promise<CommonItemType[]>((resolve, reject) => {
+      idb?.items
+        .getOwn(object.id)
+        .then((data) => {
+          function orderIdSort(obj1: CommonItemType, obj2: CommonItemType) {
+            if (obj1.orderId > obj2.orderId) return 1;
+            if (obj1.orderId < obj2.orderId) return -1;
+            return 0;
+          }
+          const newItems = data.sort(orderIdSort);
+          setItems(newItems);
+          resolve(newItems);
+        })
+        .catch((err) => reject(err));
+    });
   }
 
   function deleteItem(id: string) {
@@ -270,6 +291,28 @@ export function SelectedObject({
         addToDB<Screed_200_Type>(newItem);
         break;
       }
+      case "Монтаж": {
+        const newItem: ItemType<MontageType> = {
+          id: nanoid(),
+          orderId,
+          itemTitle: "Монтаж",
+          objectId: object.id,
+          item: montageDefault,
+        };
+        addToDB<MontageType>(newItem);
+        break;
+      }
+      case "Электрический щиток": {
+        const newItem: ItemType<ElectricShieldType> = {
+          id: nanoid(),
+          orderId,
+          itemTitle: "Электрический щиток",
+          objectId: object.id,
+          item: electricShieldDefault,
+        };
+        addToDB<ElectricShieldType>(newItem);
+        break;
+      }
       default:
         break;
     }
@@ -288,6 +331,34 @@ export function SelectedObject({
   useEffect(() => {
     getItems();
   }, [openedId]);
+
+  useEffect(() => {
+    let pvsLength = getPVSLength(items);
+    setPvsLength(pvsLength);
+
+    let vagi = getAllVagi(items);
+    setVagi(vagi);
+
+    setSolderBoxes(parseInt(getSolderBoxPieces(items).keyValue));
+
+    let quantity_480_500 = 0;
+    get_Screeds_480_500_packs(items).forEach((el) => {
+      quantity_480_500 += parseInt(el.keyValue);
+    });
+    set_screeds_480_500(quantity_480_500);
+
+    let quantity_screed_200 = 0;
+    get_screeds_200_packs(items).forEach((el) => {
+      quantity_screed_200 += parseInt(el.keyValue);
+    });
+    setScreeds_200(quantity_screed_200);
+
+    let ropeLegth = 0;
+    getEsRope(items).forEach((el) => {
+      ropeLegth += Math.ceil(parseFloat(el.keyValue));
+    });
+    setRopeMeters(ropeLegth);
+  }, [items]);
 
   return (
     <div className={classes.wrapper}>
@@ -379,6 +450,7 @@ export function SelectedObject({
             case "Трос":
               return (
                 <Rope
+                  meters={ropeMeters}
                   openedId={openedId}
                   getItems={() => getItems()}
                   key={i}
@@ -401,6 +473,7 @@ export function SelectedObject({
             case "Гофра для кабеля ПВС":
               return (
                 <CorrugationPVS
+                  pvsLength={pvsLength}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}
@@ -412,6 +485,7 @@ export function SelectedObject({
             case "Кабель-канал (короб) для кабеля ПВС":
               return (
                 <BoxPVS
+                  pvsLength={pvsLength}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}
@@ -434,6 +508,7 @@ export function SelectedObject({
             case "Распаячная коробка": {
               return (
                 <SolderBox
+                  quantity={solderBoxes}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}
@@ -446,6 +521,7 @@ export function SelectedObject({
             case "Ваги (клемма)":
               return (
                 <Vagi
+                  quantity={vagi}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}
@@ -457,6 +533,7 @@ export function SelectedObject({
             case "Стяжка 480-500мм":
               return (
                 <Screed_480_500
+                  quantity={screeds_480_500}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}
@@ -468,12 +545,35 @@ export function SelectedObject({
             case "Стяжка 200мм":
               return (
                 <Screed_200
+                  quantity={screeds_200}
                   openedId={openedId}
                   getItems={() => getItems()}
                   key={i}
                   itemObj={itemObj as ItemType<Screed_200_Type>}
                   updateCost={updateCost}
                   deleteItem={() => deleteItem(itemObj.id)}
+                />
+              );
+            case "Монтаж":
+              return (
+                <Montage
+                  deleteItem={() => deleteItem(itemObj.id)}
+                  openedId={openedId}
+                  getItems={() => getItems()}
+                  key={i}
+                  itemObj={itemObj as ItemType<MontageType>}
+                  updateCost={updateCost}
+                />
+              );
+            case "Электрический щиток":
+              return (
+                <ElectricShield
+                  deleteItem={() => deleteItem(itemObj.id)}
+                  openedId={openedId}
+                  getItems={() => getItems()}
+                  key={i}
+                  itemObj={itemObj as ItemType<ElectricShieldType>}
+                  updateCost={updateCost}
                 />
               );
             default:

@@ -41,7 +41,7 @@ export function getEsThread(allItems: CommonItemType[]) {
   threads.forEach((item) => {
     esThreads.push({
       desc: `${item.title} / ${item.glowShade} / ${item.glowMode} / ${item.cable}`,
-      keyValue: `${getThreadLength(item.length).skeinMeters} м`,
+      keyValue: `${getThreadLength(item.length).skeinsQuantity} шт`,
     });
   });
 

@@ -5,6 +5,7 @@ export {
   FringeLedEnum,
   FringeSurfaceEnum,
   FringeBracingEnum,
+  FringeMultiplicityEnum,
   FringeCableEnum,
 } from "./types";
 export {
@@ -15,4 +16,5 @@ export {
   fringeSurfaces,
   fringeCables,
   fringeBracings,
+  fringeMultiplicities,
 } from "./defaults";

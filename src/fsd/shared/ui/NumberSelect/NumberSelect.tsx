@@ -1,16 +1,18 @@
 "use client";
 
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import classes from "./NumberSelect.module.scss";
 
 export function NumberSelect({
   type,
   initialValue,
   callback,
+  minValue = 0,
 }: {
   type: string;
   initialValue: number;
   callback: (val: number) => void;
+  minValue?: number;
 }) {
   const [number, setNumber] = useState<number | "">(
     initialValue ? initialValue : ""
@@ -18,12 +20,17 @@ export function NumberSelect({
   if (type === "Длина, м") {
   }
 
+  useEffect(() => {
+    if (initialValue) setNumber(initialValue);
+    else setNumber("");
+  }, [initialValue]);
+
   return (
     <div className={classes.wrapper}>
       <div
         className={classes.operand}
         onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-          if (number !== "") {
+          if (number !== "" && number > minValue) {
             e.currentTarget.style.opacity = "1";
             e.currentTarget.style.border = "1px solid rgba(25, 25, 25, 1)";
             e.currentTarget.style.cursor = "pointer";
@@ -35,12 +42,16 @@ export function NumberSelect({
         }}
         onClick={() => {
           if (number === 1) {
-            setNumber("");
-            callback(0);
+            if (number > minValue) {
+              setNumber("");
+              callback(0);
+            }
           } else if (number !== "") {
             const newVal = number - 1;
-            callback(newVal);
-            setNumber(newVal);
+            if (newVal >= minValue) {
+              callback(newVal);
+              setNumber(newVal);
+            }
           }
         }}
       >
@@ -51,6 +62,16 @@ export function NumberSelect({
         type="text"
         className={classes.number}
         placeholder={type}
+        onBlur={(e) => {
+          const value = e.currentTarget.value;
+          if (value !== "" && +value < minValue) {
+            setNumber(minValue);
+            callback(minValue);
+          } else if (value === "") {
+            setNumber("");
+            callback(minValue);
+          }
+        }}
         onChange={(e) => {
           const value = e.currentTarget.value;
           if (value === "") {

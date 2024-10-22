@@ -31,6 +31,30 @@ export function get_Screeds_480_500_packs(
     }
   });
 
+  const pack = 100;
+
+  const esScreeds: EsWritingArrayType[] = screeds.map((screed) => {
+    let color = PVSColorEnum.Black;
+    if (screed.color === PVSColorEnum.White) color = screed.color;
+    return {
+      desc: `Стяжка 480-500 мм / ${color}`,
+      keyValue: `${Math.ceil(screed.quantity / pack)} уп`,
+    };
+  });
+
+  return esScreeds;
+}
+
+export const screeds_480_500_pack = 100;
+
+export function getCustomScreeds_480_500(
+  allItems: CommonItemType[]
+): EsWritingArrayType[] {
+  const screeds: Array<{
+    color: PVSColorEnum;
+    quantity: number;
+  }> = [];
+
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Стяжка 480-500мм") {
       const item = itemObj.item as Screed_480_500_Type;
@@ -57,7 +81,7 @@ export function get_Screeds_480_500_packs(
     if (screed.color === PVSColorEnum.White) color = screed.color;
     return {
       desc: `Стяжка 480-500 мм / ${color}`,
-      keyValue: `${Math.ceil(screed.quantity) / pack} уп`,
+      keyValue: `${Math.ceil(screed.quantity / pack)} уп`,
     };
   });
 

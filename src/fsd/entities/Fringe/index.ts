@@ -13,6 +13,8 @@ export {
   FringeCableEnum,
   FringeGlowShadeEnum,
   FringeGlowModeEnum,
+  FringeMultiplicityEnum,
+  fringeMultiplicities,
 } from "./model";
 export type { FringeType } from "./model";
 export { getFringeLength, getFringeBracketsPacks, getEsFringe } from "./lib";

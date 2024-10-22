@@ -148,13 +148,15 @@ export function BeltLight({
           />
           <NumberSelect
             type="Количество контуров"
-            callback={(val) =>
-              setBeltLight({
-                ...beltLight,
-                contours: val,
-              })
-            }
+            callback={(val) => {
+              if (val)
+                setBeltLight({
+                  ...beltLight,
+                  contours: val,
+                });
+            }}
             initialValue={itemObj.item.contours}
+            minValue={1}
           />
         </div>
       )}

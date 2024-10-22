@@ -26,7 +26,13 @@ export enum FringeSurfaceEnum {
   Concrete = "Бетон",
 }
 
+export enum FringeMultiplicityEnum {
+  m_3 = "3 метра",
+  m_5 = "5 метров",
+}
+
 export type FringeType = {
+  multiplicity: FringeMultiplicityEnum;
   title: "Бахрома";
   length: number;
   glowShade: FringeGlowShadeEnum;

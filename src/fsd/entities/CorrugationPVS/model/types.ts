@@ -12,5 +12,6 @@ export type CorrugationType = {
   title: "Гофра для кабеля ПВС";
   thickness: CorrThicknessEnum;
   color: CorrColorsEnum;
-  price: number
+  price: number;
+  length: number;
 };

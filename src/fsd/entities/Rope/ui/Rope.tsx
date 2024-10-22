@@ -24,12 +24,14 @@ export function Rope({
   getItems,
   updateCost,
   openedId,
+  meters,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<RopeType>;
   getItems: () => void;
   updateCost: () => void;
   openedId: string;
+  meters: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +48,6 @@ export function Rope({
 
   useEffect(() => {
     updateRope();
-    getItems();
     updateCost();
   }, [rope]);
 
@@ -61,6 +62,13 @@ export function Rope({
     });
   }, []);
 
+  useEffect(() => {
+    setRope({
+      ...rope,
+      length: Math.ceil(meters),
+    });
+  }, [meters]);
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
@@ -71,6 +79,7 @@ export function Rope({
           )}
         </div>
         <div className={classes.arrowWrapper}>
+          {!isOpen && <span>{itemObj.item.length} м</span>}
           <ArrowSVG
             style={{
               transform: `${isOpen ? "" : "rotate(180deg)"}`,
@@ -125,6 +134,7 @@ export function Rope({
               })
             }
             initialValue={itemObj.item.contours}
+            minValue={1}
           />
         </div>
       )}

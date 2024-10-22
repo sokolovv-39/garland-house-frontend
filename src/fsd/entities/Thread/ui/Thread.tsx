@@ -224,23 +224,31 @@ export function Thread({
           />
           <NumberSelect
             type="Количество контуров"
-            callback={(val) =>
+            callback={(val) => {
+              let powerUnits = thread.powerUnits;
+              if (powerUnits < val) {
+                powerUnits = val;
+              }
               setThread({
                 ...thread,
                 contours: val,
-              })
-            }
+                powerUnits,
+              });
+            }}
             initialValue={itemObj.item.contours}
+            minValue={1}
           />
           <NumberSelect
             type="Блоки питания, шт"
-            callback={(val) =>
-              setThread({
-                ...thread,
-                powerUnits: val,
-              })
-            }
+            callback={(val) => {
+              if (val >= thread.contours)
+                setThread({
+                  ...thread,
+                  powerUnits: val,
+                });
+            }}
             initialValue={itemObj.item.powerUnits}
+            minValue={itemObj.item.contours}
           />
           <NumberSelect
             type="Тройники, шт"

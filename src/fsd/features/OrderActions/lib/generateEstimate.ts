@@ -57,6 +57,10 @@ import {
   getEsLamps,
   getEsCorrClips,
   get_screeds_200_packs,
+  getCustomScreeds_480_500,
+  get_screeds_200_custom,
+  getRopeCustom,
+  getEsElectricShield,
 } from "@/fsd/entities";
 import fontkit from "@pdf-lib/fontkit";
 import { NeonType } from "@/fsd/entities/Neon/model";
@@ -98,34 +102,24 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   const pvses = getEsPVS(allItems);
   const corrPvs = getEsCorrPVS(allItems);
   const boxPvs = getEsBoxPvs(allItems);
-  const ropes = getEsRope(allItems);
+  const ropes = getRopeCustom(allItems);
   const cableBracketPacks = getEsCableBrackets(allItems);
   let screw_ring_4x50 = getEsScrewRings(allItems);
   let anchor_ring_6x50 = getEsAnchorRings(allItems);
   let lanyards = getEsLanyards(allItems);
   let duplex_clamps = getEsDuplexClamps(allItems);
-  let {
-    white_extensions_1m,
-    white_extensions_3m,
-    white_extensions_5m,
-    white_extensions_10m,
-    black_extensions_1m,
-    black_extensions_3m,
-    black_extensions_5m,
-    black_extensions_10m,
-  } = getEsExtensions(allItems);
+  let extensions = getEsExtensions(allItems);
   let { black_tees, white_tees } = getEsTees(allItems);
-  let powerUnits = getEsPowerUnits(allItems);
   let metal_profile = getEsMetalProfile(allItems);
   let connecting_needles = getEsConnectingNeedles(allItems);
   let plugs = getEsPlugs(allItems);
+  const powerUnits = getEsPowerUnits(allItems);
   let lamps = getEsLamps(allItems);
-  let screeds_480_500_mm = get_Screeds_480_500_packs(allItems);
-  let screeds_200_mm = get_screeds_200_packs(allItems);
+  let screeds_480_500_mm = getCustomScreeds_480_500(allItems);
+  let screeds_200_mm = get_screeds_200_custom(allItems);
   let corr_clips = getEsCorrClips(allItems);
-  let street_shield_ip65 = 1;
-  let automat_10A = 1;
-  let voltage_relay = 1;
+  let { street_shield_ip65, automat_10A, voltage_relay } =
+    getEsElectricShield(allItems);
   let {
     wired: ordinary_wired_switch,
     wirelessRadio: wireless_switch_radio,
@@ -267,6 +261,10 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       writingArray.push(rope);
     });
 
+    powerUnits.forEach((el) => {
+      writingArray.push(el);
+    });
+
     writingArray.push(cableBracketPacks);
 
     writingArray.push({
@@ -289,38 +287,10 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       keyValue: `${duplex_clamps} шт`,
     });
 
-    writingArray.push({
-      desc: `Удлинитель / 1 м / белый`,
-      keyValue: `${white_extensions_1m} шт`,
+    extensions.forEach((el) => {
+      writingArray.push(el);
     });
-    writingArray.push({
-      desc: `Удлинитель / 3 м / белый`,
-      keyValue: `${white_extensions_3m} шт`,
-    });
-    writingArray.push({
-      desc: `Удлинитель / 5 м / белый`,
-      keyValue: `${white_extensions_5m} шт`,
-    });
-    writingArray.push({
-      desc: `Удлинитель / 10 м / белый`,
-      keyValue: `${white_extensions_10m} шт`,
-    });
-    writingArray.push({
-      desc: `Удлинитель / 1 м / черный`,
-      keyValue: `${black_extensions_1m} шт`,
-    });
-    writingArray.push({
-      desc: `Удлинитель / 3 м / черный`,
-      keyValue: `${black_extensions_3m} шт`,
-    });
-    writingArray.push({
-      desc: `Удлинитель / 5 м / черный`,
-      keyValue: `${black_extensions_5m} шт`,
-    });
-    writingArray.push({
-      desc: `Удлинитель / 10 м / черный`,
-      keyValue: `${black_extensions_10m} шт`,
-    });
+
     writingArray.push({
       desc: `Тройник / черный`,
       keyValue: `${black_tees} шт`,
@@ -328,10 +298,6 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     writingArray.push({
       desc: `Тройник / белый`,
       keyValue: `${white_tees} шт`,
-    });
-    writingArray.push({
-      desc: `Блок питания`,
-      keyValue: `${powerUnits} шт`,
     });
     writingArray.push({
       desc: `Профиль металлический / 2 м`,

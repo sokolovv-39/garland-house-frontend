@@ -90,10 +90,8 @@ export function Measure({
   }
 
   function updateCost() {
-    console.log("updating cost...");
     generateRFP(idb!, measure.id, false)
       .then((overall) => {
-        console.log(`new cost ${overall}`);
         setCost(splitPrice(overall!));
       })
       .catch((err) => console.error(err));

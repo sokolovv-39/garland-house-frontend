@@ -15,8 +15,8 @@ export function getEsBoxPvs(allItems: CommonItemType[]): EsWritingArrayType {
     const piecesQuantity = Math.ceil(pvsLength / piece);
     const piecesMeters = piece * piecesQuantity;
     return {
-      desc: `${typedBox.title} / 25x16мм / ${typedBox.color}`,
-      keyValue: `${piecesMeters} м`,
+      desc: `${typedBox.title} / 25x16мм / ${typedBox.color} / Кратность 2 м`,
+      keyValue: `${piecesQuantity} шт`,
     };
   } else
     return {

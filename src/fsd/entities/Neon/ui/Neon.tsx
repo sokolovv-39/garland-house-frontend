@@ -8,6 +8,7 @@ import {
   IDBContext,
   Select,
   Toggler,
+  Input,
 } from "@/fsd/shared";
 import classes from "./Neon.module.scss";
 import { useContext, useState, useEffect } from "react";
@@ -132,45 +133,81 @@ export function Neon({
               });
             }}
           />
+          {neon.painting && (
+            <div className={classes.tabs}>
+              <h5 className={classes.tabsTitle}>Номер RAL</h5>
+              <Input
+                initialValue={neon.ral}
+                type="text"
+                placeholder="RAL"
+                onChange={(val) => {
+                  setNeon({
+                    ...neon,
+                    ral: val,
+                  });
+                }}
+              />
+            </div>
+          )}
           <NumberSelect
             type="Удлинители, 1м"
-            callback={(val) =>
+            callback={(val) => {
+              let needles = 0;
+              if (neon.needles < val * 2 + neon.contours)
+                needles = val * 2 + neon.contours;
+              else needles = neon.needles;
               setNeon({
                 ...neon,
                 extensions_1m: val,
-              })
-            }
+                needles,
+              });
+            }}
             initialValue={itemObj.item.extensions_1m}
           />
           <NumberSelect
             type="Соединительные иглы, шт"
-            callback={(val) =>
-              setNeon({
-                ...neon,
-                needles: val,
-              })
-            }
+            callback={(val) => {
+              if (val >= neon.extensions_1m * 2 + neon.contours)
+                setNeon({
+                  ...neon,
+                  needles: val,
+                });
+            }}
             initialValue={itemObj.item.needles}
+            minValue={itemObj.item.extensions_1m * 2 + itemObj.item.contours}
           />
           <NumberSelect
             type="Блоки питания, шт"
-            callback={(val) =>
-              setNeon({
-                ...neon,
-                powerUnits: val,
-              })
-            }
+            callback={(val) => {
+              if (val >= neon.contours)
+                setNeon({
+                  ...neon,
+                  powerUnits: val,
+                });
+            }}
             initialValue={itemObj.item.powerUnits}
+            minValue={itemObj.item.contours}
           />
           <NumberSelect
             type="Количество контуров, шт"
-            callback={(val) =>
+            callback={(val) => {
+              let powerUnits = neon.powerUnits;
+              if (powerUnits < val) {
+                powerUnits = val;
+              }
+              let needles = 0;
+              if (neon.needles < val + neon.extensions_1m * 2)
+                needles = val + neon.extensions_1m * 2;
+              else needles = neon.needles;
               setNeon({
                 ...neon,
                 contours: val,
-              })
-            }
+                powerUnits,
+                needles,
+              });
+            }}
             initialValue={itemObj.item.contours}
+            minValue={1}
           />
         </div>
       )}

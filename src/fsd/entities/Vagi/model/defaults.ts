@@ -5,5 +5,6 @@ export const vagiModels = Object.values(VagiModelEnum);
 export const vagiDefault: VagiType = {
   title: "Ваги (клемма)",
   model: VagiModelEnum.wire_2,
-  price: 87
+  price: 87,
+  quantity: 0,
 };

@@ -9,5 +9,6 @@ export enum BoxPVSColourEnum {
 export type BoxPVSType = {
   title: "Кабель-канал (короб) для кабеля ПВС";
   color: BoxPVSColourEnum;
-  price: number
+  price: number;
+  length: number;
 };

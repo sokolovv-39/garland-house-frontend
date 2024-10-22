@@ -28,21 +28,6 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
   const ropes: RopeType[] = [];
   const esRopes: EsWritingArrayType[] = [];
 
-  allItems.forEach((itemObj) => {
-    if (itemObj.itemTitle === "Трос") {
-      const rope = itemObj.item as RopeType;
-      let existIndex = ropes.findIndex((item) => {
-        if (item.thickness === rope.thickness) return true;
-        else return false;
-      });
-      if (existIndex !== -1) {
-        ropes[existIndex].length += rope.length;
-      } else {
-        ropes.push(rope);
-      }
-    }
-  });
-
   //Бахрома добавляет трос
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Бахрома") {
@@ -51,7 +36,9 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
         const ropeIndex = ropes.findIndex(
           (rope) => rope.thickness === RopeThicknessEnum.mm_2
         );
-        if (ropeIndex !== -1) ropes[ropeIndex].length += 1.1 * fringe.length;
+        if (ropeIndex !== -1) {
+          ropes[ropeIndex].length += 1.1 * fringe.length;
+        }
       }
     }
   });
@@ -75,6 +62,39 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
           (rope) => rope.thickness === RopeThicknessEnum.mm_3
         );
         if (ropeIndex !== -1) ropes[ropeIndex].length += 5;
+      }
+    }
+  });
+
+  ropes.forEach((item) => {
+    esRopes.push({
+      desc: `${item.title} / ${item.thickness}`,
+      keyValue: `${item.length} м`,
+    });
+  });
+
+  console.log(esRopes);
+
+  return esRopes;
+}
+
+export function getRopeCustom(
+  allItems: CommonItemType[]
+): EsWritingArrayType[] {
+  const ropes: RopeType[] = [];
+  const esRopes: EsWritingArrayType[] = [];
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Трос") {
+      const rope = itemObj.item as RopeType;
+      let existIndex = ropes.findIndex((item) => {
+        if (item.thickness === rope.thickness) return true;
+        else return false;
+      });
+      if (existIndex !== -1) {
+        ropes[existIndex].length += rope.length;
+      } else {
+        ropes.push(rope);
       }
     }
   });

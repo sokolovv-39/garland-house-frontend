@@ -1,46 +1,68 @@
+import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
 import { CommonItemType } from "../../Item";
+import { FringeCableEnum, FringeType } from "../../Fringe";
+import { BeltLightType } from "../../BeltLight";
+import { NeonType } from "../../Neon/model";
+import { ThreadType } from "../../Thread";
 
-export function getEsExtensions(allItems: CommonItemType[]) {
-  let white_extensions_1m = 0;
-  let white_extensions_3m = 0;
-  let white_extensions_5m = 0;
-  let white_extensions_10m = 0;
-  let black_extensions_1m = 0;
-  let black_extensions_3m = 0;
-  let black_extensions_5m = 0;
-  let black_extensions_10m = 0;
+export function getEsExtensions(
+  allItems: CommonItemType[]
+): EsWritingArrayType[] {
+  const esExt: EsWritingArrayType[] = [];
 
   allItems.forEach((itemObj) => {
-    const item = itemObj.item;
-
-    if ("cable" in item) {
-      const extensions_1m = "extensions_1m" in item ? item.extensions_1m : 0;
-      const extensions_3m = "extensions_3m" in item ? item.extensions_3m : 0;
-      const extensions_5m = "extensions_5m" in item ? item.extensions_5m : 0;
-      const extensions_10m = "extensions_10m" in item ? item.extensions_10m : 0;
-
-      if (item.cable === "Белый") {
-        white_extensions_1m += extensions_1m;
-        white_extensions_3m += extensions_3m;
-        white_extensions_5m += extensions_5m;
-        white_extensions_10m += extensions_10m;
-      } else if (item.cable === "Черный") {
-        black_extensions_1m += extensions_1m;
-        black_extensions_3m += extensions_3m;
-        black_extensions_5m += extensions_5m;
-        black_extensions_10m += extensions_10m;
-      }
+    if (itemObj.itemTitle === "Бахрома") {
+      const item = itemObj.item as FringeType;
+      esExt.push({
+        desc: `Удлинитель / бахрома / 1м / ${item.cable}`,
+        keyValue: `${item.extensions_1m} шт`,
+      });
+      esExt.push({
+        desc: `Удлинитель / бахрома / 3м / ${item.cable}`,
+        keyValue: `${item.extensions_3m} шт`,
+      });
+      esExt.push({
+        desc: `Удлинитель / бахрома / 5м / ${item.cable}`,
+        keyValue: `${item.extensions_5m} шт`,
+      });
+      esExt.push({
+        desc: `Удлинитель / бахрома / 10м / ${item.cable}`,
+        keyValue: `${item.extensions_10m} шт`,
+      });
     }
   });
 
-  return {
-    white_extensions_1m,
-    white_extensions_3m,
-    white_extensions_5m,
-    white_extensions_10m,
-    black_extensions_1m,
-    black_extensions_3m,
-    black_extensions_5m,
-    black_extensions_10m,
-  };
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Гибкий неон") {
+      const item = itemObj.item as NeonType;
+      esExt.push({
+        desc: `Удлинитель / гибкий неон / 1м / ${item.glowShade}`,
+        keyValue: `${item.extensions_1m} шт`,
+      });
+    }
+  });
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Нить") {
+      const item = itemObj.item as ThreadType;
+      esExt.push({
+        desc: `Удлинитель / нить / 1м / ${item.cable}`,
+        keyValue: `${item.extensions_1m} шт`,
+      });
+      esExt.push({
+        desc: `Удлинитель / нить / 3м / ${item.cable}`,
+        keyValue: `${item.extensions_3m} шт`,
+      });
+      esExt.push({
+        desc: `Удлинитель / нить / 5м / ${item.cable}`,
+        keyValue: `${item.extensions_5m} шт`,
+      });
+      esExt.push({
+        desc: `Удлинитель / нить / 10м / ${item.cable}`,
+        keyValue: `${item.extensions_10m} шт`,
+      });
+    }
+  });
+
+  return esExt;
 }

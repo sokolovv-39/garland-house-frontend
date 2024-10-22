@@ -102,6 +102,7 @@ export function Curtain({
             }
           />
           <NumberSelect
+            minValue={1}
             type="Количество занавесов"
             initialValue={itemObj.item.quantity}
             callback={(val) =>

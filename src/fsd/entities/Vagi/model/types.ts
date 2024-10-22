@@ -8,4 +8,5 @@ export type VagiType = {
   title: "Ваги (клемма)";
   model: VagiModelEnum;
   price: number;
+  quantity: number;
 };

@@ -12,6 +12,7 @@ import {
   CurtainGlowModeEnum,
   CurtainSizeEnum,
   CurtainType,
+  ElectricShieldType,
   FringeCableEnum,
   FringeType,
   get_screeds_200_packs,
@@ -27,6 +28,7 @@ import {
   getRopeLength,
   getSolderBoxPieces,
   getThreadLength,
+  MontageType,
   PVSColorEnum,
   PVSType,
   RelaysSwitchesType,
@@ -166,7 +168,6 @@ export async function generateRFP(
     const demoPdfBytes = await fetch(demoPDF).then((res) => res.arrayBuffer());
     const demoDoc = await PDFDocument.load(demoPdfBytes);
     const demoPages = demoDoc.getPages();
-    console.log("size of demo", demoPages[0].getSize());
     const totalDemoPages = demoPages.length;
     const lastPages = await pdfDoc.copyPages(demoDoc, [
       totalDemoPages - 3,
@@ -522,7 +523,7 @@ export async function generateRFP(
                   const quantity = getNeonLength(neon.length).skeinMeters;
                   positions[i].items.push({
                     id: itemId.toString(),
-                    desc: `Покраска профиля алюминиевого для неона гибкого ${neon.thickness}`,
+                    desc: `Покраска профиля алюминиевого для неона гибкого ${neon.thickness}. RAL ${neon.ral}`,
                     unit: "м.п.",
                     quantity: quantity.toString(),
                     price: `${price} Р`,
@@ -536,20 +537,8 @@ export async function generateRFP(
             }
           });
 
-          let price = 7450;
-          let quantity = 1;
-          if (i === 0)
-            positions[i].items.push({
-              id: `${itemId}`,
-              desc: `Монтаж щита уличного IP65 в сборе (автомат 10А, реле напряжения) и протяжка питания для подключения оборудования, коммутация, настройка`,
-              unit: "шт",
-              quantity: "1",
-              price: `${price} Р`,
-              cost: `${quantity * price} Р`,
-            });
-
           positions[i].items.push({
-            id: `${itemId + 1}`,
+            id: `${itemId}`,
             desc: "Расходные материалы для монтажа (стяжки, автомат 10A, реле напряжения 63A, выключатель 1/2кл, кабель ПВС до 20 метров в кабель-канале или гофре, распаечная коробка, термоусадка в местах соединения)",
             unit: "%",
             price: `${consumablesCost} Р`,
@@ -557,11 +546,11 @@ export async function generateRFP(
             quantity: `1`,
           });
 
-          quantity = getPVSLength(items);
-          price = 250;
+          let quantity = getPVSLength(items);
+          let price = 250;
           if (quantity > 20)
             positions[i].items.push({
-              id: `${itemId + 2}`,
+              id: `${itemId + 1}`,
               desc: `Монтаж кабеля ПВС 2х1,5 свыше 20 п.м.`,
               unit: "м.п.",
               quantity: quantity.toString(),
@@ -576,13 +565,79 @@ export async function generateRFP(
 
           if (quantity > 20)
             positions[i].items.push({
-              id: `${itemId + 3}`,
+              id: `${itemId + 2}`,
               desc: `Монтаж гофры или кабель-канала свыше 20 п.м.`,
               unit: "м.п.",
               quantity: quantity.toString(),
               price: `${price} Р`,
               cost: `${quantity * price} Р`,
             });
+
+          items.forEach((itemObj) => {
+            if (itemObj.itemTitle === "Монтаж") {
+              const montage = itemObj.item as MontageType;
+              price = 20000;
+
+              if (montage.m_16_20)
+                positions[i].items.push({
+                  id: `${itemId + 3}`,
+                  desc: "Автовышка 16-20 метров (смена)",
+                  unit: "шт",
+                  quantity: montage.m_16_20.toString(),
+                  price: `${price} Р`,
+                  cost: `${montage.m_16_20 * price} Р`,
+                });
+              price = 25000;
+              if (montage.m_22_24)
+                positions[i].items.push({
+                  id: `${itemId + 4}`,
+                  desc: "Автовышка 22-24 метров (смена)",
+                  unit: "шт",
+                  quantity: montage.m_22_24.toString(),
+                  price: `${price} Р`,
+                  cost: `${montage.m_22_24 * price} Р`,
+                });
+              price = 35000;
+              if (montage.m_26_36)
+                positions[i].items.push({
+                  id: `${itemId + 5}`,
+                  desc: "Автовышка 26-36 метров (смена)",
+                  unit: "шт",
+                  quantity: montage.m_26_36.toString(),
+                  price: `${price} Р`,
+                  cost: `${montage.m_26_36 * price} Р`,
+                });
+              price = 60;
+              if (montage.distance)
+                positions[i].items.push({
+                  id: `${itemId + 6}`,
+                  desc: "Монтаж оборудования с выездом на объект",
+                  unit: "км",
+                  quantity: montage.distance.toString(),
+                  price: `${price} Р`,
+                  cost: `${montage.distance * price} Р`,
+                });
+              price = 2000;
+              if (montage.m_26_36_hourly)
+                positions[i].items.push({
+                  id: `${itemId + 7}`,
+                  desc: "Автовышка 26-36 метров почасовая оплата свыше 7 часов смены",
+                  unit: "часы",
+                  quantity: montage.m_26_36_hourly.toString(),
+                  price: `${price} Р`,
+                  cost: `${montage.m_26_36_hourly * price} Р`,
+                });
+              if (montage.climber)
+                positions[i].items.push({
+                  id: `${itemId + 8}`,
+                  desc: "Альпинист (смена)",
+                  unit: "руб",
+                  quantity: montage.climber.toString(),
+                  price: `${montage.climber} Р`,
+                  cost: `${montage.climber} Р`,
+                });
+            }
+          });
 
           const cost = positions[i].items.reduce(
             (sum, item) => (sum += parseFloat(item.cost)),
@@ -618,7 +673,10 @@ function getItemDesc(
   switch (itemObj.itemTitle) {
     case "Бахрома": {
       let fringe = itemObj.item as FringeType;
-      const fringeMeters = getFringeLength(fringe.length).skeinMeters;
+      const fringeMeters = getFringeLength(
+        fringe.length,
+        fringe.multiplicity
+      ).skeinMeters;
       let desc = `Монтаж бахромы${
         fringe.led === FringeLedEnum.led_200 ? '" ПРЕМИУМ "' : " "
       }светодиодной. Класс защиты IP65. Материал провода каучук.`;
@@ -657,7 +715,7 @@ function getItemDesc(
         desc,
         unit: "м.п",
         quantity: neonMeters,
-        price: 21000,
+        price: 2200,
         cost: neonMeters * neon.price,
       };
     }
@@ -808,6 +866,17 @@ function getItemDesc(
         quantity: 0,
         price: 0,
         cost,
+      };
+    }
+    case "Электрический щиток": {
+      const shield = itemObj.item as ElectricShieldType;
+      const price = 7450;
+      return {
+        desc: `Монтаж щита уличного IP65 в сборе (автомат 10А, реле напряжения) и протяжка питания для подключения оборудования, коммутация, настройка`,
+        unit: `шт`,
+        quantity: shield.quantity,
+        price,
+        cost: shield.quantity * price,
       };
     }
 

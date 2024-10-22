@@ -24,4 +24,5 @@ export type NeonType = {
   contours: number;
   price: number;
   extensions_1m: number;
+  ral: string;
 };

@@ -24,5 +24,5 @@ export const curtainDefault: CurtainType = {
   cable: CurtainCableEnum.Black,
   surface: CurtainSurfaceEnum.Wood,
   price: 2342,
-  quantity: 0,
+  quantity: 1,
 };

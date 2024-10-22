@@ -1,9 +1,11 @@
 import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
 import { CommonItemType } from "../../Item";
-import { FringeType } from "../model";
+import { FringeMultiplicityEnum, FringeType } from "../model";
 
-export function getFringeLength(length: number) {
-  const skeinLength = 5;
+export function getFringeLength(length: number, mult: FringeMultiplicityEnum) {
+  let skeinLength = 0;
+  if (mult === FringeMultiplicityEnum.m_3) skeinLength = 3;
+  else if (mult === FringeMultiplicityEnum.m_5) skeinLength = 5;
   let skeinQuantity = Math.ceil(length / 5);
 
   if (length < 50) skeinQuantity += 2;
@@ -55,8 +57,10 @@ export function getEsFringe(allItems: CommonItemType[]): EsWritingArrayType[] {
 
   fringes.forEach((fringe) => {
     esFringes.push({
-      desc: `${fringe.title} / ${fringe.glowShade} / ${fringe.glowMode} / ${fringe.cable} / ${fringe.led}`,
-      keyValue: `${getFringeLength(fringe.length).skeinMeters} м`,
+      desc: `${fringe.title} / ${fringe.glowShade} / ${fringe.glowMode} / ${fringe.cable} / ${fringe.led} / Кратность ${fringe.multiplicity}`,
+      keyValue: `${
+        getFringeLength(fringe.length, fringe.multiplicity).skeinQuantity
+      } шт`,
     });
   });
 

@@ -21,12 +21,14 @@ export function SolderBox({
   getItems,
   updateCost,
   openedId,
+  quantity,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<SolderBoxType>;
   getItems: () => void;
   updateCost: () => void;
   openedId: string;
+  quantity: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -58,6 +60,14 @@ export function SolderBox({
     });
   }, []);
 
+  useEffect(() => {
+    if (box.quantity < quantity)
+      setBox({
+        ...box,
+        quantity,
+      });
+  }, [quantity]);
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
@@ -68,6 +78,7 @@ export function SolderBox({
           )}
         </div>
         <div className={classes.arrowWrapper}>
+          {!isOpen && <span>{itemObj.item.quantity} шт</span>}
           <ArrowSVG
             style={{
               transform: `${isOpen ? "" : "rotate(180deg)"}`,
@@ -77,6 +88,17 @@ export function SolderBox({
       </div>
       {isOpen && (
         <div className={classes.adjust}>
+          <NumberSelect
+            initialValue={box.quantity}
+            type="Количество, шт"
+            minValue={quantity}
+            callback={(val) => {
+              setBox({
+                ...box,
+                quantity: val,
+              });
+            }}
+          />
           <div className={classes.tabs}>
             <h5 className={classes.tabsTitle}>Цвет</h5>
             <ItemsAdjust

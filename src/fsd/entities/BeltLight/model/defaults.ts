@@ -16,6 +16,6 @@ export const beltLightDefault: BeltLightType = {
   lampStep: BeltLightLampStepEnum.cm_20,
   cable: PVSColorEnum.Black,
   price: 4520,
-  contours: 0,
+  contours: 1,
   pvsLength: 0,
 };

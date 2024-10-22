@@ -19,12 +19,14 @@ export function Vagi({
   updateCost,
   getItems,
   openedId,
+  quantity,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<VagiType>;
   getItems: () => void;
   updateCost: () => void;
   openedId: string;
+  quantity: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -56,6 +58,14 @@ export function Vagi({
     });
   }, []);
 
+  useEffect(() => {
+    if (vagi.quantity < quantity)
+      setVagi({
+        ...vagi,
+        quantity,
+      });
+  }, [quantity]);
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
@@ -66,6 +76,7 @@ export function Vagi({
           )}
         </div>
         <div className={classes.arrowWrapper}>
+          {!isOpen && <span>{itemObj.item.quantity} шт</span>}
           <ArrowSVG
             style={{
               transform: `${isOpen ? "" : "rotate(180deg)"}`,
@@ -75,6 +86,17 @@ export function Vagi({
       </div>
       {isOpen && (
         <div className={classes.adjust}>
+          <NumberSelect
+            type="Количество, шт"
+            initialValue={vagi.quantity}
+            callback={(val) => {
+              setVagi({
+                ...vagi,
+                quantity: val,
+              });
+            }}
+            minValue={quantity}
+          />
           <div className={classes.tabs}>
             <ItemsAdjust
               list={vagiModels}

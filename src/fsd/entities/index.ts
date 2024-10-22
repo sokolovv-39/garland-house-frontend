@@ -23,6 +23,8 @@ export {
   fringeSurfaces,
   FringeBracingEnum,
   FringeCableEnum,
+  fringeMultiplicities,
+  FringeMultiplicityEnum,
   getEsFringe,
 } from "./Fringe";
 export {
@@ -108,6 +110,7 @@ export {
   getRopeLength,
   ropeSurfaces,
   RopeThicknessEnum,
+  getRopeCustom,
   RopeSurfaceEnum,
   getEsRope,
 } from "./Rope";
@@ -161,6 +164,7 @@ export {
   Screed_480_500_default,
   get_Screeds_480_500_packs,
   screed_480_500_colors,
+  getCustomScreeds_480_500,
 } from "./Screed_480_500";
 export type { Screed_480_500_Type } from "./Screed_480_500";
 export {
@@ -168,6 +172,7 @@ export {
   screed_200_default,
   get_screeds_200_packs,
   screeds_200_colors,
+  get_screeds_200_custom,
 } from "./Screed_200";
 export type { Screed_200_Type } from "./Screed_200";
 export {
@@ -186,3 +191,11 @@ export {
   getEsCorrClips,
 } from "./Consumables";
 export { Electrical } from "./Electrical";
+export { Montage, montageDefault } from "./Montage";
+export type { MontageType } from "./Montage";
+export {
+  ElectricShield,
+  electricShieldDefault,
+  getEsElectricShield,
+} from "./ElectricShield";
+export type { ElectricShieldType } from "./ElectricShield";

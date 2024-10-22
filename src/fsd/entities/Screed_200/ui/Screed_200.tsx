@@ -19,12 +19,14 @@ export function Screed_200({
   getItems,
   updateCost,
   openedId,
+  quantity,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<Screed_200_Type>;
   getItems: () => void;
   updateCost: () => void;
   openedId: string;
+  quantity: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -56,6 +58,13 @@ export function Screed_200({
     });
   }, []);
 
+  useEffect(() => {
+    setItem({
+      ...item,
+      quantity,
+    });
+  }, [quantity]);
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
@@ -66,6 +75,7 @@ export function Screed_200({
           )}
         </div>
         <div className={classes.arrowWrapper}>
+          {!isOpen && <span>{itemObj.item.quantity} уп</span>}
           <ArrowSVG
             style={{
               transform: `${isOpen ? "" : "rotate(180deg)"}`,
@@ -89,7 +99,7 @@ export function Screed_200({
             />
           </div>
           <NumberSelect
-            type="Количество, шт"
+            type="Количество, уп"
             initialValue={itemObj.item.quantity}
             callback={(val) =>
               setItem({

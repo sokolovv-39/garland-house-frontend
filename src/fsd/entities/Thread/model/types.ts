@@ -24,7 +24,7 @@ export enum ThreadSurfaceEnum {
 
 export enum ThreadScreedsTypeEnum {
   Screed_200 = "Стяжка 200мм",
-  Screed_480_500 = "Стяжка 48-500мм",
+  Screed_480_500 = "Стяжка 480-500мм",
 }
 
 export type ThreadType = {

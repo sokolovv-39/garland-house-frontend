@@ -1,3 +1,4 @@
+import { getPVSLength } from "../../PVS";
 import { CorrColorsEnum, CorrThicknessEnum, CorrugationType } from "./types";
 
 export const corrThicknesses = Object.values(CorrThicknessEnum);
@@ -7,5 +8,6 @@ export const corrugationDefault: CorrugationType = {
   title: "Гофра для кабеля ПВС",
   thickness: CorrThicknessEnum.mm_16,
   color: CorrColorsEnum.Black,
-  price: 124
+  price: 124,
+  length: 0,
 };

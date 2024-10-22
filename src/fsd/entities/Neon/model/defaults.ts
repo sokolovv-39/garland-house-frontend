@@ -9,9 +9,10 @@ export const defaultNeon: NeonType = {
   glowShade: NeonGlowShadeEnum.Warm,
   thickness: NeonThicknessEnum.Small,
   painting: false,
-  needles: 0,
-  powerUnits: 0,
-  contours: 0,
+  needles: 1,
+  powerUnits: 1,
+  contours: 1,
   price: 4214,
   extensions_1m: 0,
+  ral: "",
 };
