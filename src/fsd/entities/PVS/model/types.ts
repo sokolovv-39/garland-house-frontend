@@ -6,6 +6,7 @@ export enum PVSColorEnum {
 export type PVSType = {
   title: "Кабель ПВС";
   length: number;
-  color: PVSColorEnum
-  price: number
+  color: PVSColorEnum;
+  price: number;
+  extraPrice: number;
 };

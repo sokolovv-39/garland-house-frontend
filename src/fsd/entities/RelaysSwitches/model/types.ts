@@ -1,11 +1,21 @@
 export type RelaysSwitchesType = {
   title: "Реле и выключатели";
-  wired: number;
-  wirelessRadio: number;
-  wirelessWifi: number;
+  wireless_1: number;
+  wireless_2: number;
+  wireless_3: number;
+  wireless_1_wifi: number;
+  wireless_2_wifi: number;
+  wireless_3_wifi: number;
   astroRelay: number;
-  wired_price: number;
-  wirelessRadio_price: number;
-  wirelessWifi_price: number;
-  astroRelay_price: number;
+  photoRelay: number;
+  priceObj: {
+    wireless_1: number;
+    wireless_2: number;
+    wireless_3: number;
+    wireless_1_wifi: number;
+    wireless_2_wifi: number;
+    wireless_3_wifi: number;
+    astroRelay: number;
+    photoRelay: number;
+  };
 };

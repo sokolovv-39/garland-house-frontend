@@ -17,4 +17,9 @@ export {
   fringeMultiplicities,
 } from "./model";
 export type { FringeType } from "./model";
-export { getFringeLength, getFringeBracketsPacks, getEsFringe } from "./lib";
+export {
+  getFringeLength,
+  getFringeBracketsPacks,
+  getEsFringe,
+  fringeRfp,
+} from "./lib";

@@ -55,6 +55,13 @@ export function Fringe({
       .catch((err) => console.error(err));
   }
 
+  function getNeededPowerUnits(length: number) {
+    let needed = Math.ceil(length / 25);
+    if (needed > 3 && needed < 10) needed++;
+    else if (needed >= 10) needed += 4;
+    return needed;
+  }
+
   useEffect(() => {
     updateFringe();
     getItems();
@@ -109,12 +116,16 @@ export function Fringe({
           </div>
           <NumberSelect
             type="Длина, м"
-            callback={(val) =>
+            callback={(val) => {
+              let powerUnits = fringe.powerUnits;
+              const neededPowerUnits = getNeededPowerUnits(val);
+              if (powerUnits < neededPowerUnits) powerUnits = neededPowerUnits;
               setFringe({
                 ...fringe,
                 length: val,
-              })
-            }
+                powerUnits,
+              });
+            }}
             initialValue={itemObj.item.length}
           />
           <div className={classes.tabs}>
@@ -247,16 +258,15 @@ export function Fringe({
           <NumberSelect
             type="Блоки питания, шт"
             callback={(val) => {
-              if (val >= fringe.contours)
-                setFringe({
-                  ...fringe,
-                  powerUnits: val,
-                });
+              setFringe({
+                ...fringe,
+                powerUnits: val,
+              });
             }}
             initialValue={itemObj.item.powerUnits}
-            minValue={itemObj.item.contours}
+            minValue={getNeededPowerUnits(fringe.length)}
           />
-          <NumberSelect
+          {/*           <NumberSelect
             type="Количество контуров"
             callback={(val) => {
               let powerUnits = fringe.powerUnits;
@@ -271,7 +281,7 @@ export function Fringe({
             }}
             initialValue={itemObj.item.contours}
             minValue={1}
-          />
+          /> */}
         </div>
       )}
     </div>

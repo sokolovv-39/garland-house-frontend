@@ -121,9 +121,13 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   let { street_shield_ip65, automat_10A, voltage_relay } =
     getEsElectricShield(allItems);
   let {
-    wired: ordinary_wired_switch,
-    wirelessRadio: wireless_switch_radio,
-    wirelessWifi: wireless_switch_wifi,
+    wireless_1,
+    wireless_2,
+    wireless_3,
+    wireless_1_wifi,
+    wireless_2_wifi,
+    wireless_3_wifi,
+    photoRelay,
     astroRelay,
   } = getRelaysSwitches(allItems);
   const vagi = getAllVagi(allItems);
@@ -299,10 +303,7 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       desc: `Тройник / белый`,
       keyValue: `${white_tees} шт`,
     });
-    writingArray.push({
-      desc: `Профиль металлический / 2 м`,
-      keyValue: `${metal_profile} шт`,
-    });
+    writingArray.push(metal_profile);
     writingArray.push({
       desc: `Соединительные иглы`,
       keyValue: `${connecting_needles} шт`,
@@ -344,19 +345,35 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       keyValue: `${voltage_relay} шт`,
     });
     writingArray.push({
-      desc: `Обычный проводной выключатель`,
-      keyValue: `${ordinary_wired_switch} шт`,
+      desc: `Беспроводной 1-клавишный выключатель + 1 радиореле`,
+      keyValue: `${wireless_1} шт`,
     });
     writingArray.push({
-      desc: `Беспроводной радио выключатель с радиореле`,
-      keyValue: `${wireless_switch_radio} шт`,
+      desc: `Беспроводной 2-клавишный выключатель + 2 радиореле`,
+      keyValue: `${wireless_2} шт`,
     });
     writingArray.push({
-      desc: `Беспроводной радио выключатель с Wi-Fi реле`,
-      keyValue: `${wireless_switch_wifi} шт`,
+      desc: `Беспроводной 3-клавишный выключатель + 3 радиореле`,
+      keyValue: `${wireless_3} шт`,
     });
     writingArray.push({
-      desc: `Астрономическое реле времени`,
+      desc: `Беспроводной 1-клавишный выключатель + 1 радиореле + WIFI`,
+      keyValue: `${wireless_1_wifi} шт`,
+    });
+    writingArray.push({
+      desc: `Беспроводной 2-клавишный выключатель + 2 радиореле + WIFI`,
+      keyValue: `${wireless_2_wifi} шт`,
+    });
+    writingArray.push({
+      desc: `Беспроводной 3-клавишный выключатель + 3 радиореле + WIFI`,
+      keyValue: `${wireless_3_wifi} шт`,
+    });
+    writingArray.push({
+      desc: `Фотореле`,
+      keyValue: `${photoRelay} шт`,
+    });
+    writingArray.push({
+      desc: `Астрономическое реле`,
       keyValue: `${astroRelay} шт`,
     });
     writingArray.push(solderBoxes);

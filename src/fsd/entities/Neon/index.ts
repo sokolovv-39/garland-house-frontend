@@ -6,4 +6,6 @@ export {
   getNeonPlugs,
   getNeonProfile,
   getEsNeon,
+  neonRfp,
+  neonPaintingRfp,
 } from "./lib";

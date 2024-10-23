@@ -1,1 +1,1 @@
-export type { EsWritingArrayType } from "./types";
+export type { EsWritingArrayType, LineType } from "./types";

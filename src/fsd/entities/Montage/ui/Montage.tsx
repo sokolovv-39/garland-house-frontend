@@ -69,6 +69,16 @@ export function Montage({
       {isOpen && (
         <div className={classes.adjust}>
           <NumberSelect
+            initialValue={itemObj.item.complex}
+            type="Сложный монтаж, метры"
+            callback={(val) => {
+              setItem({
+                ...item,
+                complex: val,
+              });
+            }}
+          />
+          <NumberSelect
             initialValue={itemObj.item.m_16_20}
             type="Автовышка 16-20 метров (смена)"
             callback={(val) => {

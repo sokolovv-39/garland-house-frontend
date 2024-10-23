@@ -6,3 +6,4 @@ export {
   getEsRope,
   getRopeCustom,
 } from "./estimateAlgs";
+export { ropeRfp } from "./rfpAlgs";

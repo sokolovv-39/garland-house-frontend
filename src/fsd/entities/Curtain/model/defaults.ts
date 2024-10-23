@@ -23,6 +23,14 @@ export const curtainDefault: CurtainType = {
   glowMode: CurtainGlowModeEnum.Flickering,
   cable: CurtainCableEnum.Black,
   surface: CurtainSurfaceEnum.Wood,
-  price: 2342,
+  priceObj: {
+    s_2_1: 9614,
+    s_2_1dot5: 13046,
+    s_2_2: 18359,
+    s_2_3: 22198,
+    s_2_4: 22198,
+    s_2_6: 28160,
+    s_2_9: 38742,
+  },
   quantity: 1,
 };

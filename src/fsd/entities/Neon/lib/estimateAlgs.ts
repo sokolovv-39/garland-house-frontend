@@ -50,9 +50,7 @@ export function getEsNeon(allItems: CommonItemType[]): EsWritingArrayType[] {
 
   neons.forEach((item) => {
     esNeons.push({
-      desc: `${item.title} / ${item.glowShade} / ${
-        item.thickness
-      } / Покраска: ${item.painting ? `Да. RAL ${item.ral}` : "Нет"}`,
+      desc: `${item.title} / ${item.glowShade} / ${item.thickness}`,
       keyValue: `${getNeonLength(item.length).skeinMeters} м`,
     });
   });

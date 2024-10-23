@@ -26,6 +26,7 @@ export {
   fringeMultiplicities,
   FringeMultiplicityEnum,
   getEsFringe,
+  fringeRfp,
 } from "./Fringe";
 export {
   Neon,
@@ -37,6 +38,8 @@ export {
   getNeonPlugs,
   getNeonProfile,
   getEsNeon,
+  neonRfp,
+  neonPaintingRfp,
 } from "./Neon";
 export { NoMedia, MediaList, Media, AddMedia } from "./Media";
 export { type MeasureType, Measure } from "./Measure";
@@ -66,6 +69,8 @@ export {
   ThreadScreedsTypeEnum,
   ThreadGlowModeEnum,
   ThreadGlowShadeEnum,
+  threadRfp,
+  threadBracingRFP,
 } from "./Thread";
 
 export type { ThreadType } from "./Thread";
@@ -79,6 +84,7 @@ export {
   BeltLightLampStepEnum,
   BeltLightGlowShadeEnum,
   getEsBeltLight,
+  beltLightRfp,
 } from "./BeltLight";
 export type { BeltLightType } from "./BeltLight";
 export {
@@ -113,6 +119,7 @@ export {
   getRopeCustom,
   RopeSurfaceEnum,
   getEsRope,
+  ropeRfp,
 } from "./Rope";
 export type { RopeType } from "./Rope";
 export {
@@ -122,6 +129,8 @@ export {
   PVSColorEnum,
   getEsPVS,
   getPVSLength,
+  pvsRfp,
+  extraCorrBoxRfp,
 } from "./PVS";
 export type { PVSType } from "./PVS";
 export {
@@ -138,9 +147,20 @@ export type {
   CorrThicknessEnum,
   CorrColorsEnum,
 } from "./CorrugationPVS";
-export { BoxPVS, boxPvsColours, boxPvsDefault, getEsBoxPvs } from "./BoxPVS";
+export {
+  BoxPVS,
+  boxPvsColours,
+  boxPvsDefault,
+  getEsBoxPvs,
+  getBoxPvsLength,
+  boxPvsRfp,
+} from "./BoxPVS";
 export type { BoxPVSType, BoxPVSColourEnum } from "./BoxPVS";
-export { relaysSwitchesDefault, RelaysSwitches } from "./RelaysSwitches";
+export {
+  relaysSwitchesDefault,
+  RelaysSwitches,
+  switchesRfp,
+} from "./RelaysSwitches";
 export type { RelaysSwitchesType } from "./RelaysSwitches";
 export {
   SolderBox,
@@ -191,11 +211,12 @@ export {
   getEsCorrClips,
 } from "./Consumables";
 export { Electrical } from "./Electrical";
-export { Montage, montageDefault } from "./Montage";
+export { Montage, montageDefault, montageRfp } from "./Montage";
 export type { MontageType } from "./Montage";
 export {
   ElectricShield,
   electricShieldDefault,
   getEsElectricShield,
+  electricShieldRfp,
 } from "./ElectricShield";
 export type { ElectricShieldType } from "./ElectricShield";

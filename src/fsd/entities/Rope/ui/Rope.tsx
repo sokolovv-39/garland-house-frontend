@@ -21,7 +21,6 @@ import { ItemType } from "../../Item";
 export function Rope({
   deleteItem,
   itemObj,
-  getItems,
   updateCost,
   openedId,
   meters,
@@ -63,6 +62,7 @@ export function Rope({
   }, []);
 
   useEffect(() => {
+    console.log("use effect", meters);
     setRope({
       ...rope,
       length: Math.ceil(meters),

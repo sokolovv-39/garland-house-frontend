@@ -5,14 +5,15 @@ export const neonThickness = Object.values(NeonThicknessEnum);
 
 export const defaultNeon: NeonType = {
   title: "Гибкий неон",
-  length: 0,
+  length: 1,
   glowShade: NeonGlowShadeEnum.Warm,
   thickness: NeonThicknessEnum.Small,
   painting: false,
   needles: 1,
   powerUnits: 1,
   contours: 1,
-  price: 4214,
+  price: 2200,
   extensions_1m: 0,
   ral: "",
+  profile_price: 350,
 };

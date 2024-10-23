@@ -8,4 +8,4 @@ export {
   BeltLightLampStepEnum,
   beltLightLampSteps,
 } from "./model";
-export { getBeltLightLength, getEsBeltLight } from "./lib";
+export { getBeltLightLength, getEsBeltLight, beltLightRfp } from "./lib";

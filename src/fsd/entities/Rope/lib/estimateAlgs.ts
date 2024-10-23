@@ -25,7 +25,7 @@ export function getRopeDuplexClamps(contours: number) {
 }
 
 export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
-  const ropes: RopeType[] = [];
+  const ropes: Pick<RopeType, "thickness" | "length" | "title">[] = [];
   const esRopes: EsWritingArrayType[] = [];
 
   //Бахрома добавляет трос
@@ -38,6 +38,12 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
         );
         if (ropeIndex !== -1) {
           ropes[ropeIndex].length += 1.1 * fringe.length;
+        } else {
+          ropes.push({
+            length: 1.1 * fringe.length,
+            thickness: RopeThicknessEnum.mm_2,
+            title: "Трос",
+          });
         }
       }
     }
@@ -50,6 +56,13 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
           (rope) => rope.thickness === RopeThicknessEnum.mm_2
         );
         if (ropeIndex !== -1) ropes[ropeIndex].length += 1.1 * thread.length;
+        else {
+          ropes.push({
+            length: 1.1 * thread.length,
+            thickness: RopeThicknessEnum.mm_2,
+            title: "Трос",
+          });
+        }
       }
     }
   });
@@ -62,6 +75,12 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
           (rope) => rope.thickness === RopeThicknessEnum.mm_3
         );
         if (ropeIndex !== -1) ropes[ropeIndex].length += 5;
+        else
+          ropes.push({
+            length: 5,
+            thickness: RopeThicknessEnum.mm_3,
+            title: "Трос",
+          });
       }
     }
   });

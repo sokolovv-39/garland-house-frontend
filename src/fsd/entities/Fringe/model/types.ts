@@ -45,8 +45,10 @@ export type FringeType = {
   contours: number;
   surface: FringeSurfaceEnum;
   price: number;
+  pricePrem: number;
   extensions_1m: number;
   extensions_3m: number;
   extensions_5m: number;
   extensions_10m: number;
+  rope_price: number;
 };

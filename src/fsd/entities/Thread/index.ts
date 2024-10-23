@@ -14,4 +14,10 @@ export {
   ThreadGlowShadeEnum,
 } from "./model";
 export type { ThreadType } from "./model";
-export { getThreadLength, getThreadScreedsQuantity, getEsThread } from "./lib";
+export {
+  getThreadLength,
+  getThreadScreedsQuantity,
+  getEsThread,
+  threadRfp,
+  threadBracingRFP,
+} from "./lib";

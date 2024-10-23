@@ -53,6 +53,13 @@ export function Thread({
       .catch((err) => console.error(err));
   }
 
+  function getNeededPowerUnits(length: number) {
+    let needed = Math.ceil(length / 100);
+    if (needed > 3 && needed < 10) needed++;
+    else if (needed >= 10) needed += 4;
+    return needed;
+  }
+
   useEffect(() => {
     updateThread();
     getItems();
@@ -94,12 +101,16 @@ export function Thread({
         <div className={classes.adjust}>
           <NumberSelect
             type="Длина, м"
-            callback={(val) =>
+            callback={(val) => {
+              let powerUnits = thread.powerUnits;
+              const needed = getNeededPowerUnits(val);
+              if (powerUnits < needed) powerUnits = needed;
               setThread({
                 ...thread,
                 length: val,
-              })
-            }
+                powerUnits,
+              });
+            }}
             initialValue={itemObj.item.length}
           />
           <div className={classes.tabs}>
@@ -222,7 +233,7 @@ export function Thread({
             }
             initialValue={itemObj.item.extensions_10m}
           />
-          <NumberSelect
+          {/* <NumberSelect
             type="Количество контуров"
             callback={(val) => {
               let powerUnits = thread.powerUnits;
@@ -237,18 +248,17 @@ export function Thread({
             }}
             initialValue={itemObj.item.contours}
             minValue={1}
-          />
+          /> */}
           <NumberSelect
             type="Блоки питания, шт"
             callback={(val) => {
-              if (val >= thread.contours)
-                setThread({
-                  ...thread,
-                  powerUnits: val,
-                });
+              setThread({
+                ...thread,
+                powerUnits: val,
+              });
             }}
             initialValue={itemObj.item.powerUnits}
-            minValue={itemObj.item.contours}
+            minValue={getNeededPowerUnits(thread.length)}
           />
           <NumberSelect
             type="Тройники, шт"

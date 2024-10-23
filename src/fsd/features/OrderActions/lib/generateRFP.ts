@@ -5,6 +5,7 @@ import { IndexedDB } from "../../IndexedDB";
 import {
   BeltLightGlowShadeEnum,
   BeltLightLampStepEnum,
+  beltLightRfp,
   BeltLightType,
   BoxPVSType,
   CommonItemType,
@@ -12,7 +13,9 @@ import {
   CurtainGlowModeEnum,
   CurtainSizeEnum,
   CurtainType,
+  electricShieldRfp,
   ElectricShieldType,
+  extraCorrBoxRfp,
   FringeCableEnum,
   FringeType,
   get_screeds_200_packs,
@@ -28,17 +31,25 @@ import {
   getRopeLength,
   getSolderBoxPieces,
   getThreadLength,
+  montageRfp,
   MontageType,
+  neonPaintingRfp,
+  neonRfp,
   PVSColorEnum,
+  pvsRfp,
   PVSType,
   RelaysSwitchesType,
+  ropeRfp,
   RopeType,
   Screed_200_Type,
   Screed_480_500_Type,
   SolderBoxType,
+  switchesRfp,
+  threadBracingRFP,
   threadGlowMode,
   ThreadGlowModeEnum,
   ThreadGlowShadeEnum,
+  threadRfp,
   ThreadType,
   VagiType,
 } from "@/fsd/entities";
@@ -48,18 +59,12 @@ import {
   FringeGlowModeEnum,
   FringeGlowShadeEnum,
   FringeLedEnum,
+  fringeRfp,
 } from "@/fsd/entities/Fringe";
 import demoPDF from "./assets/demo.pdf";
 import pdfIntro from "./assets/pdf_intro.png";
-
-type LineType = {
-  id: string;
-  desc: string;
-  unit: string;
-  quantity: string;
-  price: string;
-  cost: string;
-};
+import { LineType } from "../model";
+import { curtainRfp } from "@/fsd/entities/Curtain/lib/rfpAlgs";
 
 type PositionsType = Array<{
   name: string;
@@ -491,152 +496,86 @@ export async function generateRFP(
 
       await new Promise<void>((resolve) => {
         objects.forEach(async (object, index) => {
-          let itemId = 1;
           const items = await idb.items.getOwn(object.id);
-          let consumablesCost = 0;
           const i =
             positions.push({
               name: object.title,
               items: [],
             }) - 1;
 
-          items.forEach((item) => {
-            const { desc, unit, quantity, price, cost } = getItemDesc(
-              item,
-              items
-            );
-            if (desc && cost) {
-              const newItem = {
-                id: itemId.toString(),
-                desc,
-                unit,
-                quantity: quantity.toString(),
-                price: `${price} Р`,
-                cost: `${cost} Р`,
-              };
-              positions[i].items.push(newItem);
-              itemId++;
-              if (item.itemTitle === "Гибкий неон") {
-                const neon = item.item as NeonType;
-                if (neon.painting) {
-                  const price = 350;
-                  const quantity = getNeonLength(neon.length).skeinMeters;
-                  positions[i].items.push({
-                    id: itemId.toString(),
-                    desc: `Покраска профиля алюминиевого для неона гибкого ${neon.thickness}. RAL ${neon.ral}`,
-                    unit: "м.п.",
-                    quantity: quantity.toString(),
-                    price: `${price} Р`,
-                    cost: `${price * quantity} Р`,
-                  });
-                  itemId++;
-                }
-              }
-            } else {
-              consumablesCost += cost;
-            }
+          let startId = 1;
+
+          fringeRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
           });
+
+          threadRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
+
+          beltLightRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
+
+          neonRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
+
+          curtainRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
+
+          positions[i].items.push(electricShieldRfp(items, startId));
+          startId++;
 
           positions[i].items.push({
-            id: `${itemId}`,
-            desc: "Расходные материалы для монтажа (стяжки, автомат 10A, реле напряжения 63A, выключатель 1/2кл, кабель ПВС до 20 метров в кабель-канале или гофре, распаечная коробка, термоусадка в местах соединения)",
-            unit: "%",
-            price: `${consumablesCost} Р`,
-            cost: `${consumablesCost} Р `,
-            quantity: `1`,
+            id: startId.toString(),
+            desc: `Расходные материалы для монтажа  (стяжки, блоки питания для бахромы или сетевые шнуры для неона, выключатель 1/2кл, кабель ПВС до 20 метров в кабель-канале или гофре, распаячная коробка, термоусадка в местах соединения)`,
+            unit: "шт",
+            quantity: "1",
+            price: "6840",
+            cost: "6840",
+          });
+          startId++;
+
+          pvsRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
           });
 
-          let quantity = getPVSLength(items);
-          let price = 250;
-          if (quantity > 20)
-            positions[i].items.push({
-              id: `${itemId + 1}`,
-              desc: `Монтаж кабеля ПВС 2х1,5 свыше 20 п.м.`,
-              unit: "м.п.",
-              quantity: quantity.toString(),
-              price: `${price} Р`,
-              cost: `${quantity * price} Р`,
-            });
+          extraCorrBoxRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
 
-          quantity =
-            parseInt(getEsCorrPVS(items).keyValue) +
-            parseInt(getEsBoxPvs(items).keyValue);
-          price = 250;
+          switchesRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
 
-          if (quantity > 20)
-            positions[i].items.push({
-              id: `${itemId + 2}`,
-              desc: `Монтаж гофры или кабель-канала свыше 20 п.м.`,
-              unit: "м.п.",
-              quantity: quantity.toString(),
-              price: `${price} Р`,
-              cost: `${quantity * price} Р`,
-            });
+          montageRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
 
-          items.forEach((itemObj) => {
-            if (itemObj.itemTitle === "Монтаж") {
-              const montage = itemObj.item as MontageType;
-              price = 20000;
+          ropeRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
 
-              if (montage.m_16_20)
-                positions[i].items.push({
-                  id: `${itemId + 3}`,
-                  desc: "Автовышка 16-20 метров (смена)",
-                  unit: "шт",
-                  quantity: montage.m_16_20.toString(),
-                  price: `${price} Р`,
-                  cost: `${montage.m_16_20 * price} Р`,
-                });
-              price = 25000;
-              if (montage.m_22_24)
-                positions[i].items.push({
-                  id: `${itemId + 4}`,
-                  desc: "Автовышка 22-24 метров (смена)",
-                  unit: "шт",
-                  quantity: montage.m_22_24.toString(),
-                  price: `${price} Р`,
-                  cost: `${montage.m_22_24 * price} Р`,
-                });
-              price = 35000;
-              if (montage.m_26_36)
-                positions[i].items.push({
-                  id: `${itemId + 5}`,
-                  desc: "Автовышка 26-36 метров (смена)",
-                  unit: "шт",
-                  quantity: montage.m_26_36.toString(),
-                  price: `${price} Р`,
-                  cost: `${montage.m_26_36 * price} Р`,
-                });
-              price = 60;
-              if (montage.distance)
-                positions[i].items.push({
-                  id: `${itemId + 6}`,
-                  desc: "Монтаж оборудования с выездом на объект",
-                  unit: "км",
-                  quantity: montage.distance.toString(),
-                  price: `${price} Р`,
-                  cost: `${montage.distance * price} Р`,
-                });
-              price = 2000;
-              if (montage.m_26_36_hourly)
-                positions[i].items.push({
-                  id: `${itemId + 7}`,
-                  desc: "Автовышка 26-36 метров почасовая оплата свыше 7 часов смены",
-                  unit: "часы",
-                  quantity: montage.m_26_36_hourly.toString(),
-                  price: `${price} Р`,
-                  cost: `${montage.m_26_36_hourly * price} Р`,
-                });
-              if (montage.climber)
-                positions[i].items.push({
-                  id: `${itemId + 8}`,
-                  desc: "Альпинист (смена)",
-                  unit: "руб",
-                  quantity: montage.climber.toString(),
-                  price: `${montage.climber} Р`,
-                  cost: `${montage.climber} Р`,
-                });
-            }
+          threadBracingRFP(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
+
+          neonPaintingRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
           });
 
           const cost = positions[i].items.reduce(
@@ -656,238 +595,6 @@ export async function generateRFP(
           }
         });
       });
-    }
-  }
-}
-
-function getItemDesc(
-  itemObj: CommonItemType,
-  allItems: CommonItemType[]
-): {
-  desc: string;
-  unit: string;
-  quantity: number;
-  price: number;
-  cost: number;
-} {
-  switch (itemObj.itemTitle) {
-    case "Бахрома": {
-      let fringe = itemObj.item as FringeType;
-      const fringeMeters = getFringeLength(
-        fringe.length,
-        fringe.multiplicity
-      ).skeinMeters;
-      let desc = `Монтаж бахромы${
-        fringe.led === FringeLedEnum.led_200 ? '" ПРЕМИУМ "' : " "
-      }светодиодной. Класс защиты IP65. Материал провода каучук.`;
-      if (fringe.cable === FringeCableEnum.Black) desc += " Черный провод.";
-      if (fringe.cable === FringeCableEnum.White) desc += " Белый провод.";
-      if (fringe.glowShade === FringeGlowShadeEnum.RGB) desc += " RGB";
-      if (fringe.glowShade === FringeGlowShadeEnum.Warm) desc += " Теплый свет";
-      if (fringe.glowShade === FringeGlowShadeEnum.Cold)
-        desc += " Холодный свет";
-      if (
-        fringe.glowMode === FringeGlowModeEnum.Static_glow &&
-        fringe.glowShade !== FringeGlowShadeEnum.RGB
-      )
-        desc += " статика";
-      if (
-        fringe.glowMode === FringeGlowModeEnum.Flickering &&
-        fringe.glowShade !== FringeGlowShadeEnum.RGB
-      )
-        desc += " с холодным мерцанием";
-
-      let price = 2400;
-      if (fringe.led === FringeLedEnum.led_200) price = 2700;
-      return {
-        desc,
-        unit: "м.п",
-        quantity: fringeMeters,
-        price,
-        cost: fringeMeters * fringe.price,
-      };
-    }
-    case "Гибкий неон": {
-      let neon = itemObj.item as NeonType;
-      const neonMeters = getNeonLength(neon.length).skeinMeters;
-      let desc = `Монтаж неона гибкого светодиодного. Размер ${neon.thickness}. Класс защиты IP76. Cвечение на выбор + Монтаж профиля алюминиевого для неона гибкого ${neon.thickness}`;
-      return {
-        desc,
-        unit: "м.п",
-        quantity: neonMeters,
-        price: 2200,
-        cost: neonMeters * neon.price,
-      };
-    }
-    case "Нить": {
-      let thread = itemObj.item as ThreadType;
-      const threadMeters = getThreadLength(thread.length).skeinMeters;
-      let desc = `Монтаж нити светодиодной. Класс защиты IP65. Материал провода каучук.`;
-      if (thread.cable === PVSColorEnum.Black) desc += " Черный провод.";
-      if (thread.cable === PVSColorEnum.White) desc += " Белый провод.";
-      if (thread.glowShade === ThreadGlowShadeEnum.RGB) desc += " RGB.";
-      if (thread.glowShade === ThreadGlowShadeEnum.Warm) desc += " Теплый свет";
-      if (thread.glowShade === ThreadGlowShadeEnum.Cold)
-        desc += " Холодный свет";
-      if (thread.glowShade === ThreadGlowShadeEnum.colors_7)
-        desc += " 7 цветов разные режимы мерцания.";
-      if (
-        thread.glowMode === ThreadGlowModeEnum.Flickering &&
-        thread.glowShade !== ThreadGlowShadeEnum.RGB &&
-        thread.glowShade !== ThreadGlowShadeEnum.colors_7
-      )
-        desc += " с холодным мерцанием.";
-      if (
-        thread.glowMode === ThreadGlowModeEnum.Static_glow &&
-        thread.glowShade !== ThreadGlowShadeEnum.RGB &&
-        thread.glowShade !== ThreadGlowShadeEnum.colors_7
-      )
-        desc += " статика.";
-      desc += " Кратно 10м";
-
-      return {
-        desc: desc,
-        unit: "м.п",
-        quantity: threadMeters,
-        price: 550,
-        cost: threadMeters * thread.price,
-      };
-    }
-    case "Белт-лайт": {
-      let beltLight = itemObj.item as BeltLightType;
-      const beltLightMeters = getBeltLightLength(beltLight.length).skeinMeters;
-      let desc =
-        "Монтаж светодиодной гирлянды Белт-лайт. Шаг между цоколями - ";
-      if (beltLight.lampStep === BeltLightLampStepEnum.cm_20) desc += "20см.";
-      if (beltLight.lampStep === BeltLightLampStepEnum.cm_40) desc += "40см.";
-      desc += " Цоколь e27. Мощность лампочки 2Вт. Класс защиты IP65.";
-      if (beltLight.cable === PVSColorEnum.Black) desc += " Черный провод,";
-      if (beltLight.cable === PVSColorEnum.White) desc += " Белый провод,";
-      if (
-        beltLight.glowShade === BeltLightGlowShadeEnum.Cold &&
-        BeltLightGlowShadeEnum.Blue &&
-        BeltLightGlowShadeEnum.Filament
-      )
-        desc += " холодное свечение лампочек";
-      if (
-        beltLight.glowShade === BeltLightGlowShadeEnum.Warm &&
-        BeltLightGlowShadeEnum.Red &&
-        BeltLightGlowShadeEnum.Green
-      )
-        desc += " теплое свечение лампочек";
-      let price = 2200;
-      if (beltLight.lampStep === BeltLightLampStepEnum.cm_20) price = 4400;
-      return {
-        desc,
-        unit: "м.п",
-        quantity: beltLightMeters,
-        price,
-        cost: beltLightMeters * beltLight.price,
-      };
-    }
-    case "Занавес": {
-      let curtain = itemObj.item as CurtainType;
-      let desc = `Монтаж занавеса ${curtain.size}, 220 В. Класс защиты IP65. Цвет провода и свечение на выбор. Блок питания входит в комплект`;
-      let price = 0;
-      if (curtain.size === CurtainSizeEnum.s_2_1) price = 9614;
-      if (curtain.size === CurtainSizeEnum.s_2_1d5) price = 13046;
-      if (curtain.size === CurtainSizeEnum.s_2_2) price = 18359;
-      if (curtain.size === CurtainSizeEnum.s_2_3) price = 22198;
-      if (curtain.size === CurtainSizeEnum.s_2_6) price = 28160;
-      if (curtain.size === CurtainSizeEnum.s_2_9) price = 38742;
-      return {
-        desc,
-        unit: "шт",
-        quantity: curtain.quantity,
-        price,
-        cost: curtain.quantity * price,
-      };
-    }
-    case "Ваги (клемма)": {
-      const vagi = itemObj.item as VagiType;
-      const allVagi = getAllVagi(allItems);
-      return {
-        desc: ``,
-        unit: ``,
-        quantity: 0,
-        price: 0,
-        cost: allVagi * vagi.price,
-      };
-    }
-    case "Распаячная коробка": {
-      const solderBox = itemObj.item as SolderBoxType;
-      const solderBoxQuantity = parseInt(getSolderBoxPieces(allItems).keyValue);
-      return {
-        desc: ``,
-        unit: ``,
-        quantity: 0,
-        price: 0,
-        cost: solderBox.price * solderBoxQuantity,
-      };
-    }
-    case "Стяжка 200мм": {
-      const screeds = itemObj.item as Screed_200_Type;
-      let screedsPacks = 0;
-      get_screeds_200_packs(allItems).forEach((screed) => {
-        screedsPacks += parseInt(screed.keyValue);
-      });
-      return {
-        desc: ``,
-        unit: ``,
-        quantity: 0,
-        price: 0,
-        cost: screedsPacks * screeds.price,
-      };
-    }
-    case "Стяжка 480-500мм": {
-      const screeds = itemObj.item as Screed_480_500_Type;
-      let screedsPacks = 0;
-      get_Screeds_480_500_packs(allItems).forEach((screed) => {
-        screedsPacks += parseInt(screed.keyValue);
-      });
-      return {
-        desc: ``,
-        unit: ``,
-        quantity: 0,
-        price: 0,
-        cost: screedsPacks * screeds.price,
-      };
-    }
-    case "Реле и выключатели": {
-      const switches = itemObj.item as RelaysSwitchesType;
-      const cost =
-        switches.wired_price * switches.wired +
-        switches.wirelessRadio_price * switches.wirelessRadio_price +
-        switches.wirelessWifi_price * switches.wirelessWifi_price +
-        switches.astroRelay_price * switches.astroRelay;
-      return {
-        desc: ``,
-        unit: ``,
-        quantity: 0,
-        price: 0,
-        cost,
-      };
-    }
-    case "Электрический щиток": {
-      const shield = itemObj.item as ElectricShieldType;
-      const price = 7450;
-      return {
-        desc: `Монтаж щита уличного IP65 в сборе (автомат 10А, реле напряжения) и протяжка питания для подключения оборудования, коммутация, настройка`,
-        unit: `шт`,
-        quantity: shield.quantity,
-        price,
-        cost: shield.quantity * price,
-      };
-    }
-
-    default: {
-      return {
-        desc: ``,
-        unit: ``,
-        quantity: 0,
-        price: 0,
-        cost: 0,
-      };
     }
   }
 }

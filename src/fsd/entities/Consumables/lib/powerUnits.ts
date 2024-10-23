@@ -10,30 +10,28 @@ export function getEsPowerUnits(
   const esPowerUnits: EsWritingArrayType[] = [];
 
   allItems.forEach((itemObj) => {
-    if (itemObj.itemTitle === "Бахрома") {
-      const item = itemObj.item as FringeType;
-      esPowerUnits.push({
-        desc: "Блок питания / бахрома",
-        keyValue: `${item.powerUnits} шт`,
-      });
-    }
-  });
-  allItems.forEach((itemObj) => {
-    if (itemObj.itemTitle === "Гибкий неон") {
-      const item = itemObj.item as NeonType;
-      esPowerUnits.push({
-        desc: "Блок питания / гибкий неон",
-        keyValue: `${item.powerUnits} шт`,
-      });
-    }
-  });
-  allItems.forEach((itemObj) => {
-    if (itemObj.itemTitle === "Нить") {
-      const item = itemObj.item as ThreadType;
-      esPowerUnits.push({
-        desc: "Блок питания / нить",
-        keyValue: `${item.powerUnits} шт`,
-      });
+    if (
+      itemObj.itemTitle === "Бахрома" ||
+      itemObj.itemTitle === "Гибкий неон" ||
+      itemObj.itemTitle === "Нить"
+    ) {
+      const powerUnits = (
+        itemObj.item as {
+          powerUnits: number;
+        }
+      ).powerUnits;
+      const existIndex = esPowerUnits.findIndex((el) =>
+        el.desc.includes(itemObj.itemTitle)
+      );
+      if (existIndex !== -1) {
+        const val = parseInt(esPowerUnits[existIndex].keyValue);
+        esPowerUnits[existIndex].keyValue = `${val + 1} шт`;
+      } else {
+        esPowerUnits.push({
+          desc: `Блок питания / ${itemObj.itemTitle}`,
+          keyValue: `1 шт`,
+        });
+      }
     }
   });
 

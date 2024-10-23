@@ -44,4 +44,5 @@ export type ThreadType = {
   extensions_5m: number;
   extensions_10m: number;
   screedsType: ThreadScreedsTypeEnum;
+  price_screed_bracing: number;
 };

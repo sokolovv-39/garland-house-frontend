@@ -8,4 +8,13 @@ export const montageDefault: MontageType = {
   distance: 0,
   m_26_36_hourly: 0,
   climber: 0,
+  complex: 0,
+  priceObj: {
+    m_16_20: 20000,
+    m_22_24: 25000,
+    m_26_36: 35000,
+    distance: 60,
+    m_26_36_hourly: 2000,
+    complex: 500,
+  },
 };

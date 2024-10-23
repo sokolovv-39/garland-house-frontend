@@ -5,3 +5,4 @@ export {
   getNeonProfile,
   getEsNeon,
 } from "./estimateAlgs";
+export { neonRfp, neonPaintingRfp } from "./rfpAlgs";

@@ -36,7 +36,7 @@ export function getEsExtensions(
     if (itemObj.itemTitle === "Гибкий неон") {
       const item = itemObj.item as NeonType;
       esExt.push({
-        desc: `Удлинитель / гибкий неон / 1м / ${item.glowShade}`,
+        desc: `Удлинитель / гибкий неон / ${item.glowShade}`,
         keyValue: `${item.extensions_1m} шт`,
       });
     }

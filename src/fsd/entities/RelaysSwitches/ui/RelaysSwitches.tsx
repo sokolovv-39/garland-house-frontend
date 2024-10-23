@@ -69,37 +69,77 @@ export function RelaysSwitches({
       {isOpen && (
         <div className={classes.adjust}>
           <NumberSelect
-            type="Обычный проводной выключатель, шт"
-            initialValue={itemObj.item.wired}
+            type="Беспроводной 1-клавишный, шт"
+            initialValue={itemObj.item.wireless_1}
             callback={(val) =>
               setSwitches({
                 ...switches,
-                wired: val,
+                wireless_1: val,
               })
             }
           />
           <NumberSelect
-            type="Бес. радио выкл. с радио реле"
-            initialValue={itemObj.item.wirelessRadio}
+            type="Беспроводной 2-клавишный, шт"
+            initialValue={itemObj.item.wireless_2}
             callback={(val) =>
               setSwitches({
                 ...switches,
-                wirelessRadio: val,
+                wireless_2: val,
               })
             }
           />
           <NumberSelect
-            type="Бес. радио выкл. с wi-fi реле "
-            initialValue={itemObj.item.wirelessWifi}
+            type="Беспроводной 3-клавишный, шт"
+            initialValue={itemObj.item.wireless_3}
             callback={(val) =>
               setSwitches({
                 ...switches,
-                wirelessWifi: val,
+                wireless_3: val,
               })
             }
           />
           <NumberSelect
-            type="Астрономическое реле времени"
+            type="Беспроводной 1-клавишный WIFI, шт"
+            initialValue={itemObj.item.wireless_1_wifi}
+            callback={(val) =>
+              setSwitches({
+                ...switches,
+                wireless_1_wifi: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Беспроводной 2-клавишный WIFI, шт"
+            initialValue={itemObj.item.wireless_2_wifi}
+            callback={(val) =>
+              setSwitches({
+                ...switches,
+                wireless_2_wifi: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Беспроводной 3-клавишный WIFI, шт"
+            initialValue={itemObj.item.wireless_3_wifi}
+            callback={(val) =>
+              setSwitches({
+                ...switches,
+                wireless_3_wifi: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Фотореле, шт"
+            initialValue={itemObj.item.photoRelay}
+            callback={(val) =>
+              setSwitches({
+                ...switches,
+                photoRelay: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Астрономическое реле, шт"
             initialValue={itemObj.item.astroRelay}
             callback={(val) =>
               setSwitches({

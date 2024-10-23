@@ -15,7 +15,8 @@ export const beltLightDefault: BeltLightType = {
   glowShade: BeltLightGlowShadeEnum.Warm,
   lampStep: BeltLightLampStepEnum.cm_20,
   cable: PVSColorEnum.Black,
-  price: 4520,
+  price_20cm: 4400,
+  price_40cm: 2200,
   contours: 1,
   pvsLength: 0,
 };

@@ -1,10 +1,11 @@
 import { PVSColorEnum, PVSType } from "./types";
 
-export const pvsColors = Object.values(PVSColorEnum)
+export const pvsColors = Object.values(PVSColorEnum);
 
 export const pvsDefault: PVSType = {
   title: "Кабель ПВС",
   length: 0,
   color: PVSColorEnum.Black,
-  price: 382
+  price: 382,
+  extraPrice: 250,
 };

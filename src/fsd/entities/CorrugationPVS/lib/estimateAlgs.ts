@@ -5,17 +5,17 @@ import { getPVSLength, PVSType } from "../../PVS";
 import { CorrugationType } from "../model";
 
 export function getCorrPVSLength(items: CommonItemType[]): GetItemLengthType {
-  let pvsLength = 0;
+  let corrLength = 0;
 
   items.forEach((itemObj) => {
-    if (itemObj.itemTitle === "Кабель ПВС") {
-      const pvs = itemObj.item as PVSType;
-      pvsLength += pvs.length;
+    if (itemObj.itemTitle === "Гофра для кабеля ПВС") {
+      const corr = itemObj.item as CorrugationType;
+      corrLength += corr.length;
     }
   });
 
   const skein = 50;
-  const skeinsQuantity = Math.ceil(pvsLength / skein);
+  const skeinsQuantity = Math.ceil(corrLength / skein);
   const skeinsMeters = skein * skeinsQuantity;
   return { skeinsQuantity, skeinsMeters };
 }
@@ -34,13 +34,10 @@ export function getEsCorrPVS(allItems: CommonItemType[]): EsWritingArrayType {
   );
   if (corr) {
     const typedCorr = corr.item as CorrugationType;
-    const pvsLength = getPVSLength(allItems);
-    const skein = 50;
-    const skeinQuantity = Math.ceil(pvsLength / skein);
-    const skeinMeters = skein * skeinQuantity;
+    const corrLength = getCorrPVSLength(allItems).skeinsMeters;
     return {
       desc: `${typedCorr.title} / ${typedCorr.thickness} / ${typedCorr.color}`,
-      keyValue: `${skeinMeters} м`,
+      keyValue: `${corrLength} м`,
     };
   } else
     return {

@@ -26,10 +26,11 @@ export const defaultThread: ThreadType = {
   tees: 0,
   surface: ThreadSurfaceEnum.Wood,
   contours: 1,
-  price: 4214,
+  price: 2200,
   extensions_1m: 0,
   extensions_3m: 0,
   extensions_5m: 0,
   extensions_10m: 0,
   screedsType: ThreadScreedsTypeEnum.Screed_200,
+  price_screed_bracing: 780,
 };

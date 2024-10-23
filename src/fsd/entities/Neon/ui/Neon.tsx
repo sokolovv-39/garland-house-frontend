@@ -47,6 +47,13 @@ export function Neon({
       .catch((err) => console.error(err));
   }
 
+  function getNeededPowerUnits(length: number) {
+    let needed = Math.ceil(length / 50);
+    if (needed > 3 && needed < 10) needed++;
+    else if (needed >= 10) needed += 4;
+    return needed;
+  }
+
   useEffect(() => {
     updateNeon();
     getItems();
@@ -88,12 +95,16 @@ export function Neon({
         <div className={classes.adjust}>
           <NumberSelect
             type="Длина, м"
-            callback={(val) =>
+            callback={(val) => {
+              let powerUnits = neon.powerUnits;
+              const neededPowerUnits = getNeededPowerUnits(val);
+              if (powerUnits < neededPowerUnits) powerUnits = neededPowerUnits;
               setNeon({
                 ...neon,
                 length: val,
-              })
-            }
+                powerUnits,
+              });
+            }}
             initialValue={itemObj.item.length}
           />
           <div className={classes.tabs}>
@@ -150,12 +161,11 @@ export function Neon({
             </div>
           )}
           <NumberSelect
-            type="Удлинители, 1м"
+            type="Удлинитель для гибкого неона"
             callback={(val) => {
-              let needles = 0;
-              if (neon.needles < val * 2 + neon.contours)
-                needles = val * 2 + neon.contours;
-              else needles = neon.needles;
+              let needles = neon.needles;
+              const needed = neon.contours + val * 2 + neon.powerUnits;
+              if (needles < needed) needles = needed;
               setNeon({
                 ...neon,
                 extensions_1m: val,
@@ -167,28 +177,38 @@ export function Neon({
           <NumberSelect
             type="Соединительные иглы, шт"
             callback={(val) => {
-              if (val >= neon.extensions_1m * 2 + neon.contours)
+              if (
+                val >=
+                neon.extensions_1m * 2 + neon.contours + neon.powerUnits
+              )
                 setNeon({
                   ...neon,
                   needles: val,
                 });
             }}
             initialValue={itemObj.item.needles}
-            minValue={itemObj.item.extensions_1m * 2 + itemObj.item.contours}
+            minValue={
+              itemObj.item.extensions_1m * 2 +
+              itemObj.item.contours +
+              neon.powerUnits
+            }
           />
           <NumberSelect
             type="Блоки питания, шт"
             callback={(val) => {
-              if (val >= neon.contours)
-                setNeon({
-                  ...neon,
-                  powerUnits: val,
-                });
+              let needles = neon.needles;
+              const needed = neon.contours + neon.extensions_1m * 2 + val;
+              if (needles < needed) needles = needed;
+              setNeon({
+                ...neon,
+                powerUnits: val,
+                needles,
+              });
             }}
             initialValue={itemObj.item.powerUnits}
-            minValue={itemObj.item.contours}
+            minValue={getNeededPowerUnits(neon.length)}
           />
-          <NumberSelect
+          {/*           <NumberSelect
             type="Количество контуров, шт"
             callback={(val) => {
               let powerUnits = neon.powerUnits;
@@ -208,7 +228,7 @@ export function Neon({
             }}
             initialValue={itemObj.item.contours}
             minValue={1}
-          />
+          /> */}
         </div>
       )}
     </div>

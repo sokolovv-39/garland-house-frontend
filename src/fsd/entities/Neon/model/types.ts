@@ -25,4 +25,5 @@ export type NeonType = {
   price: number;
   extensions_1m: number;
   ral: string;
+  profile_price: number;
 };

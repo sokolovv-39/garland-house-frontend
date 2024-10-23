@@ -20,7 +20,8 @@ export type BeltLightType = {
   glowShade: BeltLightGlowShadeEnum;
   lampStep: BeltLightLampStepEnum;
   cable: PVSColorEnum;
-  price: number;
+  price_20cm: number;
+  price_40cm: number;
   contours: number;
   pvsLength: number;
 };
