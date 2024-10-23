@@ -71,7 +71,7 @@ export function neonPaintingRfp(
           mergedItems.push({
             length: neon.length,
             thickness: neon.thickness,
-            price: neon.price,
+            price: neon.profile_price,
           });
         }
       }

@@ -3,7 +3,12 @@
 import Image from "next/image";
 import classes from "./Measure.module.scss";
 import CopySVG from "./images/copy.svg";
-import { MeasureType, PickObject, SelectedObject } from "@/fsd/entities";
+import {
+  CommonItemType,
+  MeasureType,
+  PickObject,
+  SelectedObject,
+} from "@/fsd/entities";
 import { useEffect, useState, useContext } from "react";
 import { Button, CloseSVG, IDBContext, splitPrice } from "@/fsd/shared";
 import { ObjectType } from "../../Object";

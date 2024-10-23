@@ -92,8 +92,6 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
     });
   });
 
-  console.log(esRopes);
-
   return esRopes;
 }
 

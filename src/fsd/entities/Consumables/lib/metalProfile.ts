@@ -19,7 +19,6 @@ export function getEsMetalProfile(
   const pack = 2;
   const packsQuantity = Math.ceil(profLength / pack);
   const profMeters = pack * packsQuantity;
-  console.log("Профиль металлический", profMeters);
 
   return {
     keyValue: `${profMeters} м`,

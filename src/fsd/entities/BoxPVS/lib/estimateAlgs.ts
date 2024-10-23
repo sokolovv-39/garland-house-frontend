@@ -9,7 +9,7 @@ export function getBoxPvsLength(allItems: CommonItemType[]): {
   piecesMeters: number;
 } {
   const box = allItems.find(
-    (itemObj) => (itemObj.itemTitle = "Кабель-канал (короб) для кабеля ПВС")
+    (itemObj) => itemObj.itemTitle === "Кабель-канал (короб) для кабеля ПВС"
   );
   if (box) {
     const typedBox = box.item as BoxPVSType;

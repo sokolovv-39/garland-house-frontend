@@ -5,9 +5,7 @@ import { NeonType } from "../model";
 export function getNeonLength(length: number) {
   const skein = 50;
   const reserved = length * 0.1;
-  console.log("neon length", length);
   const skeinsQuantity = Math.ceil((length + reserved) / skein);
-  console.log(skeinsQuantity);
   const skeinMeters = skein * skeinsQuantity;
   return { skeinsQuantity, skeinMeters };
 }

@@ -355,11 +355,9 @@ export function SelectedObject({
 
     let ropeLegth = 0;
     getEsRope(items).forEach((el) => {
-      console.log(el);
       ropeLegth += Math.ceil(parseFloat(el.keyValue));
     });
     setRopeMeters(ropeLegth);
-    console.log("ropeLength", ropeLegth);
   }, [items]);
 
   return (

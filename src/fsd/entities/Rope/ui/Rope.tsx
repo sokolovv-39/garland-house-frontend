@@ -62,7 +62,6 @@ export function Rope({
   }, []);
 
   useEffect(() => {
-    console.log("use effect", meters);
     setRope({
       ...rope,
       length: Math.ceil(meters),
