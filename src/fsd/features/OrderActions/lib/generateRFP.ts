@@ -164,10 +164,25 @@ export async function generateRFP(
       if (item.id) {
         yOffset = writeRow(splittedItem);
       } else {
-        yOffset = writeOverall(splittedItem);
+        yOffset = writeOverall(splittedItem, "Итого");
       }
     });
   });
+
+  yPosition -= yOffset;
+  xPosition = margin;
+
+  yOffset = writeOverall(
+    {
+      id: "",
+      desc: "",
+      unit: "",
+      quantity: "",
+      price: "",
+      cost: splitPrice(getTotal()),
+    },
+    "Всего"
+  );
 
   if (download) {
     const demoPdfBytes = await fetch(demoPDF).then((res) => res.arrayBuffer());
@@ -187,6 +202,10 @@ export async function generateRFP(
     aEl.download = "КП";
     aEl.click();
   } else {
+    return getTotal();
+  }
+
+  function getTotal() {
     let overall = 0;
 
     if (!positions.length) return overall;
@@ -361,7 +380,7 @@ export async function generateRFP(
     return cellHeight;
   }
 
-  function writeOverall(overall: LineType) {
+  function writeOverall(overall: LineType, text: string) {
     drawDivider(margin, pageWidth - margin, yPosition, yPosition);
 
     const yBottom = yPosition - 2 * verticalTablePadding - lineHeight;
@@ -373,8 +392,6 @@ export async function generateRFP(
     drawDivider(dividerX, dividerX, yPosition, yBottom);
     drawDivider(margin, margin, yPosition, yBottom);
     drawDivider(pageWidth - margin, pageWidth - margin, yPosition, yBottom);
-
-    const text = "Итого";
 
     const textWidth = robotoFont.widthOfTextAtSize(text, fontSize);
 
@@ -484,6 +501,16 @@ export async function generateRFP(
       lines: lines,
       maxWidthLine,
     };
+  }
+
+  function drawPageBackground(page: PDFPage, width: number, height: number) {
+    page.drawRectangle({
+      x: 0,
+      y: 0,
+      width,
+      height,
+      color: rgb(248 / 255, 248 / 255, 248 / 255),
+    });
   }
 
   async function getPositions(measureId: string) {
@@ -597,14 +624,4 @@ export async function generateRFP(
       });
     }
   }
-}
-
-function drawPageBackground(page: PDFPage, width: number, height: number) {
-  page.drawRectangle({
-    x: 0,
-    y: 0,
-    width,
-    height,
-    color: rgb(248 / 255, 248 / 255, 248 / 255),
-  });
 }

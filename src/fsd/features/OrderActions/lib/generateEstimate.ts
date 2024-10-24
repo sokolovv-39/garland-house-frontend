@@ -308,15 +308,12 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       desc: `Соединительные иглы`,
       keyValue: `${connecting_needles} шт`,
     });
-    writingArray.push({
-      desc: `Заглушки`,
-      keyValue: `${plugs} шт`,
+    plugs.forEach((el) => {
+      writingArray.push(el);
     });
-    writingArray.push({
-      desc: `Лампы`,
-      keyValue: `${lamps} шт`,
+    lamps.forEach((el) => {
+      writingArray.push(el);
     });
-
     screeds_200_mm.forEach((screed) => {
       writingArray.push(screed);
     });

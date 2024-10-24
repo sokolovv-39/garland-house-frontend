@@ -59,6 +59,19 @@ export function RelaysSwitches({
           )}
         </div>
         <div className={classes.arrowWrapper}>
+          {!isOpen && (
+            <span>
+              {itemObj.item.wireless_1 +
+                itemObj.item.wireless_2 +
+                itemObj.item.wireless_3 +
+                itemObj.item.wireless_1_wifi +
+                itemObj.item.wireless_2_wifi +
+                itemObj.item.wireless_3_wifi +
+                itemObj.item.astroRelay +
+                itemObj.item.photoRelay}{" "}
+              шт
+            </span>
+          )}
           <ArrowSVG
             style={{
               transform: `${isOpen ? "" : "rotate(180deg)"}`,
@@ -68,6 +81,26 @@ export function RelaysSwitches({
       </div>
       {isOpen && (
         <div className={classes.adjust}>
+          <NumberSelect
+            type="Обычный 1-клавишный, шт"
+            initialValue={itemObj.item.default_1}
+            callback={(val) =>
+              setSwitches({
+                ...switches,
+                default_1: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Обычный 2-клавишный, шт"
+            initialValue={itemObj.item.default_2}
+            callback={(val) =>
+              setSwitches({
+                ...switches,
+                default_2: val,
+              })
+            }
+          />
           <NumberSelect
             type="Беспроводной 1-клавишный, шт"
             initialValue={itemObj.item.wireless_1}

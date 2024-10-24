@@ -9,8 +9,8 @@ export enum NeonGlowShadeEnum {
 }
 
 export enum NeonThicknessEnum {
-  Small = "8x15 мм",
-  Big = "15x25 мм",
+  Small = "8x16 мм",
+  Big = "14x25 мм",
 }
 
 export type NeonType = {
@@ -25,5 +25,7 @@ export type NeonType = {
   price: number;
   extensions_1m: number;
   ral: string;
+  ral_meters: number;
   profile_price: number;
+  plugs: number;
 };

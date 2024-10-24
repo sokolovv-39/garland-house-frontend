@@ -7,7 +7,7 @@ export const ropeDefault: RopeType = {
   title: "Трос",
   thickness: RopeThicknessEnum.mm_2,
   contours: 1,
-  length: 0,
+  length: 1,
   surface: RopeSurfaceEnum.Wood,
   price: 250,
 };

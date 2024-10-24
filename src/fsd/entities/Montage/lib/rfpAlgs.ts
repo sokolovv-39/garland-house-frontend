@@ -12,7 +12,9 @@ export function montageRfp(
   let distance = 0;
   let m_26_36_hourly = 0;
   let climber = 0;
-  let complex = 0;
+  let complex_fringe = 0;
+  let complex_neon = 0;
+  let complex_thread = 0;
 
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Монтаж") {
@@ -23,7 +25,9 @@ export function montageRfp(
       distance += montage.distance;
       m_26_36_hourly += montage.m_26_36_hourly;
       climber += montage.climber;
-      complex += montage.complex;
+      complex_fringe += montage.complex_fringe;
+      complex_neon += montage.complex_neon;
+      complex_thread += montage.complex_thread;
     }
   });
 
@@ -104,14 +108,19 @@ export function montageRfp(
     id++;
   }
 
-  if (complex) {
+  if (complex_fringe || complex_neon || complex_thread) {
+    let quantity = complex_fringe + complex_neon + complex_thread;
+    let cost =
+      complex_fringe * montageDefault.priceObj.complex_fringe +
+      complex_neon * montageDefault.priceObj.complex_neon +
+      complex_thread * montageDefault.priceObj.complex_thread;
     rfp.push({
       id: id.toString(),
       desc: "Монтаж сложного участка (на дюбеля В ФАСАД, монтаж с неудобной крыши, с применением обвязки альпснаряжения)",
       unit: "м.п",
-      quantity: complex.toString(),
-      price: montageDefault.priceObj.complex.toString(),
-      cost: (complex * montageDefault.priceObj.complex).toString(),
+      quantity: quantity.toString(),
+      price: montageDefault.priceObj.complex_fringe.toString(),
+      cost: cost.toString(),
     });
     id++;
   }

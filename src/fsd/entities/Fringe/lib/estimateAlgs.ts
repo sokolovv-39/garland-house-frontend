@@ -6,7 +6,7 @@ export function getFringeLength(length: number, mult: FringeMultiplicityEnum) {
   let skeinLength = 0;
   if (mult === FringeMultiplicityEnum.m_3) skeinLength = 3;
   else if (mult === FringeMultiplicityEnum.m_5) skeinLength = 5;
-  let skeinQuantity = Math.ceil(length / 5);
+  let skeinQuantity = Math.ceil(length / skeinLength);
 
   let skeinMeters = 0;
   if (length === 0) return { skeinQuantity, skeinMeters };

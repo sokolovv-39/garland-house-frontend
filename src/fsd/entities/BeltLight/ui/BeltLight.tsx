@@ -124,7 +124,7 @@ export function BeltLight({
             />
           </div>
           <div className={classes.tabs}>
-            <h5 className={classes.tabsTitle}>Цвет кабеля</h5>
+            <h5 className={classes.tabsTitle}>Цвет провода</h5>
             <ItemsAdjust
               list={beltLightCables}
               active={itemObj.item.cable}
@@ -146,7 +146,7 @@ export function BeltLight({
             }
             initialValue={itemObj.item.pvsLength}
           />
-          <NumberSelect
+          {/* <NumberSelect
             type="Количество контуров"
             callback={(val) => {
               if (val)
@@ -157,7 +157,7 @@ export function BeltLight({
             }}
             initialValue={itemObj.item.contours}
             minValue={1}
-          />
+          /> */}
         </div>
       )}
     </div>

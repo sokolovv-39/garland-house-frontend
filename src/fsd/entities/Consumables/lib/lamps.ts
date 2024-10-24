@@ -1,18 +1,44 @@
+import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
 import { BeltLightLampStepEnum, BeltLightType } from "../../BeltLight";
 import { CommonItemType } from "../../Item";
 
-export function getEsLamps(allItems: CommonItemType[]) {
-  let lamps = 0;
+export function getEsLamps(allItems: CommonItemType[]): EsWritingArrayType[] {
+  let lamps: (Pick<BeltLightType, "glowShade"> & {
+    quantity: number;
+  })[] = [];
+
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Белт-лайт") {
       const beltLight = itemObj.item as BeltLightType;
+      let newQuantity = 0;
       if (beltLight.lampStep === BeltLightLampStepEnum.cm_20) {
-        lamps += beltLight.length * 5;
-      } else if (beltLight.lampStep === BeltLightLampStepEnum.cm_40) {
-        lamps += beltLight.length * 2.5;
+        newQuantity = beltLight.length * 5;
+      }
+      if (beltLight.lampStep === BeltLightLampStepEnum.cm_40) {
+        newQuantity = beltLight.length * 2.5;
+      }
+      const index = lamps.findIndex(
+        (el) => el.glowShade === beltLight.glowShade
+      );
+      if (~index) {
+        lamps[index].quantity += newQuantity;
+      } else {
+        lamps.push({
+          quantity: newQuantity,
+          glowShade: beltLight.glowShade,
+        });
       }
     }
   });
 
-  return Math.ceil(lamps);
+  const esLamps: EsWritingArrayType[] = [];
+
+  lamps.forEach((el) => {
+    esLamps.push({
+      desc: `Лампа / для неона / ${el.glowShade}`,
+      keyValue: `${Math.ceil(el.quantity)} шт`,
+    });
+  });
+
+  return esLamps;
 }

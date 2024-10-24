@@ -80,6 +80,11 @@ export function Curtain({
           )}
         </div>
         <div className={classes.arrowWrapper}>
+          {!isOpen && (
+            <span>
+              {itemObj.item.size} - {curtain.quantity} шт
+            </span>
+          )}
           <ArrowSVG
             style={{
               transform: `${isOpen ? "" : "rotate(180deg)"}`,
@@ -136,7 +141,7 @@ export function Curtain({
             />
           </div>
           <div className={classes.tabs}>
-            <h5 className={classes.tabsTitle}>Цвет кабеля</h5>
+            <h5 className={classes.tabsTitle}>Цвет провода</h5>
             <ItemsAdjust
               list={curtainCable}
               active={itemObj.item.cable}

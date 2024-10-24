@@ -11,6 +11,8 @@ export function getRelaysSwitches(allItems: CommonItemType[]) {
     wireless_3_wifi: 0,
     astroRelay: 0,
     photoRelay: 0,
+    default_1: 0,
+    default_2: 0,
   };
 
   allItems.forEach((itemObj) => {
@@ -25,6 +27,8 @@ export function getRelaysSwitches(allItems: CommonItemType[]) {
       relaysSwitches.wireless_3_wifi += typedItem.wireless_3_wifi;
       relaysSwitches.photoRelay += typedItem.photoRelay;
       relaysSwitches.astroRelay += typedItem.astroRelay;
+      relaysSwitches.default_1 += typedItem.default_1;
+      relaysSwitches.default_2 += typedItem.default_2;
     }
   });
   return relaysSwitches;

@@ -19,14 +19,12 @@ export function BoxPVS({
   getItems,
   updateCost,
   openedId,
-  pvsLength,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<BoxPVSType>;
   getItems: () => void;
   updateCost: () => void;
   openedId: string;
-  pvsLength: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -58,15 +56,6 @@ export function BoxPVS({
     });
   }, []);
 
-  useEffect(() => {
-    if (box.length < pvsLength) {
-      setBox({
-        ...box,
-        length: pvsLength,
-      });
-    }
-  }, [pvsLength]);
-
   return (
     <div className={classes.wrapper}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
@@ -92,13 +81,13 @@ export function BoxPVS({
           <NumberSelect
             initialValue={box.length}
             type="Длина"
-            minValue={pvsLength}
             callback={(val) => {
               setBox({
                 ...box,
-                length: length,
+                length: val,
               });
             }}
+            minValue={1}
           />
           <div className={classes.tabs}>
             <h5 className={classes.tabsTitle}>Цвет</h5>

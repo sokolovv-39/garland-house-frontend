@@ -1,14 +1,32 @@
+import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
 import { CommonItemType } from "../../Item";
 import { NeonType } from "../../Neon/model";
 
-export function getEsPlugs(allItems: CommonItemType[]) {
-  let plugs = 0;
+export function getEsPlugs(allItems: CommonItemType[]): EsWritingArrayType[] {
+  const plugsArr: Pick<NeonType, "thickness" | "plugs">[] = [];
+
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Гибкий неон") {
       const neon = itemObj.item as NeonType;
-      plugs += neon.contours;
+      const index = plugsArr.findIndex((el) => el.thickness === neon.thickness);
+      if (~index) {
+        plugsArr[index].plugs += neon.plugs;
+      } else {
+        plugsArr.push({
+          thickness: neon.thickness,
+          plugs: neon.plugs,
+        });
+      }
     }
   });
 
-  return plugs;
+  const esPlugs: EsWritingArrayType[] = [];
+  plugsArr.forEach((el) => {
+    esPlugs.push({
+      desc: `Заглушка / для неона / ${el.thickness} / LedMSK`,
+      keyValue: `${el.plugs} шт`,
+    });
+  });
+
+  return esPlugs;
 }

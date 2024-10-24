@@ -152,7 +152,7 @@ export function Fringe({
             />
           </div>
           <div className={classes.tabs}>
-            <h5 className={classes.tabsTitle}>Цвет кабеля</h5>
+            <h5 className={classes.tabsTitle}>Цвет провода</h5>
             <ItemsAdjust
               list={fringeCables}
               active={itemObj.item.cable}

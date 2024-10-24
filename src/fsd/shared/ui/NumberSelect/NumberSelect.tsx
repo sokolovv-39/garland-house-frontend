@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEventHandler, useEffect, useState } from "react";
+import { CSSProperties, MouseEventHandler, useEffect, useState } from "react";
 import classes from "./NumberSelect.module.scss";
 
 export function NumberSelect({
@@ -8,11 +8,19 @@ export function NumberSelect({
   initialValue,
   callback,
   minValue = 0,
+  style,
 }: {
   type: string;
   initialValue: number;
   callback: (val: number) => void;
   minValue?: number;
+  style?: {
+    height?: CSSProperties["height"];
+    operandWidth?: CSSProperties["width"];
+    littleTypeTop?: CSSProperties["top"];
+    inputWidth?: CSSProperties["width"];
+    gap?: CSSProperties["gap"];
+  };
 }) {
   const [number, setNumber] = useState<number | "">(
     initialValue ? initialValue : ""
@@ -26,8 +34,19 @@ export function NumberSelect({
   }, [initialValue]);
 
   return (
-    <div className={classes.wrapper}>
+    <div
+      className={classes.wrapper}
+      style={{
+        height: style?.height,
+        gap: style?.gap,
+      }}
+    >
       <div
+        style={{
+          minWidth: style?.operandWidth,
+          width: style?.operandWidth,
+          maxWidth: style?.operandWidth,
+        }}
         className={classes.operand}
         onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
           if (number !== "" && number > minValue) {
@@ -57,7 +76,16 @@ export function NumberSelect({
       >
         -
       </div>
-      {number && <span className={classes.type}>{type}</span>}
+      {number && (
+        <span
+          className={classes.type}
+          style={{
+            top: style?.littleTypeTop,
+          }}
+        >
+          {type}
+        </span>
+      )}
       <input
         type="text"
         className={classes.number}
@@ -88,9 +116,15 @@ export function NumberSelect({
         value={number || ""}
         style={{
           paddingTop: number && "13px",
+          minWidth: style?.inputWidth,
         }}
       />
       <div
+        style={{
+          minWidth: style?.operandWidth,
+          width: style?.operandWidth,
+          maxWidth: style?.operandWidth,
+        }}
         className={classes.operand}
         onClick={() => {
           if (number === "") {

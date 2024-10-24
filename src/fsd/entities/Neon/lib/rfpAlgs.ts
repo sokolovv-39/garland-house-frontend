@@ -55,7 +55,6 @@ export function neonPaintingRfp(
   allItems: CommonItemType[],
   startId: number
 ): LineType[] {
-  let length = 0;
   const mergedItems: Pick<NeonType, "thickness" | "length" | "price">[] = [];
 
   allItems.forEach((itemObj) => {
@@ -66,10 +65,10 @@ export function neonPaintingRfp(
           (el) => el.thickness === neon.thickness
         );
         if (index !== -1) {
-          mergedItems[index].length += neon.length;
+          mergedItems[index].length += neon.ral_meters;
         } else {
           mergedItems.push({
-            length: neon.length,
+            length: neon.ral_meters,
             thickness: neon.thickness,
             price: neon.profile_price,
           });

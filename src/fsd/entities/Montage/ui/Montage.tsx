@@ -69,12 +69,32 @@ export function Montage({
       {isOpen && (
         <div className={classes.adjust}>
           <NumberSelect
-            initialValue={itemObj.item.complex}
-            type="Сложный монтаж, метры"
+            initialValue={itemObj.item.complex_fringe}
+            type="Сложный монтаж бахромы, метры"
             callback={(val) => {
               setItem({
                 ...item,
-                complex: val,
+                complex_fringe: val,
+              });
+            }}
+          />
+          <NumberSelect
+            initialValue={itemObj.item.complex_neon}
+            type="Сложный монтаж неона, метры"
+            callback={(val) => {
+              setItem({
+                ...item,
+                complex_neon: val,
+              });
+            }}
+          />
+          <NumberSelect
+            initialValue={itemObj.item.complex_thread}
+            type="Сложный монтаж нити, метры"
+            callback={(val) => {
+              setItem({
+                ...item,
+                complex_thread: val,
               });
             }}
           />

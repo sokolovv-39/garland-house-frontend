@@ -10,6 +10,8 @@ export const relaysSwitchesDefault: RelaysSwitchesType = {
   wireless_3_wifi: 0,
   astroRelay: 0,
   photoRelay: 0,
+  default_1: 1,
+  default_2: 0,
   priceObj: {
     wireless_1: 6840,
     wireless_2: 8360,

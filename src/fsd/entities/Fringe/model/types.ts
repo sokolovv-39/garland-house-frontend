@@ -17,8 +17,8 @@ export enum FringeBracingEnum {
 }
 
 export enum FringeLedEnum {
-  led_100 = "100 led",
-  led_200 = "200 led",
+  led_100 = "Стандарт",
+  led_200 = "Премиум",
 }
 
 export enum FringeSurfaceEnum {

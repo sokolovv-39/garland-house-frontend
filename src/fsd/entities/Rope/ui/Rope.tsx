@@ -124,7 +124,7 @@ export function Rope({
               }
             />
           </div>
-          <NumberSelect
+          {/* <NumberSelect
             type="Количество контуров, шт"
             callback={(val) =>
               setRope({
@@ -134,7 +134,7 @@ export function Rope({
             }
             initialValue={itemObj.item.contours}
             minValue={1}
-          />
+          /> */}
         </div>
       )}
     </div>

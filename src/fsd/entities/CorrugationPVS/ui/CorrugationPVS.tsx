@@ -26,14 +26,12 @@ export function CorrugationPVS({
   getItems,
   updateCost,
   openedId,
-  pvsLength,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<CorrugationType>;
   getItems: () => Promise<CommonItemType[]>;
   updateCost: () => void;
   openedId: string;
-  pvsLength: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -64,15 +62,6 @@ export function CorrugationPVS({
       behavior: "smooth",
     });
   }, []);
-
-  useEffect(() => {
-    if (pvsLength > corr.length) {
-      setCorr({
-        ...corr,
-        length: pvsLength,
-      });
-    }
-  }, [pvsLength]);
 
   return (
     <div className={classes.wrapper}>
@@ -105,7 +94,7 @@ export function CorrugationPVS({
                 length: val,
               });
             }}
-            minValue={pvsLength}
+            minValue={1}
           />
           <div className={classes.tabs}>
             <h5 className={classes.tabsTitle}>Толщина</h5>

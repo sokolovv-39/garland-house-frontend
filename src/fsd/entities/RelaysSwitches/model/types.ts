@@ -8,6 +8,8 @@ export type RelaysSwitchesType = {
   wireless_3_wifi: number;
   astroRelay: number;
   photoRelay: number;
+  default_1: number;
+  default_2: number;
   priceObj: {
     wireless_1: number;
     wireless_2: number;

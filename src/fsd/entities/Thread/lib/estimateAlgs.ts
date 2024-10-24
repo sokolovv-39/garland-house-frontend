@@ -40,7 +40,7 @@ export function getEsThread(allItems: CommonItemType[]) {
 
   threads.forEach((item) => {
     esThreads.push({
-      desc: `${item.title} / ${item.glowShade} / ${item.glowMode} / ${item.cable}`,
+      desc: `${item.title} / ${item.glowShade} / ${item.glowMode} / ${item.cable} / Штука - 10 м`,
       keyValue: `${getThreadLength(item.length).skeinsQuantity} шт`,
     });
   });

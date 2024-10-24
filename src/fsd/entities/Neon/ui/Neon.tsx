@@ -103,6 +103,7 @@ export function Neon({
                 ...neon,
                 length: val,
                 powerUnits,
+                ral_meters: val,
               });
             }}
             initialValue={itemObj.item.length}
@@ -135,12 +136,14 @@ export function Neon({
             />
           </div>
           <Toggler
+            val={neon.ral_meters}
             type="Покраска профиля"
             isActive={neon.painting}
-            callback={(isActive) => {
+            callback={(isActive, length) => {
               setNeon({
                 ...neon,
                 painting: isActive,
+                ral_meters: length,
               });
             }}
           />
@@ -161,7 +164,7 @@ export function Neon({
             </div>
           )}
           <NumberSelect
-            type="Удлинитель для гибкого неона"
+            type="Соединитель для гибкого неона"
             callback={(val) => {
               let needles = neon.needles;
               const needed = neon.contours + val * 2 + neon.powerUnits;
@@ -192,6 +195,17 @@ export function Neon({
               itemObj.item.contours +
               neon.powerUnits
             }
+          />
+          <NumberSelect
+            type="Заглушки, шт"
+            callback={(val) => {
+              setNeon({
+                ...neon,
+                plugs: val,
+              });
+            }}
+            initialValue={neon.plugs}
+            minValue={1}
           />
           <NumberSelect
             type="Блоки питания, шт"

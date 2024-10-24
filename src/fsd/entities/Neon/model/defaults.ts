@@ -15,5 +15,7 @@ export const defaultNeon: NeonType = {
   price: 2200,
   extensions_1m: 0,
   ral: "",
+  ral_meters: 1,
   profile_price: 350,
+  plugs: 1,
 };

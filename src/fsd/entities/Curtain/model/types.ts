@@ -52,4 +52,5 @@ export type CurtainType = {
     s_2_9: number;
   };
   quantity: number;
+  contours: number;
 };

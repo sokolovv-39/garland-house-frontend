@@ -9,5 +9,5 @@ export const corrugationDefault: CorrugationType = {
   thickness: CorrThicknessEnum.mm_16,
   color: CorrColorsEnum.Black,
   price: 124,
-  length: 0,
+  length: 1,
 };

@@ -82,7 +82,6 @@ export function SelectedObject({
   const idb = useContext(IDBContext);
   const [objName, setObjName] = useState(object.title);
   const [openedId, setOpenedId] = useState("");
-  const [pvsLength, setPvsLength] = useState(0);
   const [vagi, setVagi] = useState(0);
   const [solderBoxes, setSolderBoxes] = useState(0);
   const [screeds_480_500, set_screeds_480_500] = useState(0);
@@ -117,6 +116,11 @@ export function SelectedObject({
             ...item,
             orderId: index + 1,
           };
+        });
+        newItems.sort((a, b) => {
+          if (a.orderId > b.orderId) return 1;
+          else if (a.orderId < b.orderId) return -1;
+          else return 0;
         });
         idb?.items
           .rewrite(newItems)
@@ -333,9 +337,6 @@ export function SelectedObject({
   }, [openedId]);
 
   useEffect(() => {
-    let pvsLength = getPVSLength(items);
-    setPvsLength(pvsLength);
-
     let vagi = getAllVagi(items);
     setVagi(vagi);
 
@@ -473,7 +474,6 @@ export function SelectedObject({
             case "Гофра для кабеля ПВС":
               return (
                 <CorrugationPVS
-                  pvsLength={pvsLength}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}
@@ -485,7 +485,6 @@ export function SelectedObject({
             case "Кабель-канал (короб) для кабеля ПВС":
               return (
                 <BoxPVS
-                  pvsLength={pvsLength}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}
