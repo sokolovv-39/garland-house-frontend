@@ -25,7 +25,7 @@ export function getRopeDuplexClamps(contours: number) {
 }
 
 export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
-  const ropes: Pick<RopeType, "thickness" | "length" | "title">[] = [];
+  const ropes: Pick<RopeType, "thickness" | "length">[] = [];
   const esRopes: EsWritingArrayType[] = [];
 
   //Бахрома добавляет трос
@@ -42,7 +42,6 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
           ropes.push({
             length: 1.1 * fringe.length,
             thickness: RopeThicknessEnum.mm_2,
-            title: "Трос",
           });
         }
       }
@@ -60,7 +59,6 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
           ropes.push({
             length: 1.1 * thread.length,
             thickness: RopeThicknessEnum.mm_2,
-            title: "Трос",
           });
         }
       }
@@ -79,8 +77,22 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
           ropes.push({
             length: 5,
             thickness: RopeThicknessEnum.mm_3,
-            title: "Трос",
           });
+      }
+    }
+  });
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Трос") {
+      const rope = itemObj.item as RopeType;
+      const index = ropes.findIndex((el) => el.thickness === rope.thickness);
+      if (~index) {
+        ropes[index].length += rope.length;
+      } else {
+        ropes.push({
+          length: rope.length,
+          thickness: rope.thickness,
+        });
       }
     }
   });

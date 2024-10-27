@@ -11,7 +11,7 @@ export const beltLightCables = Object.values(PVSColorEnum);
 
 export const beltLightDefault: BeltLightType = {
   title: "Белт-лайт",
-  length: 0,
+  length: 1,
   glowShade: BeltLightGlowShadeEnum.Warm,
   lampStep: BeltLightLampStepEnum.cm_20,
   cable: PVSColorEnum.Black,

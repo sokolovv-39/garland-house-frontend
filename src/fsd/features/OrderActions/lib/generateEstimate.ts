@@ -121,6 +121,8 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   let { street_shield_ip65, automat_10A, voltage_relay } =
     getEsElectricShield(allItems);
   let {
+    default_1,
+    default_2,
     wireless_1,
     wireless_2,
     wireless_3,
@@ -257,7 +259,9 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       writingArray.push(pvs);
     });
 
-    writingArray.push(corrPvs);
+    corrPvs.forEach((el) => {
+      writingArray.push(el);
+    });
 
     writingArray.push(boxPvs);
 
@@ -321,6 +325,7 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     screeds_480_500_mm.forEach((screed) => {
       writingArray.push(screed);
     });
+    console.log("corr clips", corr_clips);
     writingArray.push({
       desc: `Клипсы для гофры`,
       keyValue: `${corr_clips} уп`,
@@ -340,6 +345,14 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     writingArray.push({
       desc: `Реле напряжения`,
       keyValue: `${voltage_relay} шт`,
+    });
+    writingArray.push({
+      desc: `Обычный выключатель 1-клавишный`,
+      keyValue: `${default_1} шт`,
+    });
+    writingArray.push({
+      desc: `Обычный выключатель 2-клавишный`,
+      keyValue: `${default_2} шт`,
     });
     writingArray.push({
       desc: `Беспроводной 1-клавишный выключатель + 1 радиореле`,

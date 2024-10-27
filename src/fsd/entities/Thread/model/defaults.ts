@@ -17,7 +17,7 @@ export const threadScreedTypes = Object.values(ThreadScreedsTypeEnum);
 
 export const defaultThread: ThreadType = {
   title: "Нить",
-  length: 0,
+  length: 1,
   glowShade: ThreadGlowShadeEnum.Warm,
   glowMode: ThreadGlowModeEnum.Flickering,
   cable: PVSColorEnum.Black,
