@@ -4,6 +4,5 @@ export {
   getRopeRings,
   getRopeLength,
   getEsRope,
-  getRopeCustom,
 } from "./estimateAlgs";
 export { ropeRfp } from "./rfpAlgs";

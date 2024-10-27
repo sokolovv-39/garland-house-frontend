@@ -38,6 +38,8 @@ export {
   getNeonPlugs,
   getNeonProfile,
   getEsNeon,
+  NeonThicknessEnum,
+  NeonGlowShadeEnum,
   neonRfp,
   neonPaintingRfp,
 } from "./Neon";
@@ -70,6 +72,7 @@ export {
   ThreadGlowModeEnum,
   ThreadGlowShadeEnum,
   threadRfp,
+  threadOnTreeRFP,
   threadBracingRFP,
 } from "./Thread";
 
@@ -116,7 +119,6 @@ export {
   getRopeLength,
   ropeSurfaces,
   RopeThicknessEnum,
-  getRopeCustom,
   RopeSurfaceEnum,
   getEsRope,
   ropeRfp,
@@ -192,7 +194,6 @@ export {
   screed_200_default,
   get_screeds_200_packs,
   screeds_200_colors,
-  get_screeds_200_custom,
 } from "./Screed_200";
 export type { Screed_200_Type } from "./Screed_200";
 export {
@@ -209,6 +210,7 @@ export {
   getEsPlugs,
   getEsLamps,
   getEsCorrClips,
+  getRFPExtensions,
 } from "./Consumables";
 export { Electrical } from "./Electrical";
 export { Montage, montageDefault, montageRfp } from "./Montage";

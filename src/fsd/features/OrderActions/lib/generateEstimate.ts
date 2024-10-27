@@ -58,9 +58,8 @@ import {
   getEsCorrClips,
   get_screeds_200_packs,
   getCustomScreeds_480_500,
-  get_screeds_200_custom,
-  getRopeCustom,
   getEsElectricShield,
+  ObjectType,
 } from "@/fsd/entities";
 import fontkit from "@pdf-lib/fontkit";
 import { NeonType } from "@/fsd/entities/Neon/model";
@@ -71,8 +70,6 @@ import robotoFontUrl from "./fonts/Roboto-Regular.ttf";
 import { EsWritingArrayType } from "../model";
 
 export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
-  const allItems = await getItems(idb, orderId);
-
   const pdfDoc = await PDFDocument.create();
   pdfDoc.registerFontkit(fontkit);
 
@@ -93,51 +90,224 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   let currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
   let yPosition = pageHeight - margin;
 
-  // Позиции в смете
-  const fringes = getEsFringe(allItems);
-  const beltLights = getEsBeltLight(allItems);
-  const neons = getEsNeon(allItems);
-  const curtains = getEsCurtains(allItems);
-  const threads = getEsThread(allItems);
-  const pvses = getEsPVS(allItems);
-  const corrPvs = getEsCorrPVS(allItems);
-  const boxPvs = getEsBoxPvs(allItems);
-  const ropes = getRopeCustom(allItems);
-  const cableBracketPacks = getEsCableBrackets(allItems);
-  let screw_ring_4x50 = getEsScrewRings(allItems);
-  let anchor_ring_6x50 = getEsAnchorRings(allItems);
-  let lanyards = getEsLanyards(allItems);
-  let duplex_clamps = getEsDuplexClamps(allItems);
-  let extensions = getEsExtensions(allItems);
-  let { black_tees, white_tees } = getEsTees(allItems);
-  let metal_profile = getEsMetalProfile(allItems);
-  let connecting_needles = getEsConnectingNeedles(allItems);
-  let plugs = getEsPlugs(allItems);
-  const powerUnits = getEsPowerUnits(allItems);
-  let lamps = getEsLamps(allItems);
-  let screeds_480_500_mm = getCustomScreeds_480_500(allItems);
-  let screeds_200_mm = get_screeds_200_custom(allItems);
-  let corr_clips = getEsCorrClips(allItems);
-  let { street_shield_ip65, automat_10A, voltage_relay } =
-    getEsElectricShield(allItems);
-  let {
-    default_1,
-    default_2,
-    wireless_1,
-    wireless_2,
-    wireless_3,
-    wireless_1_wifi,
-    wireless_2_wifi,
-    wireless_3_wifi,
-    photoRelay,
-    astroRelay,
-  } = getRelaysSwitches(allItems);
-  const vagi = getAllVagi(allItems);
-  const solderBoxes = getSolderBoxPieces(allItems);
+  const objItemsArr = await getItemsObj(idb, orderId);
 
-  const writingArray = getPositionsEstimateInfo();
+  objItemsArr.forEach((el) => {
+    // Позиции в смете
+    const fringes = getEsFringe(el.items);
+    const beltLights = getEsBeltLight(el.items);
+    const neons = getEsNeon(el.items);
+    const curtains = getEsCurtains(el.items);
+    const threads = getEsThread(el.items);
+    const pvses = getEsPVS(el.items);
+    const corrPvs = getEsCorrPVS(el.items);
+    const boxPvs = getEsBoxPvs(el.items);
+    const ropes = getEsRope(el.items);
+    const cableBracketPacks = getEsCableBrackets(el.items);
+    let screw_ring_4x50 = getEsScrewRings(el.items);
+    let anchor_ring_6x50 = getEsAnchorRings(el.items);
+    let lanyards = getEsLanyards(el.items);
+    let duplex_clamps = getEsDuplexClamps(el.items);
+    let extensions = getEsExtensions(el.items);
+    let { black_tees, white_tees } = getEsTees(el.items);
+    let metal_profile = getEsMetalProfile(el.items);
+    let connecting_needles = getEsConnectingNeedles(el.items);
+    let plugs = getEsPlugs(el.items);
+    const powerUnits = getEsPowerUnits(el.items);
+    let lamps = getEsLamps(el.items);
+    let screeds_480_500_mm = getCustomScreeds_480_500(el.items);
+    let screeds_200_mm = get_screeds_200_packs(el.items);
+    let corr_clips = getEsCorrClips(el.items);
+    let { street_shield_ip65, automat_10A, voltage_relay } =
+      getEsElectricShield(el.items);
+    let {
+      default_1,
+      default_2,
+      wireless_1,
+      wireless_2,
+      wireless_3,
+      wireless_1_wifi,
+      wireless_2_wifi,
+      wireless_3_wifi,
+      photoRelay,
+      astroRelay,
+    } = getRelaysSwitches(el.items);
+    const vagi = getAllVagi(el.items);
+    const solderBoxes = getSolderBoxPieces(el.items);
 
-  writingArray.forEach((item) => writeItem(item.desc, item.keyValue));
+    const writingArray = getPositionsEstimateInfo();
+
+    writingArray.forEach((item, index) =>
+      writeItem(item.desc, item.keyValue, index !== 0)
+    );
+
+    currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+    yPosition = pageHeight - margin;
+
+    function getPositionsEstimateInfo(): EsWritingArrayType[] {
+      const writingArray: EsWritingArrayType[] = [];
+
+      writingArray.push({
+        desc: el.title,
+        keyValue: "",
+      });
+
+      fringes.forEach((fringe) => {
+        writingArray.push(fringe);
+      });
+
+      writingArray.push(cableBracketPacks);
+
+      beltLights.forEach((beltLight) => {
+        writingArray.push(beltLight);
+      });
+
+      lamps.forEach((el) => {
+        writingArray.push(el);
+      });
+
+      neons.forEach((neon) => {
+        writingArray.push(neon);
+      });
+      writingArray.push(metal_profile);
+      writingArray.push({
+        desc: `Соединительные иглы`,
+        keyValue: `${connecting_needles} шт`,
+      });
+
+      plugs.forEach((el) => {
+        writingArray.push(el);
+      });
+
+      curtains.forEach((curtain) => {
+        writingArray.push(curtain);
+      });
+
+      threads.forEach((thread) => {
+        writingArray.push(thread);
+      });
+      pvses.forEach((pvs) => {
+        writingArray.push(pvs);
+      });
+
+      corrPvs.forEach((el) => {
+        writingArray.push(el);
+      });
+
+      writingArray.push({
+        desc: `Клипсы для гофры`,
+        keyValue: `${corr_clips} уп`,
+      });
+
+      writingArray.push(boxPvs);
+
+      ropes.forEach((rope) => {
+        writingArray.push(rope);
+      });
+
+      writingArray.push({
+        desc: "Шуруп-кольцо / 4x50",
+        keyValue: `${screw_ring_4x50} шт`,
+      });
+
+      writingArray.push({
+        desc: `Анкер-кольцо / 6x50`,
+        keyValue: `${anchor_ring_6x50} шт`,
+      });
+
+      writingArray.push({
+        desc: `Талреп`,
+        keyValue: `${lanyards} шт`,
+      });
+
+      writingArray.push({
+        desc: `Дуплексный зажим`,
+        keyValue: `${duplex_clamps} шт`,
+      });
+
+      powerUnits.forEach((el) => {
+        writingArray.push(el);
+      });
+
+      extensions.forEach((el) => {
+        writingArray.push(el);
+      });
+
+      writingArray.push({
+        desc: `Тройник / черный`,
+        keyValue: `${black_tees} шт`,
+      });
+      writingArray.push({
+        desc: `Тройник / белый`,
+        keyValue: `${white_tees} шт`,
+      });
+      screeds_200_mm.forEach((screed) => {
+        writingArray.push(screed);
+      });
+
+      screeds_480_500_mm.forEach((screed) => {
+        writingArray.push(screed);
+      });
+      writingArray.push({
+        desc: `${getVagiModel(el.items)}`,
+        keyValue: `${vagi} шт`,
+      });
+      writingArray.push({
+        desc: "Щит уличный IP65",
+        keyValue: `${street_shield_ip65} шт`,
+      });
+      writingArray.push({
+        desc: `Автомат 10A`,
+        keyValue: `${automat_10A} шт`,
+      });
+      writingArray.push({
+        desc: `Реле напряжения`,
+        keyValue: `${voltage_relay} шт`,
+      });
+      writingArray.push({
+        desc: `Обычный выключатель 1-клавишный`,
+        keyValue: `${default_1} шт`,
+      });
+      writingArray.push({
+        desc: `Обычный выключатель 2-клавишный`,
+        keyValue: `${default_2} шт`,
+      });
+      writingArray.push({
+        desc: `Беспроводной 1-клавишный выключатель + 1 радиореле`,
+        keyValue: `${wireless_1} шт`,
+      });
+      writingArray.push({
+        desc: `Беспроводной 2-клавишный выключатель + 2 радиореле`,
+        keyValue: `${wireless_2} шт`,
+      });
+      writingArray.push({
+        desc: `Беспроводной 3-клавишный выключатель + 3 радиореле`,
+        keyValue: `${wireless_3} шт`,
+      });
+      writingArray.push({
+        desc: `Беспроводной 1-клавишный выключатель + 1 радиореле + WIFI`,
+        keyValue: `${wireless_1_wifi} шт`,
+      });
+      writingArray.push({
+        desc: `Беспроводной 2-клавишный выключатель + 2 радиореле + WIFI`,
+        keyValue: `${wireless_2_wifi} шт`,
+      });
+      writingArray.push({
+        desc: `Беспроводной 3-клавишный выключатель + 3 радиореле + WIFI`,
+        keyValue: `${wireless_3_wifi} шт`,
+      });
+      writingArray.push({
+        desc: `Фотореле`,
+        keyValue: `${photoRelay} шт`,
+      });
+      writingArray.push({
+        desc: `Астрономическое реле`,
+        keyValue: `${astroRelay} шт`,
+      });
+      writingArray.push(solderBoxes);
+      return writingArray;
+    }
+  });
 
   const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
 
@@ -146,7 +316,11 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   aEl.download = "Смета";
   aEl.click();
 
-  function writeItem(desc: string, keyValue: string) {
+  function writeItem(
+    desc: string,
+    keyValue: string,
+    isDivider: boolean = true
+  ) {
     if (keyValue[0] === "0") return;
 
     const descLines = splitTextIntoLines(desc, robotoFont, 12, maxDescWidth); // Автоматический перенос текста desc
@@ -217,9 +391,14 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       color: rgb(0, 0, 0),
     });
 
-    // Рисуем разделитель после текста
-    yPosition -= lineHeight / 2;
-    drawDivider(currentPage, yPosition);
+    if (isDivider) {
+      // Рисуем разделитель после текста
+      yPosition -= lineHeight / 2;
+      drawDivider(currentPage, yPosition);
+      yPosition -= lineHeight; // Зазор после разделителя
+    } else {
+      yPosition -= 1.5 * lineHeight;
+    }
     // Функция для рисования разделителя
     function drawDivider(page: any, y: number) {
       page.drawLine({
@@ -229,185 +408,25 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
         color: rgb(0.5, 0.5, 0.5), // серая линия
       });
     }
-    yPosition -= lineHeight; // Зазор после разделителя
-  }
-
-  function getPositionsEstimateInfo(): EsWritingArrayType[] {
-    const writingArray: EsWritingArrayType[] = [];
-
-    fringes.forEach((fringe) => {
-      writingArray.push(fringe);
-    });
-
-    beltLights.forEach((beltLight) => {
-      writingArray.push(beltLight);
-    });
-
-    neons.forEach((neon) => {
-      writingArray.push(neon);
-    });
-
-    curtains.forEach((curtain) => {
-      writingArray.push(curtain);
-    });
-
-    threads.forEach((thread) => {
-      writingArray.push(thread);
-    });
-
-    pvses.forEach((pvs) => {
-      writingArray.push(pvs);
-    });
-
-    corrPvs.forEach((el) => {
-      writingArray.push(el);
-    });
-
-    writingArray.push(boxPvs);
-
-    ropes.forEach((rope) => {
-      writingArray.push(rope);
-    });
-
-    powerUnits.forEach((el) => {
-      writingArray.push(el);
-    });
-
-    writingArray.push(cableBracketPacks);
-
-    writingArray.push({
-      desc: "Шуруп-кольцо / 4x50",
-      keyValue: `${screw_ring_4x50} шт`,
-    });
-
-    writingArray.push({
-      desc: `Анкер-кольцо / 6x50`,
-      keyValue: `${anchor_ring_6x50} шт`,
-    });
-
-    writingArray.push({
-      desc: `Талреп`,
-      keyValue: `${lanyards} шт`,
-    });
-
-    writingArray.push({
-      desc: `Дуплексный зажим`,
-      keyValue: `${duplex_clamps} шт`,
-    });
-
-    extensions.forEach((el) => {
-      writingArray.push(el);
-    });
-
-    writingArray.push({
-      desc: `Тройник / черный`,
-      keyValue: `${black_tees} шт`,
-    });
-    writingArray.push({
-      desc: `Тройник / белый`,
-      keyValue: `${white_tees} шт`,
-    });
-    writingArray.push(metal_profile);
-    writingArray.push({
-      desc: `Соединительные иглы`,
-      keyValue: `${connecting_needles} шт`,
-    });
-    plugs.forEach((el) => {
-      writingArray.push(el);
-    });
-    lamps.forEach((el) => {
-      writingArray.push(el);
-    });
-    screeds_200_mm.forEach((screed) => {
-      writingArray.push(screed);
-    });
-
-    screeds_480_500_mm.forEach((screed) => {
-      writingArray.push(screed);
-    });
-    console.log("corr clips", corr_clips);
-    writingArray.push({
-      desc: `Клипсы для гофры`,
-      keyValue: `${corr_clips} уп`,
-    });
-    writingArray.push({
-      desc: `${getVagiModel(allItems)}`,
-      keyValue: `${vagi} шт`,
-    });
-    writingArray.push({
-      desc: "Щит уличный IP65",
-      keyValue: `${street_shield_ip65} шт`,
-    });
-    writingArray.push({
-      desc: `Автомат 10A`,
-      keyValue: `${automat_10A} шт`,
-    });
-    writingArray.push({
-      desc: `Реле напряжения`,
-      keyValue: `${voltage_relay} шт`,
-    });
-    writingArray.push({
-      desc: `Обычный выключатель 1-клавишный`,
-      keyValue: `${default_1} шт`,
-    });
-    writingArray.push({
-      desc: `Обычный выключатель 2-клавишный`,
-      keyValue: `${default_2} шт`,
-    });
-    writingArray.push({
-      desc: `Беспроводной 1-клавишный выключатель + 1 радиореле`,
-      keyValue: `${wireless_1} шт`,
-    });
-    writingArray.push({
-      desc: `Беспроводной 2-клавишный выключатель + 2 радиореле`,
-      keyValue: `${wireless_2} шт`,
-    });
-    writingArray.push({
-      desc: `Беспроводной 3-клавишный выключатель + 3 радиореле`,
-      keyValue: `${wireless_3} шт`,
-    });
-    writingArray.push({
-      desc: `Беспроводной 1-клавишный выключатель + 1 радиореле + WIFI`,
-      keyValue: `${wireless_1_wifi} шт`,
-    });
-    writingArray.push({
-      desc: `Беспроводной 2-клавишный выключатель + 2 радиореле + WIFI`,
-      keyValue: `${wireless_2_wifi} шт`,
-    });
-    writingArray.push({
-      desc: `Беспроводной 3-клавишный выключатель + 3 радиореле + WIFI`,
-      keyValue: `${wireless_3_wifi} шт`,
-    });
-    writingArray.push({
-      desc: `Фотореле`,
-      keyValue: `${photoRelay} шт`,
-    });
-    writingArray.push({
-      desc: `Астрономическое реле`,
-      keyValue: `${astroRelay} шт`,
-    });
-    writingArray.push(solderBoxes);
-    return writingArray;
   }
 }
 
-function getItems(idb: IndexedDB, orderId: IDBValidKey) {
-  return new Promise<CommonItemType[]>((resolve, reject) => {
-    idb.measures
-      .getOwn(orderId)
-      .then((measures) => {
-        let favouriteMeasure = measures.find((measure) => measure.isFavourite);
-        if (!favouriteMeasure) resolve([]);
-        idb.objects.getOwn(favouriteMeasure!.id).then((objects) => {
-          if (!objects.length) resolve([]);
-          const allItems: CommonItemType[] = [];
-          objects.forEach(async (object, index) => {
-            const items = await idb.items.getOwn(object.id);
-            allItems.push(...items);
-            if (index === objects.length - 1) resolve(allItems);
-          });
-        });
-      })
-      .catch((err) => reject(err));
-  });
+async function getItemsObj(idb: IndexedDB, orderId: IDBValidKey) {
+  const itemsArr: Array<{
+    title: string;
+    items: CommonItemType[];
+  }> = [];
+  const measures = await idb.measures.getOwn(orderId);
+  let fav = measures.find((meas) => meas.isFavourite);
+  const objects = await idb.objects.getOwn(fav!.id);
+  await Promise.all(
+    objects.map(async (obj) => {
+      const items = await idb.items.getOwn(obj.id);
+      itemsArr.push({
+        title: obj.title,
+        items,
+      });
+    })
+  );
+  return itemsArr;
 }

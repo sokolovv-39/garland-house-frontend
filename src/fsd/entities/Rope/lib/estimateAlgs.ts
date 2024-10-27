@@ -37,10 +37,10 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
           (rope) => rope.thickness === RopeThicknessEnum.mm_2
         );
         if (ropeIndex !== -1) {
-          ropes[ropeIndex].length += 1.1 * fringe.length;
+          ropes[ropeIndex].length += getRopeLength(fringe.length, 0);
         } else {
           ropes.push({
-            length: 1.1 * fringe.length,
+            length: getRopeLength(fringe.length, 0),
             thickness: RopeThicknessEnum.mm_2,
           });
         }
@@ -54,10 +54,11 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
         const ropeIndex = ropes.findIndex(
           (rope) => rope.thickness === RopeThicknessEnum.mm_2
         );
-        if (ropeIndex !== -1) ropes[ropeIndex].length += 1.1 * thread.length;
+        if (ropeIndex !== -1)
+          ropes[ropeIndex].length += getRopeLength(thread.length, 0);
         else {
           ropes.push({
-            length: 1.1 * thread.length,
+            length: getRopeLength(thread.length, 0),
             thickness: RopeThicknessEnum.mm_2,
           });
         }
@@ -99,38 +100,7 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
 
   ropes.forEach((item) => {
     esRopes.push({
-      desc: `${item.title} / ${item.thickness}`,
-      keyValue: `${item.length} м`,
-    });
-  });
-
-  return esRopes;
-}
-
-export function getRopeCustom(
-  allItems: CommonItemType[]
-): EsWritingArrayType[] {
-  const ropes: RopeType[] = [];
-  const esRopes: EsWritingArrayType[] = [];
-
-  allItems.forEach((itemObj) => {
-    if (itemObj.itemTitle === "Трос") {
-      const rope = itemObj.item as RopeType;
-      let existIndex = ropes.findIndex((item) => {
-        if (item.thickness === rope.thickness) return true;
-        else return false;
-      });
-      if (existIndex !== -1) {
-        ropes[existIndex].length += rope.length;
-      } else {
-        ropes.push(rope);
-      }
-    }
-  });
-
-  ropes.forEach((item) => {
-    esRopes.push({
-      desc: `${item.title} / ${item.thickness}`,
+      desc: `Трос / ${item.thickness}`,
       keyValue: `${item.length} м`,
     });
   });

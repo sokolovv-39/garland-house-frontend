@@ -111,3 +111,32 @@ export function threadBracingRFP(
     ];
   } else return [];
 }
+
+export function threadOnTreeRFP(
+  allItems: CommonItemType[],
+  startId: number
+): LineType[] {
+  let length = 0;
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Нить") {
+      const thread = itemObj.item as ThreadType;
+      if (thread.tree.isActive && thread.tree.height > 5) {
+        length += 1.1 * thread.length;
+      }
+    }
+  });
+
+  if (length) {
+    return [
+      {
+        id: startId.toString(),
+        desc: `Монтаж Нити светодиодной на дерево высотой более 5 метров`,
+        unit: "м.п",
+        quantity: length.toString(),
+        price: defaultThread.tree.price.toString(),
+        cost: `${length * defaultThread.tree.price}`,
+      },
+    ];
+  } else return [];
+}

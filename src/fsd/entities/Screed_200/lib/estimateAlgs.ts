@@ -3,6 +3,7 @@ import { CommonItemType } from "../../Item";
 import { PVSColorEnum } from "../../PVS";
 import { ThreadScreedsTypeEnum, ThreadType } from "../../Thread";
 import { Screed_200_Type } from "../model";
+import { NeonType } from "../../Neon/model";
 
 export function get_screeds_200_packs(
   allItems: CommonItemType[]
@@ -31,27 +32,24 @@ export function get_screeds_200_packs(
     }
   });
 
-  const pack = 100;
-
-  const esScreeds: EsWritingArrayType[] = screeds.map((screed) => {
-    let color = PVSColorEnum.Black;
-    if (screed.color === PVSColorEnum.White) color = screed.color;
-    return {
-      desc: `Стяжка 200 мм / ${color}`,
-      keyValue: `${Math.ceil(screed.quantity / pack)} уп`,
-    };
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Гибкий неон") {
+      const neon = itemObj.item as NeonType;
+      if (neon.isScreeds_200mm) {
+        const index = screeds.findIndex(
+          (screed) => screed.color === PVSColorEnum.White
+        );
+        if (~index) {
+          screeds[index].quantity += neon.length * 5;
+        } else {
+          screeds.push({
+            color: PVSColorEnum.White,
+            quantity: neon.length * 5,
+          });
+        }
+      }
+    }
   });
-
-  return esScreeds;
-}
-
-export function get_screeds_200_custom(
-  allItems: CommonItemType[]
-): EsWritingArrayType[] {
-  const screeds: Array<{
-    color: PVSColorEnum;
-    quantity: number;
-  }> = [];
 
   const pack = 100;
 

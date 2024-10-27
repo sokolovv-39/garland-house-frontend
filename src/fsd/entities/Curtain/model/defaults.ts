@@ -33,5 +33,9 @@ export const curtainDefault: CurtainType = {
     s_2_9: 38742,
   },
   quantity: 1,
-  contours: 2,
+  contours: 1,
+  powerUnits: 1,
+  tees: 0,
+  extensions_1m: 0,
+  extensions_3m: 0,
 };

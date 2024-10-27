@@ -3,7 +3,7 @@ export { getEsScrewRings } from "./screwRings";
 export { getEsAnchorRings } from "./anchorRings";
 export { getEsLanyards } from "./lanyards";
 export { getEsDuplexClamps } from "./duplexClamps";
-export { getEsExtensions } from "./extensions";
+export { getEsExtensions, getRFPExtensions } from "./extensions";
 export { getEsTees } from "./tees";
 export { getEsPowerUnits } from "./powerUnits";
 export { getEsMetalProfile } from "./metalProfile";

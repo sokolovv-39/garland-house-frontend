@@ -15,6 +15,7 @@ export enum ThreadGlowModeEnum {
 export enum ThreadBracingEnum {
   Screeds = "Стяжки",
   Rope = "Трос",
+  Brackets = "Скобы",
 }
 
 export enum ThreadSurfaceEnum {
@@ -45,4 +46,9 @@ export type ThreadType = {
   extensions_10m: number;
   screedsType: ThreadScreedsTypeEnum;
   price_screed_bracing: number;
+  tree: {
+    isActive: boolean;
+    height: number;
+    price: number;
+  };
 };

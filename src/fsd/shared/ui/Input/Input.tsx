@@ -17,6 +17,7 @@ export function Input({
   onKeyDown,
   isPrice = false,
   littleType = false,
+  isLink = false,
 }: {
   type: "text" | "password" | "search";
   placeholder?: string;
@@ -28,6 +29,7 @@ export function Input({
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   isPrice?: boolean;
   littleType?: boolean;
+  isLink?: boolean;
 }) {
   const [val, setVal] = useState<string>("");
 
@@ -58,11 +60,29 @@ export function Input({
       break;
   }
 
-  /*   if (littleType)
-    inputStyles = {
-      ...inputStyles,
-      paddingTop: "23px",
-    }; */
+  function inputClick(e: React.MouseEvent<HTMLInputElement>) {
+    if (isLink) {
+      const input = e.currentTarget;
+      const val = e.currentTarget.value;
+      const textWidth = getTextWidth(val, window.getComputedStyle(input).font);
+      const clickX = e.clientX - input.getBoundingClientRect().left;
+      if (clickX <= textWidth) {
+        window.open(val, "_blank");
+      } else {
+        input.focus();
+      }
+    }
+  }
+
+  function getTextWidth(text: string, font: string) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (context) {
+      context.font = font;
+      return context.measureText(text).width;
+    }
+    return 0;
+  }
 
   useEffect(() => {
     if (initialValue) setVal(initialValue);
@@ -104,7 +124,9 @@ export function Input({
         className={
           type === "search"
             ? `${classes.searchInput} ${classes.input} ${placeholderClass}`
-            : `${classes.input} ${placeholderClass}`
+            : `${classes.input} ${placeholderClass} ${
+                isLink && classes.linkedInput
+              }`
         }
         placeholder={placeholder}
         style={{
@@ -115,6 +137,7 @@ export function Input({
         onKeyDown={(e) => {
           if (onKeyDown) onKeyDown(e);
         }}
+        onClick={inputClick}
       />
     </div>
   );

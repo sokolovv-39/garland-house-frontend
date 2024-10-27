@@ -1,5 +1,6 @@
 "use client";
 
+import { generateRFP } from "@/fsd/features/OrderActions/lib";
 import { ErrorPage, IDBContext } from "@/fsd/shared";
 import { MeasureControl } from "@/fsd/widgets";
 import React, { useContext, useEffect, useState } from "react";

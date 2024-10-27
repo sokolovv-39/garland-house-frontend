@@ -582,7 +582,9 @@ export function SelectedObject({
       </div>
       <div className={classes.pickers}>
         <PickItem addItem={(item) => addItem(item)} />
-        <NoMedia />
+        <NoMedia type="Добавить фото" />
+        <NoMedia type="Добавить видео" />
+        <NoMedia type="Добавить визуализацию объекта" />
       </div>
     </div>
   );

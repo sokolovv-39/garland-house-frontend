@@ -1,9 +1,16 @@
-import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
+import {
+  EsWritingArrayType,
+  LineType,
+} from "@/fsd/features/OrderActions/model";
 import { CommonItemType } from "../../Item";
 import { FringeCableEnum, FringeType } from "../../Fringe";
 import { BeltLightType } from "../../BeltLight";
 import { NeonType } from "../../Neon/model";
 import { ThreadType } from "../../Thread";
+import { CurtainType } from "../../Curtain";
+
+export const extPrice = 200;
+export const teePrice = 500;
 
 export function getEsExtensions(
   allItems: CommonItemType[]
@@ -64,5 +71,50 @@ export function getEsExtensions(
     }
   });
 
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Занавес") {
+      const item = itemObj.item as CurtainType;
+      esExt.push({
+        desc: `Удлинитель / занавес / 1м / ${item.cable}`,
+        keyValue: `${item.extensions_1m} шт`,
+      });
+      esExt.push({
+        desc: `Удлинитель / занавес / 3м / ${item.cable}`,
+        keyValue: `${item.extensions_3m} шт`,
+      });
+    }
+  });
+
   return esExt;
+}
+
+export function getRFPExtensions(allItems: CommonItemType[]) {
+  let fringeExt = 0;
+  let threadExt = 0;
+  let fringeTee = 0;
+  let threadTee = 0;
+
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Бахрома") {
+      const fringe = itemObj.item as FringeType;
+      fringeExt +=
+        fringe.extensions_1m * extPrice +
+        fringe.extensions_3m * 3 * extPrice +
+        fringe.extensions_5m * 5 * extPrice +
+        fringe.extensions_10m * 10 * extPrice;
+      fringeTee += fringe.tees * teePrice;
+    }
+    if (itemObj.itemTitle === "Нить") {
+      const thread = itemObj.item as ThreadType;
+      threadExt +=
+        thread.extensions_1m * extPrice +
+        thread.extensions_3m * 3 * extPrice +
+        thread.extensions_5m * 5 * extPrice +
+        thread.extensions_10m * 10 * extPrice;
+      threadTee += thread.tees * teePrice;
+    }
+  });
+
+  const overall = fringeExt + threadExt + fringeTee + threadTee;
+  return overall;
 }

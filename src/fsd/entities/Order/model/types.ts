@@ -15,6 +15,8 @@ export type OrderType = {
   address: string;
   comments: CommentType[];
   numberOfOrder: number;
+  priceWithDiscount: number;
+  duration: string;
   rfpFork: {
     noData: boolean;
     maxRfpPrice: number;

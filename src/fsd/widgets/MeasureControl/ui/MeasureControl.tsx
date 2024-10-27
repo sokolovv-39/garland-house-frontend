@@ -42,7 +42,7 @@ export function MeasureControl({ orderId }: { orderId: string }) {
           }`}
         >
           <span className={classes.number}>3</span>
-          <span>Визуализации и отчет</span>
+          <span>Отчет</span>
         </Link>
       </div>
       <Button goto="/orders" type="button">

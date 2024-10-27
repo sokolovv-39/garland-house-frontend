@@ -18,6 +18,8 @@ export const defaultOrder: OrderType = {
   address: "",
   comments: [],
   numberOfOrder: 0,
+  priceWithDiscount: 0,
+  duration: "",
   rfpFork: {
     maxRfpPrice: 0,
     minRfpPrice: 0,

@@ -3,4 +3,4 @@ export {
   getThreadScreedsQuantity,
   getEsThread,
 } from "./estimateAlgs";
-export { threadRfp, threadBracingRFP } from "./rfpAlgs";
+export { threadRfp, threadBracingRFP, threadOnTreeRFP } from "./rfpAlgs";

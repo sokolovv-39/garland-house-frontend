@@ -33,4 +33,9 @@ export const defaultThread: ThreadType = {
   extensions_10m: 0,
   screedsType: ThreadScreedsTypeEnum.Screed_200,
   price_screed_bracing: 780,
+  tree: {
+    isActive: false,
+    height: 1,
+    price: 150,
+  },
 };

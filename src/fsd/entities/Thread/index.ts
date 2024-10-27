@@ -20,4 +20,5 @@ export {
   getEsThread,
   threadRfp,
   threadBracingRFP,
+  threadOnTreeRFP,
 } from "./lib";

@@ -3,34 +3,11 @@ import fontkit from "@pdf-lib/fontkit";
 import robotoFontUrl from "./fonts/Roboto-Regular.ttf";
 import { IndexedDB } from "../../IndexedDB";
 import {
-  BeltLightGlowShadeEnum,
-  BeltLightLampStepEnum,
   beltLightRfp,
-  BeltLightType,
-  BoxPVSType,
-  CommonItemType,
-  CorrugationType,
-  CurtainGlowModeEnum,
-  CurtainSizeEnum,
-  CurtainType,
   electricShieldRfp,
   ElectricShieldType,
   extraCorrBoxRfp,
-  FringeCableEnum,
-  FringeType,
-  get_screeds_200_packs,
-  get_Screeds_480_500_packs,
-  getAllVagi,
-  getBeltLightLength,
-  getCorrPVSLength,
-  getEsBoxPvs,
-  getEsCorrPVS,
-  getFringeLength,
-  getNeonLength,
-  getPVSLength,
-  getRopeLength,
-  getSolderBoxPieces,
-  getThreadLength,
+  getRFPExtensions,
   montageRfp,
   MontageType,
   neonPaintingRfp,
@@ -49,6 +26,7 @@ import {
   threadGlowMode,
   ThreadGlowModeEnum,
   ThreadGlowShadeEnum,
+  threadOnTreeRFP,
   threadRfp,
   ThreadType,
   VagiType,
@@ -172,6 +150,8 @@ export async function generateRFP(
   yPosition -= yOffset;
   xPosition = margin;
 
+  const overall = getTotal();
+
   yOffset = writeOverall(
     {
       id: "",
@@ -179,10 +159,29 @@ export async function generateRFP(
       unit: "",
       quantity: "",
       price: "",
-      cost: splitPrice(getTotal()),
+      cost: splitPrice(overall),
     },
     "Всего"
   );
+
+  yPosition -= yOffset;
+  xPosition = margin;
+
+  const discount = await getDiscount();
+
+  if (discount) {
+    yOffset = writeOverall(
+      {
+        id: "",
+        desc: "",
+        unit: "",
+        quantity: "",
+        price: "",
+        cost: splitPrice(await getDiscount()),
+      },
+      "Цена со скидкой"
+    );
+  }
 
   if (download) {
     const demoPdfBytes = await fetch(demoPDF).then((res) => res.arrayBuffer());
@@ -218,6 +217,13 @@ export async function generateRFP(
       });
     });
     return overall;
+  }
+
+  async function getDiscount() {
+    const measure = (await idb.measures.getAll()).find(
+      (measure) => measure.id === measureId
+    );
+    return (await idb.orders.get(measure!.ownOrder)).priceWithDiscount;
   }
 
   function writeRow(row: LineType) {
@@ -542,6 +548,11 @@ export async function generateRFP(
             startId++;
           });
 
+          threadOnTreeRFP(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
+
           beltLightRfp(items, startId).forEach((el) => {
             positions[i].items.push(el);
             startId++;
@@ -560,13 +571,15 @@ export async function generateRFP(
           positions[i].items.push(electricShieldRfp(items, startId));
           startId++;
 
+          let consumables = 5920 + getRFPExtensions(items);
+
           positions[i].items.push({
             id: startId.toString(),
             desc: `Расходные материалы для монтажа  (стяжки, блоки питания для бахромы или сетевые шнуры для неона, выключатель 1/2кл, кабель ПВС до 20 метров в кабель-канале или гофре, распаячная коробка, термоусадка в местах соединения)`,
             unit: "шт",
             quantity: "1",
-            price: "5920",
-            cost: " 5920",
+            price: consumables.toString(),
+            cost: consumables.toString(),
           });
           startId++;
 

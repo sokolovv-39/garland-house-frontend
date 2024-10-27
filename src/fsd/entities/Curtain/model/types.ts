@@ -42,6 +42,7 @@ export type CurtainType = {
   glowMode: CurtainGlowModeEnum;
   cable: CurtainCableEnum;
   surface: CurtainSurfaceEnum;
+
   priceObj: {
     s_2_1: number;
     s_2_1dot5: number;
@@ -53,4 +54,8 @@ export type CurtainType = {
   };
   quantity: number;
   contours: number;
+  powerUnits: number;
+  tees: number;
+  extensions_1m: number;
+  extensions_3m: number;
 };

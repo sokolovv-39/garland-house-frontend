@@ -13,6 +13,5 @@ export {
   getRopeRings,
   getRopeLength,
   getEsRope,
-  getRopeCustom,
   ropeRfp,
 } from "./lib";

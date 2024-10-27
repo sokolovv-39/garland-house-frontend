@@ -14,6 +14,7 @@ import {
 } from "@/fsd/shared";
 import { defaultOrder, OrderType } from "../../model";
 import { OrderActions } from "@/fsd/features";
+import { generateRFP } from "@/fsd/features/OrderActions/lib";
 
 const workersMocks = ["Александр П.", "Сергей А.", "Олег И.", "Антон У."];
 
@@ -31,8 +32,10 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
   function getOrder() {
     idb?.orders
       .get(orderId)
-      .then((order) => {
-        setOrder(order);
+      .then(async (order) => {
+        setOrder({
+          ...order,
+        });
       })
       .catch((err) => console.error(err));
   }
@@ -178,6 +181,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             }
           />
           <Input
+            isLink
             littleType
             type="text"
             placeholder="Ссылка на Яндекс карты"
@@ -232,6 +236,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             />
           </div>
           <Input
+            isLink
             littleType
             type="text"
             placeholder="Ссылка на AmoCRM"
@@ -242,6 +247,18 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
                 amoCRMLink: text,
               });
             }}
+          />
+          <Input
+            littleType
+            type="text"
+            placeholder="Время на выполнение замера, ч"
+            initialValue={order.duration}
+            onChange={(text) =>
+              setOrder({
+                ...order,
+                duration: text,
+              })
+            }
           />
         </div>
         <OrderActions idb={idb!} orderId={orderId} />
@@ -317,6 +334,38 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             })
           }
         ></textarea>
+        <Input
+          littleType
+          isPrice
+          type="text"
+          placeholder="Цена со скидкой"
+          initialValue={
+            order.priceWithDiscount ? order.priceWithDiscount.toString() : ""
+          }
+          onChange={(text) => {
+            if (text) {
+              const toNum = parseInt(text.replace(/\s/g, ""));
+              if (toNum) {
+                if (!isFinite(toNum)) {
+                  setOrder({
+                    ...order,
+                    priceWithDiscount: 0,
+                  });
+                } else {
+                  setOrder({
+                    ...order,
+                    priceWithDiscount: toNum,
+                  });
+                }
+              }
+            } else {
+              setOrder({
+                ...order,
+                priceWithDiscount: 0,
+              });
+            }
+          }}
+        />
         <Comments />
       </div>
     </div>

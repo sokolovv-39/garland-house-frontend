@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { MediaList } from "../MediaList";
 import { uploadMedia } from "../../lib";
 
-export function NoMedia() {
+export function NoMedia({ type }: { type: string }) {
   const [hover, setHover] = useState(false);
   const [mediaURLs, setMediaURLs] = useState<string[]>([]);
 
@@ -51,7 +51,7 @@ export function NoMedia() {
             cursor: `${mediaURLs.length === 0 ? "pointer" : "auto"}`,
           }}
         >
-          <span className={classes.title}>Добавить фото или видео</span>
+          <span className={classes.title}>{type}</span>
           <PlusSVG hovered={hover} disabled={mediaURLs.length > 0} />
         </div>
       ) : (

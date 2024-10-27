@@ -181,6 +181,47 @@ export function Curtain({
               />
             </div>
           )}
+          <NumberSelect
+            minValue={1}
+            type="Блоки питания, шт"
+            initialValue={itemObj.item.powerUnits}
+            callback={(val) =>
+              setCurtain({
+                ...curtain,
+                powerUnits: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Удлинители, 1м"
+            initialValue={itemObj.item.extensions_1m}
+            callback={(val) =>
+              setCurtain({
+                ...curtain,
+                extensions_1m: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Удлинители, 3м"
+            initialValue={itemObj.item.extensions_3m}
+            callback={(val) =>
+              setCurtain({
+                ...curtain,
+                extensions_3m: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Тройники, шт"
+            initialValue={itemObj.item.tees}
+            callback={(val) =>
+              setCurtain({
+                ...curtain,
+                tees: val,
+              })
+            }
+          />
         </div>
       )}
     </div>

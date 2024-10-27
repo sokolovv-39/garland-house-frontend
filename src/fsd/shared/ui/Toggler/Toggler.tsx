@@ -10,11 +10,15 @@ export function Toggler({
   isActive,
   callback,
   val,
+  numberType,
+  isWithInput = true,
 }: {
   type: string;
   isActive: boolean;
   callback: (isActive: boolean, val: number) => void;
   val: number;
+  numberType: string;
+  isWithInput?: boolean;
 }) {
   const [isOn, setIsOn] = useState(isActive);
   const [input, setInput] = useState(val);
@@ -22,7 +26,7 @@ export function Toggler({
   return (
     <div className={classes.wrapper}>
       <p className={classes.type}>{type}</p>
-      {isOn && (
+      {isOn && isWithInput && (
         <NumberSelect
           style={{
             operandWidth: "47px",
@@ -31,7 +35,7 @@ export function Toggler({
             inputWidth: "251px",
             gap: "6px",
           }}
-          type="Длина покраски"
+          type={numberType}
           initialValue={val}
           callback={(val) => {
             callback(isOn, val);

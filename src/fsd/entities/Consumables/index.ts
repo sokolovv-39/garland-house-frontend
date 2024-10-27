@@ -10,6 +10,7 @@ export {
   getEsPowerUnits,
   getEsConnectingNeedles,
   getEsPlugs,
+  getRFPExtensions,
   getEsLamps,
   getEsCorrClips,
 } from "./lib";

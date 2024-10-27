@@ -12,10 +12,15 @@ export const defaultNeon: NeonType = {
   needles: 1,
   powerUnits: 1,
   contours: 1,
-  price: 2200,
+  priceObj: {
+    m_8_16: 2200,
+    m_14_25: 2800,
+    m_8_16_prof: 350,
+    m_14_25_prof: 450,
+  },
   extensions_1m: 0,
   ral: "",
   ral_meters: 1,
-  profile_price: 350,
   plugs: 1,
+  isScreeds_200mm: false,
 };

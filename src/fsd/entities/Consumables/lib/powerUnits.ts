@@ -13,7 +13,8 @@ export function getEsPowerUnits(
     if (
       itemObj.itemTitle === "Бахрома" ||
       itemObj.itemTitle === "Гибкий неон" ||
-      itemObj.itemTitle === "Нить"
+      itemObj.itemTitle === "Нить" ||
+      itemObj.itemTitle === "Занавес"
     ) {
       const powerUnits = (
         itemObj.item as {
@@ -29,7 +30,7 @@ export function getEsPowerUnits(
       } else {
         esPowerUnits.push({
           desc: `Блок питания / ${itemObj.itemTitle}`,
-          keyValue: `1 шт`,
+          keyValue: `${powerUnits} шт`,
         });
       }
     }

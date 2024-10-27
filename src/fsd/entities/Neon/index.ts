@@ -1,5 +1,11 @@
 export { Neon } from "./ui";
-export { neonGlowShade, neonThickness, defaultNeon } from "./model";
+export {
+  neonGlowShade,
+  neonThickness,
+  defaultNeon,
+  NeonThicknessEnum,
+  NeonGlowShadeEnum,
+} from "./model";
 export {
   getNeonLength,
   getNeonNeedles,

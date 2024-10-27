@@ -1,16 +1,15 @@
 import { LineType } from "@/fsd/features/OrderActions/model";
 import { CommonItemType } from "../../Item";
-import { NeonType } from "../model";
+import { defaultNeon, NeonThicknessEnum, NeonType } from "../model";
 import { getNeonLength } from "./estimateAlgs";
 
 export function neonRfp(
   allItems: CommonItemType[],
   startId: number
 ): LineType[] {
-  const mergedItems: Pick<
-    NeonType,
-    "glowShade" | "thickness" | "length" | "price"
-  >[] = [];
+  const mergedItems: (Pick<NeonType, "glowShade" | "thickness" | "length"> & {
+    price: number;
+  })[] = [];
 
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Гибкий неон") {
@@ -23,11 +22,15 @@ export function neonRfp(
       if (index !== -1) {
         mergedItems[index].length += neon.length;
       } else {
+        let price =
+          neon.thickness === NeonThicknessEnum.Small
+            ? defaultNeon.priceObj.m_8_16
+            : defaultNeon.priceObj.m_14_25;
         mergedItems.push({
           length: neon.length,
           glowShade: neon.glowShade,
           thickness: neon.thickness,
-          price: neon.price,
+          price: price,
         });
       }
     }
@@ -55,7 +58,9 @@ export function neonPaintingRfp(
   allItems: CommonItemType[],
   startId: number
 ): LineType[] {
-  const mergedItems: Pick<NeonType, "thickness" | "length" | "price">[] = [];
+  const mergedItems: (Pick<NeonType, "thickness" | "length"> & {
+    price: number;
+  })[] = [];
 
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Гибкий неон") {
@@ -67,10 +72,14 @@ export function neonPaintingRfp(
         if (index !== -1) {
           mergedItems[index].length += neon.ral_meters;
         } else {
+          let price =
+            neon.thickness === NeonThicknessEnum.Small
+              ? defaultNeon.priceObj.m_8_16_prof
+              : defaultNeon.priceObj.m_14_25_prof;
           mergedItems.push({
             length: neon.ral_meters,
             thickness: neon.thickness,
-            price: neon.profile_price,
+            price: price,
           });
         }
       }

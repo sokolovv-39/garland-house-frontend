@@ -136,6 +136,33 @@ export function Neon({
             />
           </div>
           <Toggler
+            numberType="Длина покраски"
+            val={neon.ral_meters}
+            type="Покраска профиля"
+            isActive={neon.painting}
+            callback={(isActive, length) => {
+              setNeon({
+                ...neon,
+                painting: isActive,
+                ral_meters: length,
+              });
+            }}
+          />
+          <Toggler
+            isWithInput={false}
+            numberType=""
+            val={1}
+            type="На стяжки (200 мм)?"
+            isActive={neon.isScreeds_200mm}
+            callback={(isActive, length) => {
+              setNeon({
+                ...neon,
+                isScreeds_200mm: isActive,
+              });
+            }}
+          />
+          <Toggler
+            numberType="Длина покраски"
             val={neon.ral_meters}
             type="Покраска профиля"
             isActive={neon.painting}

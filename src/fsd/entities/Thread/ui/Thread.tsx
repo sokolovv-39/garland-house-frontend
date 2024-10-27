@@ -7,6 +7,7 @@ import {
   ItemsAdjust,
   IDBContext,
   Select,
+  Toggler,
 } from "@/fsd/shared";
 import classes from "./Thread.module.scss";
 import { useContext, useEffect, useState } from "react";
@@ -26,6 +27,7 @@ import {
 import { ItemType } from "../../Item";
 import { threadCables } from "../model/defaults";
 import { PVSColorEnum } from "../../PVS";
+import { tree } from "next/dist/build/templates/app-page";
 
 export function Thread({
   deleteItem,
@@ -88,7 +90,12 @@ export function Thread({
         </div>
         <div className={classes.arrowWrapper}>
           {!isOpen && itemObj.item.length !== 0 && (
-            <span>{itemObj.item.length} м</span>
+            <span>
+              {itemObj.item.length} м
+              {thread.tree.isActive
+                ? `. На дерево высотой ${thread.tree.height} м`
+                : ""}
+            </span>
           )}
           <ArrowSVG
             style={{
@@ -112,6 +119,22 @@ export function Thread({
               });
             }}
             initialValue={itemObj.item.length}
+          />
+          <Toggler
+            numberType="Высота дерева, м"
+            type="Для дерева?"
+            val={thread.tree.height}
+            isActive={thread.tree.isActive}
+            callback={(isActive, val) => {
+              setThread({
+                ...thread,
+                tree: {
+                  ...thread.tree,
+                  isActive,
+                  height: val,
+                },
+              });
+            }}
           />
           <div className={classes.tabs}>
             <h5 className={classes.tabsTitle}>Тип свечения</h5>

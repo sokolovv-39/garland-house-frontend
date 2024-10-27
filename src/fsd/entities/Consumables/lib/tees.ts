@@ -13,6 +13,8 @@ export function getEsTees(allItems: CommonItemType[]) {
         black_tees += tees;
       } else if (item.cable === "Белый") {
         white_tees += tees;
+      } else {
+        white_tees += tees;
       }
     }
   });

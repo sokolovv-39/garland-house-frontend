@@ -22,10 +22,15 @@ export type NeonType = {
   needles: number;
   powerUnits: number;
   contours: number;
-  price: number;
+  priceObj: {
+    m_8_16: number;
+    m_14_25: number;
+    m_8_16_prof: number;
+    m_14_25_prof: number;
+  };
   extensions_1m: number;
   ral: string;
   ral_meters: number;
-  profile_price: number;
   plugs: number;
+  isScreeds_200mm: boolean;
 };
