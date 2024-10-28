@@ -1,5 +1,9 @@
 import { EsWritingArrayType } from "@/fsd/features/OrderActions/model";
-import { BeltLightLampStepEnum, BeltLightType } from "../../BeltLight";
+import {
+  BeltLightLampStepEnum,
+  BeltLightType,
+  getBeltLightLength,
+} from "../../BeltLight";
 import { CommonItemType } from "../../Item";
 
 export function getEsLamps(allItems: CommonItemType[]): EsWritingArrayType[] {
@@ -12,10 +16,10 @@ export function getEsLamps(allItems: CommonItemType[]): EsWritingArrayType[] {
       const beltLight = itemObj.item as BeltLightType;
       let newQuantity = 0;
       if (beltLight.lampStep === BeltLightLampStepEnum.cm_20) {
-        newQuantity = beltLight.length * 5;
+        newQuantity = getBeltLightLength(beltLight.length).skeinMeters * 5;
       }
       if (beltLight.lampStep === BeltLightLampStepEnum.cm_40) {
-        newQuantity = beltLight.length * 2.5;
+        newQuantity = getBeltLightLength(beltLight.length).skeinMeters * 2.5;
       }
       const index = lamps.findIndex(
         (el) => el.glowShade === beltLight.glowShade

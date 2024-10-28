@@ -11,7 +11,7 @@ import {
   Input,
 } from "@/fsd/shared";
 import classes from "./Neon.module.scss";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { ItemType } from "../../Item";
 import {
   neonGlowShade,
@@ -37,6 +37,7 @@ export function Neon({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
   const [neon, setNeon] = useState<NeonType>(itemObj.item);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   function updateNeon() {
     idb?.items
@@ -65,14 +66,20 @@ export function Neon({
   }, [openedId]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
+    let y = 0;
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        y = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.titleWrapper}>
           <h4 className={classes.title}>{itemObj.item.title}</h4>
@@ -136,19 +143,6 @@ export function Neon({
             />
           </div>
           <Toggler
-            numberType="Длина покраски"
-            val={neon.ral_meters}
-            type="Покраска профиля"
-            isActive={neon.painting}
-            callback={(isActive, length) => {
-              setNeon({
-                ...neon,
-                painting: isActive,
-                ral_meters: length,
-              });
-            }}
-          />
-          <Toggler
             isWithInput={false}
             numberType=""
             val={1}
@@ -174,6 +168,18 @@ export function Neon({
               });
             }}
           />
+          {neon.painting && (
+            <NumberSelect
+              type="Длина непокрашенного профиля, м"
+              callback={(val) => {
+                setNeon({
+                  ...neon,
+                  no_ral_meters: val,
+                });
+              }}
+              initialValue={itemObj.item.no_ral_meters}
+            />
+          )}
           {neon.painting && (
             <div className={classes.tabs}>
               <h5 className={classes.tabsTitle}>Номер RAL</h5>

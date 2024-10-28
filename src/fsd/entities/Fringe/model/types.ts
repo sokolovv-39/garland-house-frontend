@@ -12,8 +12,8 @@ export enum FringeCableEnum {
   White = "Белый",
 }
 export enum FringeBracingEnum {
-  Bracket = "Скоба кабельная",
   Rope = "Трос",
+  Bracket = "Скоба кабельная",
 }
 
 export enum FringeLedEnum {

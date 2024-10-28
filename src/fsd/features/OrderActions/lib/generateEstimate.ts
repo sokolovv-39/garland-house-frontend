@@ -68,6 +68,7 @@ import { FringeCableEnum, getEsFringe } from "@/fsd/entities/Fringe";
 import { getRelaysSwitches } from "@/fsd/entities/RelaysSwitches/lib/estimateAlgs";
 import robotoFontUrl from "./fonts/Roboto-Regular.ttf";
 import { EsWritingArrayType } from "../model";
+import { screed_200_custom_es } from "@/fsd/entities/Screed_200/lib/estimateAlgs";
 
 export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
   const pdfDoc = await PDFDocument.create();
@@ -116,7 +117,7 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
     const powerUnits = getEsPowerUnits(el.items);
     let lamps = getEsLamps(el.items);
     let screeds_480_500_mm = getCustomScreeds_480_500(el.items);
-    let screeds_200_mm = get_screeds_200_packs(el.items);
+    let screeds_200_mm = screed_200_custom_es(el.items);
     let corr_clips = getEsCorrClips(el.items);
     let { street_shield_ip65, automat_10A, voltage_relay } =
       getEsElectricShield(el.items);
@@ -131,6 +132,7 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       wireless_3_wifi,
       photoRelay,
       astroRelay,
+      relays,
     } = getRelaysSwitches(el.items);
     const vagi = getAllVagi(el.items);
     const solderBoxes = getSolderBoxPieces(el.items);
@@ -169,7 +171,9 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       neons.forEach((neon) => {
         writingArray.push(neon);
       });
-      writingArray.push(metal_profile);
+      metal_profile.forEach((el) => {
+        writingArray.push(el);
+      });
       writingArray.push({
         desc: `Соединительные иглы`,
         keyValue: `${connecting_needles} шт`,
@@ -273,27 +277,27 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
         keyValue: `${default_2} шт`,
       });
       writingArray.push({
-        desc: `Беспроводной 1-клавишный выключатель + 1 радиореле`,
+        desc: `Беспроводной 1-клавишный выключатель`,
         keyValue: `${wireless_1} шт`,
       });
       writingArray.push({
-        desc: `Беспроводной 2-клавишный выключатель + 2 радиореле`,
+        desc: `Беспроводной 2-клавишный выключатель`,
         keyValue: `${wireless_2} шт`,
       });
       writingArray.push({
-        desc: `Беспроводной 3-клавишный выключатель + 3 радиореле`,
+        desc: `Беспроводной 3-клавишный выключатель`,
         keyValue: `${wireless_3} шт`,
       });
       writingArray.push({
-        desc: `Беспроводной 1-клавишный выключатель + 1 радиореле + WIFI`,
+        desc: `Беспроводной 1-клавишный выключатель + WIFI`,
         keyValue: `${wireless_1_wifi} шт`,
       });
       writingArray.push({
-        desc: `Беспроводной 2-клавишный выключатель + 2 радиореле + WIFI`,
+        desc: `Беспроводной 2-клавишный выключатель + WIFI`,
         keyValue: `${wireless_2_wifi} шт`,
       });
       writingArray.push({
-        desc: `Беспроводной 3-клавишный выключатель + 3 радиореле + WIFI`,
+        desc: `Беспроводной 3-клавишный выключатель + WIFI`,
         keyValue: `${wireless_3_wifi} шт`,
       });
       writingArray.push({
@@ -303,6 +307,10 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       writingArray.push({
         desc: `Астрономическое реле`,
         keyValue: `${astroRelay} шт`,
+      });
+      writingArray.push({
+        desc: `Радиореле`,
+        keyValue: `${relays} шт`,
       });
       writingArray.push(solderBoxes);
       return writingArray;

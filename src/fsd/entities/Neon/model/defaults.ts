@@ -20,6 +20,7 @@ export const defaultNeon: NeonType = {
   },
   extensions_1m: 0,
   ral: "",
+  no_ral_meters: 1,
   ral_meters: 1,
   plugs: 1,
   isScreeds_200mm: false,

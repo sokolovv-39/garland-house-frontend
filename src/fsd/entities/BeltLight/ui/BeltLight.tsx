@@ -9,7 +9,7 @@ import {
   Select,
 } from "@/fsd/shared";
 import classes from "./BeltLight.module.scss";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { ItemType } from "../../Item";
 import {
   beltLightCables,
@@ -37,6 +37,7 @@ export function BeltLight({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
   const [beltLight, setBeltLight] = useState<BeltLightType>(itemObj.item);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   function updateBeltLight() {
     idb?.items
@@ -58,14 +59,20 @@ export function BeltLight({
   }, [openedId]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
+    let y = 0;
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        y = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.titleWrapper}>
           <h4 className={classes.title}>{itemObj.item.title}</h4>

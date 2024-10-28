@@ -295,11 +295,11 @@ export function SelectedObject({
         addToDB<Screed_200_Type>(newItem);
         break;
       }
-      case "Монтаж": {
+      case "Монтаж и логистика": {
         const newItem: ItemType<MontageType> = {
           id: nanoid(),
           orderId,
-          itemTitle: "Монтаж",
+          itemTitle: "Монтаж и логистика",
           objectId: object.id,
           item: montageDefault,
         };
@@ -553,7 +553,7 @@ export function SelectedObject({
                   deleteItem={() => deleteItem(itemObj.id)}
                 />
               );
-            case "Монтаж":
+            case "Монтаж и логистика":
               return (
                 <Montage
                   deleteItem={() => deleteItem(itemObj.id)}
@@ -582,9 +582,12 @@ export function SelectedObject({
       </div>
       <div className={classes.pickers}>
         <PickItem addItem={(item) => addItem(item)} />
-        <NoMedia type="Добавить фото" />
-        <NoMedia type="Добавить видео" />
-        <NoMedia type="Добавить визуализацию объекта" />
+        <NoMedia type="Добавить фото" addedType="Фото" />
+        <NoMedia type="Добавить видео" addedType="Видео" />
+        <NoMedia
+          type="Добавить визуализацию объекта"
+          addedType="Визуализация объекта"
+        />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { MontageType } from "./types";
 
 export const montageDefault: MontageType = {
-  title: "Монтаж",
+  title: "Монтаж и логистика",
   m_16_20: 0,
   m_22_24: 0,
   m_26_36: 0,

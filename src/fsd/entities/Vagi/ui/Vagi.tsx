@@ -6,10 +6,9 @@ import {
   NumberSelect,
   ItemsAdjust,
   IDBContext,
-  Select,
 } from "@/fsd/shared";
 import classes from "./Vagi.module.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ItemType } from "../../Item";
 import { VagiModelEnum, vagiModels, VagiType } from "../model";
 
@@ -31,6 +30,7 @@ export function Vagi({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
   const [vagi, setVagi] = useState<VagiType>(itemObj.item);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   function updateVagi() {
     idb?.items
@@ -52,10 +52,16 @@ export function Vagi({
   }, [openedId]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
+    let y = 0;
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        y = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
   useEffect(() => {
@@ -67,7 +73,7 @@ export function Vagi({
   }, [quantity]);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.titleWrapper}>
           <h4 className={classes.title}>{itemObj.item.title}</h4>

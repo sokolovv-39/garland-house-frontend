@@ -17,7 +17,7 @@ export function montageRfp(
   let complex_thread = 0;
 
   allItems.forEach((itemObj) => {
-    if (itemObj.itemTitle === "Монтаж") {
+    if (itemObj.itemTitle === "Монтаж и логистика") {
       const montage = itemObj.item as MontageType;
       m_16_20 += montage.m_16_20;
       m_22_24 += montage.m_22_24;

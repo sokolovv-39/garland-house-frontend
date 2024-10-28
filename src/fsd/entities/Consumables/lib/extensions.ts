@@ -93,6 +93,8 @@ export function getRFPExtensions(allItems: CommonItemType[]) {
   let threadExt = 0;
   let fringeTee = 0;
   let threadTee = 0;
+  let curtainExt = 0;
+  let curtainTee = 0;
 
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Бахрома") {
@@ -113,8 +115,15 @@ export function getRFPExtensions(allItems: CommonItemType[]) {
         thread.extensions_10m * 10 * extPrice;
       threadTee += thread.tees * teePrice;
     }
+    if (itemObj.itemTitle === "Занавес") {
+      const curtain = itemObj.item as CurtainType;
+      curtainExt +=
+        curtain.extensions_1m * extPrice + curtain.extensions_3m * 3 * extPrice;
+      curtainTee += curtain.tees * teePrice;
+    }
   });
 
-  const overall = fringeExt + threadExt + fringeTee + threadTee;
+  const overall =
+    fringeExt + threadExt + fringeTee + threadTee + curtainExt + curtainTee;
   return overall;
 }

@@ -1,5 +1,10 @@
-.wrapper {
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  .wrapper {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+  }
 }

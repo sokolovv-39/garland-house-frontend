@@ -31,6 +31,7 @@ export type NeonType = {
   extensions_1m: number;
   ral: string;
   ral_meters: number;
+  no_ral_meters: number;
   plugs: number;
   isScreeds_200mm: boolean;
 };

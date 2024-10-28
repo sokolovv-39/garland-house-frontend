@@ -5,11 +5,9 @@ export function getAllVagi(allItems: CommonItemType[]) {
   let vagi = 0;
 
   allItems.forEach((itemObj) => {
-    if (Object.hasOwn(itemObj.item, "contours")) {
-      const itemWithContours = itemObj.item as {
-        contours: number;
-      };
-      vagi += itemWithContours.contours * 2;
+    if (itemObj.itemTitle === "Ваги (клемма)") {
+      const item = itemObj.item as VagiType;
+      vagi += item.quantity;
     }
   });
 

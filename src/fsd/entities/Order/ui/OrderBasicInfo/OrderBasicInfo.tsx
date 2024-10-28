@@ -207,6 +207,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
           />
           <div className={classes.selects}>
             <Select
+              littleType
               type="Менеджер"
               values={workersMocks}
               style={{
@@ -221,6 +222,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
               }
             />
             <Select
+              littleType
               type="Исполнитель"
               values={workersMocks}
               style={{
@@ -289,7 +291,7 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
           )}
         </div>
         <div className={classes.pay}>
-          <Select type="Кто платит за замер" values={workersMocks} />
+          <Select type="Кто платит за замер" values={workersMocks} littleType />
           <Input
             littleType
             isPrice

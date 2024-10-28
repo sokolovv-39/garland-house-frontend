@@ -2,7 +2,7 @@
 
 import { ArrowSVG, CloseSVG, IDBContext, NumberSelect } from "@/fsd/shared";
 import classes from "./Montage.module.scss";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { ItemType } from "../../Item";
 import { MontageType } from "../model";
 
@@ -22,6 +22,7 @@ export function Montage({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
   const [item, setItem] = useState<MontageType>(itemObj.item);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   function updateBeltLight() {
     idb?.items
@@ -43,14 +44,20 @@ export function Montage({
   }, [openedId]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
+    let y = 0;
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        y = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.titleWrapper}>
           <h4 className={classes.title}>{itemObj.item.title}</h4>

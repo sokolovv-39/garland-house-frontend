@@ -92,7 +92,7 @@ export function threadBracingRFP(
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Нить") {
       const thread = itemObj.item as ThreadType;
-      if (thread.bracing === ThreadBracingEnum.Screeds) {
+      if (thread.bracing === ThreadBracingEnum.Brackets) {
         length += thread.length;
       }
     }

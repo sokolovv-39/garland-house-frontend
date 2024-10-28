@@ -9,7 +9,7 @@ import {
   Select,
 } from "@/fsd/shared";
 import classes from "./Curtain.module.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   CurtainBracingEnum,
   curtainBracings,
@@ -43,6 +43,7 @@ export function Curtain({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
   const [curtain, setCurtain] = useState<CurtainType>(itemObj.item);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   function updateCurtain() {
     idb?.items
@@ -64,14 +65,20 @@ export function Curtain({
   }, [openedId]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
+    let y = 0;
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        y = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.titleWrapper}>
           <h4 className={classes.title}>{itemObj.item.title}</h4>

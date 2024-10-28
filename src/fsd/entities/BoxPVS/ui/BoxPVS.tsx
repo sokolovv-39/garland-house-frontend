@@ -9,7 +9,7 @@ import {
   Select,
 } from "@/fsd/shared";
 import classes from "./BoxPVS.module.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ItemType } from "../../Item";
 import { BoxPVSColourEnum, boxPvsColours, BoxPVSType } from "../model";
 
@@ -29,6 +29,7 @@ export function BoxPVS({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
   const [box, setBox] = useState<BoxPVSType>(itemObj.item);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   function updateBox() {
     idb?.items
@@ -50,14 +51,20 @@ export function BoxPVS({
   }, [openedId]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
+    let y = 0;
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        y = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.titleWrapper}>
           <h4 className={classes.title}>{itemObj.item.title}</h4>

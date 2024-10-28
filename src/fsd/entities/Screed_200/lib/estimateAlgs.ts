@@ -4,6 +4,11 @@ import { PVSColorEnum } from "../../PVS";
 import { ThreadScreedsTypeEnum, ThreadType } from "../../Thread";
 import { Screed_200_Type } from "../model";
 import { NeonType } from "../../Neon/model";
+import {
+  CurtainBracingEnum,
+  CurtainCableEnum,
+  CurtainType,
+} from "../../Curtain";
 
 export function get_screeds_200_packs(
   allItems: CommonItemType[]
@@ -51,6 +56,34 @@ export function get_screeds_200_packs(
     }
   });
 
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Занавес") {
+      const curtain = itemObj.item as CurtainType;
+      if (curtain.bracing === CurtainBracingEnum.Screed) {
+        let curtainCable: PVSColorEnum;
+        if (curtain.cable === CurtainCableEnum.Black)
+          curtainCable = PVSColorEnum.Black;
+        if (
+          curtain.cable === CurtainCableEnum.White ||
+          curtain.cable === CurtainCableEnum.Transparent
+        )
+          curtainCable = PVSColorEnum.White;
+
+        const index = screeds.findIndex(
+          (screed) => screed.color === curtainCable
+        );
+        if (~index) {
+          screeds[index].quantity += 2 * 2 * 5;
+        } else {
+          screeds.push({
+            color: curtainCable!,
+            quantity: 2 * 2 * 5,
+          });
+        }
+      }
+    }
+  });
+
   const pack = 100;
 
   const esScreeds: EsWritingArrayType[] = screeds.map((screed) => {
@@ -63,4 +96,37 @@ export function get_screeds_200_packs(
   });
 
   return esScreeds;
+}
+
+export function screed_200_custom_es(
+  allItems: CommonItemType[]
+): EsWritingArrayType[] {
+  const screeds: Array<{
+    color: PVSColorEnum;
+    quantity: number;
+  }> = [];
+  allItems.forEach((itemObj) => {
+    if (itemObj.itemTitle === "Стяжка 200мм") {
+      const screed = itemObj.item as Screed_200_Type;
+      const index = screeds.findIndex((el) => el.color === screed.color);
+      if (~index) {
+        screeds[index].quantity += screed.quantity;
+      } else {
+        screeds.push({
+          color: screed.color,
+          quantity: screed.quantity,
+        });
+      }
+    }
+  });
+
+  const rfp: EsWritingArrayType[] = [];
+  screeds.forEach((el) => {
+    rfp.push({
+      desc: `Стяжки 200м / ${el.color}`,
+      keyValue: `${el.quantity} шт`,
+    });
+  });
+
+  return rfp;
 }

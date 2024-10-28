@@ -6,7 +6,13 @@ import { useEffect, useState } from "react";
 import { MediaList } from "../MediaList";
 import { uploadMedia } from "../../lib";
 
-export function NoMedia({ type }: { type: string }) {
+export function NoMedia({
+  type,
+  addedType,
+}: {
+  type: string;
+  addedType: string;
+}) {
   const [hover, setHover] = useState(false);
   const [mediaURLs, setMediaURLs] = useState<string[]>([]);
 
@@ -56,6 +62,7 @@ export function NoMedia({ type }: { type: string }) {
         </div>
       ) : (
         <MediaList
+          type={addedType}
           urls={mediaURLs}
           callback={addMedia}
           deleteMedia={deleteMedia}

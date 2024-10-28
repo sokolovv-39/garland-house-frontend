@@ -608,11 +608,6 @@ export async function generateRFP(
             startId++;
           });
 
-          threadBracingRFP(items, startId).forEach((el) => {
-            positions[i].items.push(el);
-            startId++;
-          });
-
           neonPaintingRfp(items, startId).forEach((el) => {
             positions[i].items.push(el);
             startId++;

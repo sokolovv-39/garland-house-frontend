@@ -8,7 +8,7 @@ import {
   ItemsAdjust,
 } from "@/fsd/shared";
 import classes from "./Screed_480_500.module.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ItemType } from "../../Item";
 import { screed_480_500_colors, Screed_480_500_Type } from "../model";
 import { PVSColorEnum } from "../../PVS";
@@ -32,6 +32,7 @@ export function Screed_480_500({
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
   const [item, setItem] = useState<Screed_480_500_Type>(itemObj.item);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   function updateItem() {
     idb?.items
@@ -53,10 +54,16 @@ export function Screed_480_500({
   }, [openedId]);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
+    let y = 0;
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        y = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
   useEffect(() => {
@@ -67,7 +74,7 @@ export function Screed_480_500({
   }, [quantity]);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.titleWrapper}>
           <h4 className={classes.title}>{itemObj.item.title}</h4>

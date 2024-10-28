@@ -9,25 +9,30 @@ export function MediaList({
   deleteMedia,
   mediaHeight,
   mediaWidth,
+  type,
 }: {
   urls: string[];
   callback: (files: FileList) => void;
   deleteMedia: (delUrl: string) => void;
   mediaWidth?: number;
   mediaHeight?: number;
+  type?: string;
 }) {
   return (
-    <div className={classes.wrapper}>
-      {urls.map((url, i) => (
-        <Media
-          src={url}
-          key={i}
-          deleteMedia={deleteMedia}
-          mediaHeight={mediaHeight}
-          mediaWidth={mediaWidth}
-        />
-      ))}
-      <AddMedia callback={callback} width={mediaWidth} height={mediaHeight} />
+    <div className={classes.box}>
+      {type && <h5>{type}</h5>}
+      <div className={classes.wrapper}>
+        {urls.map((url, i) => (
+          <Media
+            src={url}
+            key={i}
+            deleteMedia={deleteMedia}
+            mediaHeight={mediaHeight}
+            mediaWidth={mediaWidth}
+          />
+        ))}
+        <AddMedia callback={callback} width={mediaWidth} height={mediaHeight} />
+      </div>
     </div>
   );
 }

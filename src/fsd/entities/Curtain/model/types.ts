@@ -1,6 +1,6 @@
 export enum CurtainBracingEnum {
-  Rope = "Трос",
   Screed = "Стяжка",
+  Rope = "Трос",
 }
 
 export enum CurtainGlowShadeEnum {
