@@ -135,7 +135,7 @@ export function threadOnTreeRFP(
         unit: "м.п",
         quantity: length.toString(),
         price: defaultThread.tree.price.toString(),
-        cost: `${length * defaultThread.tree.price}`,
+        cost: `${Math.ceil(length * defaultThread.tree.price)}`,
       },
     ];
   } else return [];
