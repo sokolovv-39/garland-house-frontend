@@ -64,4 +64,5 @@ export type CommonItemType = ItemType<AllItemsTypes>;
 export type GetItemLengthType = {
   skeinsQuantity: number;
   skeinsMeters: number;
+  pure: number;
 };

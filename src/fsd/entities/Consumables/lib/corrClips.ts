@@ -5,7 +5,6 @@ import { getPVSLength } from "../../PVS";
 export function getEsCorrClips(allItems: CommonItemType[]) {
   let clips = 0;
   const pack = 50;
-  console.log(allItems);
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Гофра для кабеля ПВС") {
       const corrLength = getCorrPVSLength(allItems).skeinsMeters;

@@ -32,8 +32,7 @@ export function extraCorrBoxRfp(
   startId: number
 ): LineType[] {
   const length =
-    getCorrPVSLength(allItems).skeinsMeters +
-    getBoxPvsLength(allItems).piecesMeters;
+    getCorrPVSLength(allItems).pure + getBoxPvsLength(allItems).pure;
   const price = pvsDefault.extraPrice;
 
   if (length > 20) {

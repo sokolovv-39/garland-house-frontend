@@ -12,13 +12,13 @@ function get_PVS_Skeins_Meters(
     const skein = 100;
     const skeinsQuantity = Math.ceil(length / skein);
     const skeinsMeters = skein * skeinsQuantity;
-    return { skeinsQuantity, skeinsMeters };
+    return { skeinsQuantity, skeinsMeters, pure: length };
   } else if (color === PVSColorEnum.White) {
     const skein = 50;
     const skeinsQuantity = Math.ceil(length / skein);
     const skeinsMeters = skein * skeinsQuantity;
-    return { skeinsQuantity, skeinsMeters };
-  } else return { skeinsQuantity: 0, skeinsMeters: 0 };
+    return { skeinsQuantity, skeinsMeters, pure: length };
+  } else return { skeinsQuantity: 0, skeinsMeters: 0, pure: length };
 }
 
 export function getEsPVS(allItems: CommonItemType[]) {

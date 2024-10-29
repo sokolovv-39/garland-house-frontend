@@ -13,6 +13,10 @@ export function ropeRfp(
     if (itemObj.itemTitle === "Трос") {
       const rope = itemObj.item as RopeType;
       length += rope.length;
+    } else if ("bracing" in itemObj.item) {
+      if (itemObj.item.bracing === "Трос" && "length" in itemObj.item) {
+        length += itemObj.item.length;
+      }
     }
   });
 
@@ -20,7 +24,7 @@ export function ropeRfp(
     return [
       {
         id: startId.toString(),
-        desc: "Монтаж троса",
+        desc: "Монтаж троса для крепления гирлянды",
         quantity: length.toString(),
         unit: "м.п",
         price: ropeDefault.price.toString(),

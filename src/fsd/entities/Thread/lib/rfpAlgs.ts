@@ -48,7 +48,7 @@ export function threadRfp(
   const rfp: LineType[] = [];
 
   mergedItems.forEach((el, index) => {
-    const threadMeters = getThreadLength(el.length).skeinMeters;
+    const threadMeters = el.length;
     let desc = `Монтаж нити светодиодной. Класс защиты IP65. Материал провода каучук.`;
     if (el.cable === PVSColorEnum.Black) desc += " Черный провод.";
     if (el.cable === PVSColorEnum.White) desc += " Белый провод.";
@@ -122,7 +122,7 @@ export function threadOnTreeRFP(
     if (itemObj.itemTitle === "Нить") {
       const thread = itemObj.item as ThreadType;
       if (thread.tree.isActive && thread.tree.height > 5) {
-        length += 1.1 * thread.length;
+        length += thread.length;
       }
     }
   });

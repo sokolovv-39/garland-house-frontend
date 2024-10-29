@@ -47,7 +47,7 @@ export function beltLightRfp(
   const rfpItems: LineType[] = [];
 
   items.forEach((el, index) => {
-    const beltLightMeters = getBeltLightLength(el.length).skeinMeters;
+    const beltLightMeters = el.length;
 
     let desc = "Монтаж светодиодной гирлянды Белт-лайт. Шаг между цоколями - ";
     if (el.lampStep === BeltLightLampStepEnum.cm_20) desc += "20см.";

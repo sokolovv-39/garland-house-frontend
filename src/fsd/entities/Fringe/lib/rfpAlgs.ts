@@ -59,10 +59,7 @@ export function fringeRfp(
   const rfpItems: LineType[] = [];
 
   mergedItems.forEach((item, index) => {
-    const meters = getFringeLength(
-      item.length,
-      FringeMultiplicityEnum.m_5
-    ).skeinMeters;
+    const meters = item.length;
 
     let desc = `Монтаж бахромы${
       item.led === FringeLedEnum.led_200 ? '" ПРЕМИУМ "' : " "

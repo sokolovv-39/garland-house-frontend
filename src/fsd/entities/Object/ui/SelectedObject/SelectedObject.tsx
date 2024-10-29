@@ -108,9 +108,9 @@ export function SelectedObject({
   }
 
   function deleteItem(id: string) {
-    idb?.items
-      .getAll()
+    getItems()
       .then((items) => {
+        console.log("allItems in delete", items);
         let newItems = items.filter((item) => item.id !== id);
         newItems = newItems.map((item, index) => {
           return {

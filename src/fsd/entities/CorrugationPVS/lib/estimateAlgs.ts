@@ -18,7 +18,8 @@ export function getCorrPVSLength(
   const skein = 50;
   const skeinsQuantity = Math.ceil(length / skein);
   const skeinsMeters = skein * skeinsQuantity;
-  return { skeinsQuantity, skeinsMeters };
+  const pure = length;
+  return { skeinsQuantity, skeinsMeters, pure };
 }
 
 export function getCorrPVSClips(allItems: CommonItemType[]) {

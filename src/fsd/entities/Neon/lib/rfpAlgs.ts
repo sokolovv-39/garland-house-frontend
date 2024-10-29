@@ -39,7 +39,7 @@ export function neonRfp(
   const rfp: LineType[] = [];
 
   mergedItems.forEach((el, index) => {
-    const neonMeters = getNeonLength(el.length).skeinMeters;
+    const neonMeters = el.length;
     let desc = `Монтаж неона гибкого светодиодного. Размер ${el.thickness}. Класс защиты IP76. Cвечение на выбор + Монтаж профиля алюминиевого для неона гибкого ${el.thickness}`;
     rfp.push({
       id: `${startId + index}`,
@@ -58,7 +58,7 @@ export function neonPaintingRfp(
   allItems: CommonItemType[],
   startId: number
 ): LineType[] {
-  const mergedItems: (Pick<NeonType, "thickness" | "length"> & {
+  let mergedItems: (Pick<NeonType, "thickness" | "length"> & {
     price: number;
   })[] = [];
 
@@ -87,6 +87,13 @@ export function neonPaintingRfp(
   });
 
   const rfp: LineType[] = [];
+
+  mergedItems.map((el) => {
+    return {
+      ...el,
+      price: el.price < 15000 ? 15000 : el.price,
+    };
+  });
 
   mergedItems.forEach((el, index) => {
     rfp.push({
