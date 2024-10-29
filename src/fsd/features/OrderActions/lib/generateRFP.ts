@@ -118,7 +118,9 @@ export async function generateRFP(
   positions.forEach((pos) => {
     xPosition = margin;
     yPosition -= yOffset;
-    if (yPosition <= margin) {
+    const boundary = margin + pos.items.length * verticalTablePadding * 7;
+
+    if (yPosition <= boundary) {
       currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
       const { width, height } = currentPage.getSize();
       drawPageBackground(currentPage, width, height);
@@ -526,6 +528,12 @@ export async function generateRFP(
 
     if (measure) {
       const objects = await idb.objects.getOwn(measure.id);
+
+      objects.sort((a, b) => {
+        if (a.orderId > b.orderId) return 1;
+        else if (a.orderId < b.orderId) return -1;
+        else return 0;
+      });
 
       await new Promise<void>((resolve) => {
         objects.forEach(async (object, index) => {
