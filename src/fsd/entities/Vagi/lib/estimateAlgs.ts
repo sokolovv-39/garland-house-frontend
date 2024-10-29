@@ -23,3 +23,14 @@ export function getVagiModel(allItems: CommonItemType[]) {
     return vagi.model;
   } else return VagiModelEnum.wire_2;
 }
+
+export function getFirstVagi(allItems: CommonItemType[]) {
+  let quantity = 0;
+  const vagi = allItems.find((el) => el.itemTitle === "Ваги (клемма)");
+  if (vagi) {
+    const vagiObj = vagi.item as VagiType;
+    quantity += vagiObj.quantity;
+  }
+
+  return quantity;
+}

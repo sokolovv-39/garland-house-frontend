@@ -61,6 +61,7 @@ import {
   ElectricShieldType,
   electricShieldDefault,
   ElectricShield,
+  getFirstVagi,
 } from "@/fsd/entities";
 import { useState, useContext, useEffect } from "react";
 import { ObjectType } from "../../model";
@@ -337,8 +338,7 @@ export function SelectedObject({
   }, [openedId]);
 
   useEffect(() => {
-    let vagi = getAllVagi(items);
-    setVagi(vagi);
+    setVagi(getFirstVagi(items));
 
     setSolderBoxes(parseInt(getSolderBoxPieces(items).keyValue));
 

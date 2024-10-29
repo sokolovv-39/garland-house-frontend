@@ -1,1 +1,1 @@
-export {getAllVagi, getVagiModel} from './estimateAlgs'
+export { getAllVagi, getVagiModel, getFirstVagi } from "./estimateAlgs";

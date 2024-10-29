@@ -178,6 +178,7 @@ export {
   vagiModels,
   VagiModelEnum,
   getAllVagi,
+  getFirstVagi,
   getVagiModel,
 } from "./Vagi";
 export type { VagiType } from "./Vagi";
