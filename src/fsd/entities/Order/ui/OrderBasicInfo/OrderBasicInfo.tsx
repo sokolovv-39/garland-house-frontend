@@ -250,18 +250,6 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
               });
             }}
           />
-          <Input
-            littleType
-            type="text"
-            placeholder="Время на выполнение замера, ч"
-            initialValue={order.duration}
-            onChange={(text) =>
-              setOrder({
-                ...order,
-                duration: text,
-              })
-            }
-          />
         </div>
         <OrderActions idb={idb!} orderId={orderId} />
       </form>
@@ -278,20 +266,48 @@ export function OrderBasicInfo({ orderId }: { orderId: number }) {
             })
           }
         /> */}
-        <div className={classes.calendarWrapper} ref={calendarRef}>
-          <div
-            className={classes.calendarTab}
-            onClick={() => setIsShowCalendar(!isShowCalendar)}
-          >
-            <span className={classes.little}>Дата замера</span>
-            <span className={classes.calendarInfo}>{order.measureDate}</span>
+        <div className={classes.times}>
+          <div className={classes.calendarWrapper} ref={calendarRef}>
+            <div
+              className={classes.calendarTab}
+              onClick={() => setIsShowCalendar(!isShowCalendar)}
+            >
+              <span className={classes.little}>Дата замера</span>
+              <span className={classes.calendarInfo}>{order.measureDate}</span>
+            </div>
+            {isShowCalendar && (
+              <Calendar onChange={changeDate} className={classes.calendar} />
+            )}
           </div>
-          {isShowCalendar && (
-            <Calendar onChange={changeDate} className={classes.calendar} />
-          )}
+          <Input
+            wrapperStyles={{
+              flex: "1 0 0",
+            }}
+            littleType
+            type="text"
+            placeholder="Время на выполнение замера, ч"
+            initialValue={order.duration}
+            onChange={(text) =>
+              setOrder({
+                ...order,
+                duration: text,
+              })
+            }
+          />
         </div>
         <div className={classes.pay}>
-          <Select type="Кто платит за замер" values={workersMocks} littleType />
+          <Select
+            type="Кто платит за замер"
+            values={["Компания", "Клиент"]}
+            littleType
+            initialValue={order.payer}
+            callback={(val) =>
+              setOrder({
+                ...order,
+                payer: val,
+              })
+            }
+          />
           <Input
             littleType
             isPrice

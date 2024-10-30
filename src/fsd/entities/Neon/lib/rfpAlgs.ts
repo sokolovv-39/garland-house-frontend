@@ -40,7 +40,7 @@ export function neonRfp(
 
   mergedItems.forEach((el, index) => {
     const neonMeters = el.length;
-    let desc = `Монтаж неона гибкого светодиодного. Размер ${el.thickness}. Класс защиты IP76. Cвечение на выбор + Монтаж профиля алюминиевого для неона гибкого ${el.thickness}`;
+    let desc = `Монтаж неона гибкого светодиодного. Размер ${el.thickness}. Класс защиты IP67. Cвечение на выбор + Монтаж профиля алюминиевого для неона гибкого ${el.thickness}`;
     rfp.push({
       id: `${startId + index}`,
       desc,

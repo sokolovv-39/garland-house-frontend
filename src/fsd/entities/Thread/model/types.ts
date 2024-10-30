@@ -4,7 +4,7 @@ export enum ThreadGlowShadeEnum {
   Warm = "Теплый",
   Cold = "Холодный",
   RGB = "RGB",
-  colors_7 = "7 цветов",
+  colors_7 = "Мульти",
 }
 
 export enum ThreadGlowModeEnum {
@@ -39,13 +39,17 @@ export type ThreadType = {
   tees: number;
   surface: ThreadSurfaceEnum;
   contours: number;
-  price: number;
+  priceObj: {
+    one_color: number;
+    multi: number;
+    rgb: number;
+    price_screed_bracing: number;
+  };
   extensions_1m: number;
   extensions_3m: number;
   extensions_5m: number;
   extensions_10m: number;
   screedsType: ThreadScreedsTypeEnum;
-  price_screed_bracing: number;
   tree: {
     isActive: boolean;
     height: number;

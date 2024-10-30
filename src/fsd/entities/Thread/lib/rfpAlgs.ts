@@ -16,7 +16,7 @@ export function threadRfp(
 ): LineType[] {
   const mergedItems: Pick<
     ThreadType,
-    "cable" | "glowShade" | "glowMode" | "length" | "price"
+    "cable" | "glowShade" | "glowMode" | "length"
   >[] = [];
 
   allItems.forEach((itemObj) => {
@@ -39,7 +39,6 @@ export function threadRfp(
           glowMode: thread.glowMode,
           glowShade: thread.glowShade,
           length: thread.length,
-          price: thread.price,
         });
       }
     }
@@ -71,13 +70,25 @@ export function threadRfp(
       desc += " статика.";
     desc += " Кратно 10м";
 
+    let price = 0;
+    if (
+      el.glowShade === ThreadGlowShadeEnum.Cold ||
+      el.glowShade === ThreadGlowShadeEnum.Warm
+    ) {
+      price = defaultThread.priceObj.one_color;
+    }
+    if (el.glowShade === ThreadGlowShadeEnum.RGB)
+      price = defaultThread.priceObj.rgb;
+    if (el.glowShade === ThreadGlowShadeEnum.colors_7)
+      price = defaultThread.priceObj.multi;
+
     rfp.push({
       id: `${startId + index}`,
       desc,
       unit: "м.п",
       quantity: threadMeters.toString(),
-      price: el.price.toString(),
-      cost: (threadMeters * el.price).toString(),
+      price: price.toString(),
+      cost: (threadMeters * price).toString(),
     });
   });
 
@@ -105,8 +116,8 @@ export function threadBracingRFP(
         desc: "Монтаж Нити светодиодной с применением скобы в фасад дома",
         unit: "м.п",
         quantity: length.toString(),
-        price: defaultThread.price_screed_bracing.toString(),
-        cost: `${defaultThread.price_screed_bracing * length}`,
+        price: defaultThread.priceObj.price_screed_bracing.toString(),
+        cost: `${defaultThread.priceObj.price_screed_bracing * length}`,
       },
     ];
   } else return [];

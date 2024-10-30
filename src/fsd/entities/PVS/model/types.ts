@@ -7,6 +7,8 @@ export type PVSType = {
   title: "Кабель ПВС";
   length: number;
   color: PVSColorEnum;
-  price: number;
-  extraPrice: number;
+  priceObj: {
+    extraPvs: number;
+    extraCorrBox: number;
+  };
 };

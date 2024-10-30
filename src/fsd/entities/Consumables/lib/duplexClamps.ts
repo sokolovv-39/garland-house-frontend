@@ -15,7 +15,7 @@ export function getEsDuplexClamps(allItems: CommonItemType[]) {
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Трос") {
       const rope = itemObj.item as RopeType;
-      clamps += rope.contours * 2;
+      clamps += rope.duplexClamps;
     }
   });
 

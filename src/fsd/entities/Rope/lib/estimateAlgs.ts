@@ -88,10 +88,10 @@ export function getEsRope(allItems: CommonItemType[]): EsWritingArrayType[] {
       const rope = itemObj.item as RopeType;
       const index = ropes.findIndex((el) => el.thickness === rope.thickness);
       if (~index) {
-        ropes[index].length += rope.length;
+        ropes[index].length += getRopeLength(rope.length, 0);
       } else {
         ropes.push({
-          length: rope.length,
+          length: getRopeLength(rope.length, 0),
           thickness: rope.thickness,
         });
       }

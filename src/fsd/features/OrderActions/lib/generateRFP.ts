@@ -576,8 +576,10 @@ export async function generateRFP(
             startId++;
           });
 
-          positions[i].items.push(electricShieldRfp(items, startId));
-          startId++;
+          electricShieldRfp(items, startId).forEach((el) => {
+            positions[i].items.push(el);
+            startId++;
+          });
 
           let consumables = 5920 + getRFPExtensions(items);
 

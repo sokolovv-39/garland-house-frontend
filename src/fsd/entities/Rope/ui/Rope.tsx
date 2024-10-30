@@ -23,14 +23,12 @@ export function Rope({
   itemObj,
   updateCost,
   openedId,
-  meters,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<RopeType>;
   getItems: () => void;
   updateCost: () => void;
   openedId: string;
-  meters: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -67,13 +65,6 @@ export function Rope({
       }
     }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
-
-  useEffect(() => {
-    setRope({
-      ...rope,
-      length: Math.ceil(meters),
-    });
-  }, [meters]);
 
   return (
     <div className={classes.wrapper} ref={wrapperRef}>
@@ -131,6 +122,26 @@ export function Rope({
               }
             />
           </div>
+          <NumberSelect
+            type="Талреп, шт"
+            initialValue={itemObj.item.lanyards}
+            callback={(val) =>
+              setRope({
+                ...rope,
+                lanyards: val,
+              })
+            }
+          />
+          <NumberSelect
+            type="Дуплексный зажим, шт"
+            initialValue={itemObj.item.duplexClamps}
+            callback={(val) =>
+              setRope({
+                ...rope,
+                duplexClamps: val,
+              })
+            }
+          />
           {/* <NumberSelect
             type="Количество контуров, шт"
             callback={(val) =>

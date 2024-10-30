@@ -158,7 +158,9 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
         writingArray.push(fringe);
       });
 
-      writingArray.push(cableBracketPacks);
+      cableBracketPacks.forEach((el) => {
+        writingArray.push(el);
+      });
 
       beltLights.forEach((beltLight) => {
         writingArray.push(beltLight);
@@ -174,9 +176,9 @@ export async function generateEstimate(idb: IndexedDB, orderId: IDBValidKey) {
       metal_profile.forEach((el) => {
         writingArray.push(el);
       });
-      writingArray.push({
-        desc: `Соединительные иглы`,
-        keyValue: `${connecting_needles} шт`,
+
+      connecting_needles.forEach((el) => {
+        writingArray.push(el);
       });
 
       plugs.forEach((el) => {

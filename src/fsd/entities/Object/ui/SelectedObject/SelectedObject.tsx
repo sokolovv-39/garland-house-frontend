@@ -83,11 +83,9 @@ export function SelectedObject({
   const idb = useContext(IDBContext);
   const [objName, setObjName] = useState(object.title);
   const [openedId, setOpenedId] = useState("");
-  const [vagi, setVagi] = useState(0);
   const [solderBoxes, setSolderBoxes] = useState(0);
   const [screeds_480_500, set_screeds_480_500] = useState(0);
   const [screeds_200, setScreeds_200] = useState(0);
-  const [ropeMeters, setRopeMeters] = useState(0);
 
   function getItems() {
     return new Promise<CommonItemType[]>((resolve, reject) => {
@@ -338,8 +336,6 @@ export function SelectedObject({
   }, [openedId]);
 
   useEffect(() => {
-    setVagi(getFirstVagi(items));
-
     setSolderBoxes(parseInt(getSolderBoxPieces(items).keyValue));
 
     let quantity_480_500 = 0;
@@ -358,7 +354,6 @@ export function SelectedObject({
     getEsRope(items).forEach((el) => {
       ropeLegth += Math.ceil(parseFloat(el.keyValue));
     });
-    setRopeMeters(ropeLegth);
   }, [items]);
 
   return (
@@ -451,7 +446,6 @@ export function SelectedObject({
             case "Трос":
               return (
                 <Rope
-                  meters={ropeMeters}
                   openedId={openedId}
                   getItems={() => getItems()}
                   key={i}
@@ -520,7 +514,6 @@ export function SelectedObject({
             case "Ваги (клемма)":
               return (
                 <Vagi
-                  quantity={vagi}
                   openedId={openedId}
                   updateCost={updateCost}
                   getItems={() => getItems()}

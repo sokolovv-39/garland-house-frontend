@@ -6,9 +6,9 @@
     justify-content: space-between;
     cursor: pointer;
     .type {
-      display: flex;
-      flex-direction: column;
       .littleType {
+        position: absolute;
+        top: 5px;
         font-variant-numeric: lining-nums tabular-nums stacked-fractions;
         font-feature-settings: "liga" off, "clig" off;
         font-size: 12px;

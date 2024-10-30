@@ -10,4 +10,6 @@ export const ropeDefault: RopeType = {
   length: 1,
   surface: RopeSurfaceEnum.Wood,
   price: 250,
+  lanyards: 1,
+  duplexClamps: 2,
 };

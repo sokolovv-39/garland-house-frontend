@@ -19,7 +19,7 @@ export const relaysSwitchesDefault: RelaysSwitchesType = {
     wireless_1_wifi: 11800,
     wireless_2_wifi: 14800,
     wireless_3_wifi: 16500,
-    astroRelay: 10000,
+    astroRelay: 12400,
     photoRelay: 7000,
   },
 };

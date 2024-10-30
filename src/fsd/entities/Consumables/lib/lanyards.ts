@@ -15,7 +15,7 @@ export function getEsLanyards(allItems: CommonItemType[]) {
   allItems.forEach((itemObj) => {
     if (itemObj.itemTitle === "Трос") {
       const rope = itemObj.item as RopeType;
-      lanyards += rope.contours;
+      lanyards += rope.lanyards;
     }
   });
 

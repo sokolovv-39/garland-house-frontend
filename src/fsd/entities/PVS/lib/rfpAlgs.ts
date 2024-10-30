@@ -10,7 +10,7 @@ export function pvsRfp(
   startId: number
 ): LineType[] {
   let pvsLength = getPVSLength(allItems);
-  let price = pvsDefault.extraPrice;
+  let price = pvsDefault.priceObj.extraPvs;
 
   if (pvsLength > 20) {
     const meters = pvsLength - 20;
@@ -33,7 +33,7 @@ export function extraCorrBoxRfp(
 ): LineType[] {
   const length =
     getCorrPVSLength(allItems).pure + getBoxPvsLength(allItems).pure;
-  const price = pvsDefault.extraPrice;
+  const price = pvsDefault.priceObj.extraCorrBox;
 
   if (length > 20) {
     const meters = length - 20;

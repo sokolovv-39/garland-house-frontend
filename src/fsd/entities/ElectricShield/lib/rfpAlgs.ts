@@ -5,7 +5,7 @@ import { electricShieldDefault, ElectricShieldType } from "../model";
 export function electricShieldRfp(
   allItems: CommonItemType[],
   id: number
-): LineType {
+): LineType[] {
   let quantity = 0;
 
   allItems.forEach((itemObj) => {
@@ -15,14 +15,18 @@ export function electricShieldRfp(
     }
   });
 
-  if (!quantity) quantity = 1;
+  if (!quantity) {
+    return [];
+  }
 
-  return {
-    id: id.toString(),
-    desc: `Монтаж щита уличного IP65 в сборе (автомат 10А, реле напряжения) и протяжка питания для подключения оборудования, коммутация, настройка`,
-    unit: "шт",
-    quantity: quantity.toString(),
-    price: electricShieldDefault.price.toString(),
-    cost: (quantity * electricShieldDefault.price).toString(),
-  };
+  return [
+    {
+      id: id.toString(),
+      desc: `Монтаж щита уличного IP65 в сборе (автомат 10А, реле напряжения) и протяжка питания для подключения оборудования, коммутация, настройка`,
+      unit: "шт",
+      quantity: quantity.toString(),
+      price: electricShieldDefault.price.toString(),
+      cost: (quantity * electricShieldDefault.price).toString(),
+    },
+  ];
 }

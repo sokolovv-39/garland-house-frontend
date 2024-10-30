@@ -18,14 +18,12 @@ export function Vagi({
   updateCost,
   getItems,
   openedId,
-  quantity,
 }: {
   deleteItem: () => void;
   itemObj: ItemType<VagiType>;
   getItems: () => void;
   updateCost: () => void;
   openedId: string;
-  quantity: number;
 }) {
   const idb = useContext(IDBContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -64,14 +62,6 @@ export function Vagi({
     }, 100); // Отложите на 100 мс или больше, если требуется
   }, []);
 
-  useEffect(() => {
-    if (vagi.quantity < quantity)
-      setVagi({
-        ...vagi,
-        quantity,
-      });
-  }, [quantity]);
-
   return (
     <div className={classes.wrapper} ref={wrapperRef}>
       <div className={classes.header} onClick={() => setIsOpen(!isOpen)}>
@@ -101,7 +91,6 @@ export function Vagi({
                 quantity: val,
               });
             }}
-            minValue={quantity}
           />
           <div className={classes.tabs}>
             <ItemsAdjust

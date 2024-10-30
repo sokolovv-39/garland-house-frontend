@@ -18,6 +18,7 @@ export function Input({
   isPrice = false,
   littleType = false,
   isLink = false,
+  wrapperStyles,
 }: {
   type: "text" | "password" | "search";
   placeholder?: string;
@@ -30,6 +31,7 @@ export function Input({
   isPrice?: boolean;
   littleType?: boolean;
   isLink?: boolean;
+  wrapperStyles?: CSSProperties;
 }) {
   const [val, setVal] = useState<string>("");
 
@@ -90,7 +92,7 @@ export function Input({
   }, [initialValue]);
 
   const inputElement = (
-    <div className={classes.inputWrapper}>
+    <div className={classes.inputWrapper} style={wrapperStyles}>
       <span className={classes.littleType}>
         {littleType && val ? placeholder : ""}
       </span>

@@ -46,25 +46,30 @@
     flex-direction: column;
     gap: 16px;
     position: relative;
-    .calendarWrapper {
-      .calendar {
-        border-radius: 20px;
-        position: absolute;
-        z-index: 1;
-      }
-      .calendarTab {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        padding: 10px 14px;
-        border-radius: 16px;
-        border: 1px solid rgba(26, 25, 25, 0.12);
-        cursor: pointer;
-        .little {
-          font-variant-numeric: lining-nums tabular-nums stacked-fractions;
-          font-feature-settings: "liga" off, "clig" off;
-          font-size: 12px;
-          line-height: 16px; /* 133.333% */
+    .times {
+      display: flex;
+      gap: 16px;
+      .calendarWrapper {
+        flex: 1 0 0;
+        .calendar {
+          border-radius: 20px;
+          position: absolute;
+          z-index: 1;
+        }
+        .calendarTab {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          padding: 10px 14px;
+          border-radius: 16px;
+          border: 1px solid rgba(26, 25, 25, 0.12);
+          cursor: pointer;
+          .little {
+            font-variant-numeric: lining-nums tabular-nums stacked-fractions;
+            font-feature-settings: "liga" off, "clig" off;
+            font-size: 12px;
+            line-height: 16px; /* 133.333% */
+          }
         }
       }
     }

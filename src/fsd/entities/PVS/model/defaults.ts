@@ -6,6 +6,8 @@ export const pvsDefault: PVSType = {
   title: "Кабель ПВС",
   length: 0,
   color: PVSColorEnum.Black,
-  price: 382,
-  extraPrice: 250,
+  priceObj: {
+    extraPvs: 350,
+    extraCorrBox: 250,
+  },
 };

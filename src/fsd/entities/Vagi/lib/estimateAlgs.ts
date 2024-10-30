@@ -21,7 +21,7 @@ export function getVagiModel(allItems: CommonItemType[]) {
   if (result) {
     const vagi = result.item as VagiType;
     return vagi.model;
-  } else return VagiModelEnum.wire_2;
+  } else return VagiModelEnum.wire_3;
 }
 
 export function getFirstVagi(allItems: CommonItemType[]) {
