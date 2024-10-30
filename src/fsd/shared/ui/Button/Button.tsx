@@ -16,7 +16,7 @@ export function Button({
   style?: CSSProperties;
   click?: () => void;
   goto?: string;
-  mode?: "basic" | "noBackground" | "beige" | "red";
+  mode?: "basic" | "noBackground" | "beige" | "red" | "blackWhite";
 }) {
   const router = useRouter();
 
@@ -81,6 +81,18 @@ export function Button({
     ...style,
   };
 
+  const blackWhite: CSSProperties = {
+    ...defaultStyle,
+    color: "#191919",
+    background: "white",
+    border: "1px solid rgba(25, 25, 25, 0.10)",
+    borderRadius: "10px",
+    fontWeight: "600",
+    padding: "0 47px",
+    lineHeight: "16px" /* 100% */,
+    letterSpacing: "-0.16px",
+  };
+
   let btnStyle: CSSProperties = {};
 
   switch (mode) {
@@ -96,6 +108,8 @@ export function Button({
     case "red":
       btnStyle = redStyle;
       break;
+    case "blackWhite":
+      btnStyle = blackWhite;
     default:
       break;
   }

@@ -13,4 +13,6 @@ export { ItemsAdjust } from "./ItemsAdjust";
 export { IndexedDBProvider } from "./IndexedDBProvider";
 export { Comments } from "./Comments";
 export { ErrorPage } from "./ErrorPage";
+export { Photo } from "./Photo";
 export { Toggler } from "./Toggler";
+export { Textarea } from "./Textarea";

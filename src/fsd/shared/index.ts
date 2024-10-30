@@ -15,6 +15,8 @@ export {
   Comments,
   ErrorPage,
   Toggler,
+  Photo,
+  Textarea,
 } from "./ui";
 export {
   IDBContext,

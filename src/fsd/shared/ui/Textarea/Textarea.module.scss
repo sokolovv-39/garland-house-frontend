@@ -1,0 +1,22 @@
+.wrapper {
+  position: relative;
+  span {
+    position: absolute;
+    top: 10px;
+    left: 16px;
+    overflow: hidden;
+    font-variant-numeric: lining-nums tabular-nums stacked-fractions;
+    font-feature-settings: "liga" off, "clig" off;
+    font-size: 12px;
+    line-height: 16px; /* 133.333% */
+    opacity: 0.5;
+  }
+  .text {
+    width: 386px;
+    height: 184px;
+    resize: none;
+    border-radius: 16px;
+    border: 1px solid rgba(25, 25, 25, 0.1);
+    padding: 10px 16px;
+  }
+}
