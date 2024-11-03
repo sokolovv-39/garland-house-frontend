@@ -12,6 +12,10 @@
     display: flex;
     gap: 16px;
     flex-direction: column;
+    .wrong {
+      text-align: center;
+      color: red;
+    }
   }
 
   .title {

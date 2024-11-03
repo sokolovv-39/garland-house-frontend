@@ -5,6 +5,7 @@ import {
   ObjectType,
   CommonItemType,
   AllItemsTypes,
+  UserType,
 } from "@/fsd/entities";
 import { IndexType, ObjectStoreType } from "./types";
 
@@ -14,10 +15,72 @@ export class IndexedDB {
   objects;
   items;
   orders;
+  user;
 
   constructor() {
     this.db = null;
+    this.user = {
+      deleteUser: (key: IDBValidKey) => {
+        return new Promise((resolve, reject) => {
+          this.transactionHandler("user", "readwrite", this.deleteHandler, key)
+            .then(() => resolve(undefined))
+            .catch((err) => {
+              reject(err);
+            });
+        });
+      },
+      getUser: (key: IDBValidKey) => {
+        return new Promise<UserType>((resolve, reject) => {
+          this.transactionHandler("user", "readonly", this.getHandler, key)
+            .then((data) => {
+              resolve(data as UserType);
+            })
+            .catch((err) => reject(err));
+        });
+      },
+      setUser: (user: UserType) => {
+        return new Promise((resolve, reject) => {
+          this.transactionHandler("user", "readwrite", this.putHandler, user)
+            .then((data) => {
+              resolve(data as IDBValidKey);
+            })
+            .catch((err) => reject(err));
+        });
+      },
+    };
     this.orders = {
+      clear: () => {
+        return new Promise<undefined>((resolve, reject) => {
+          this.transactionHandler(
+            "orders",
+            "readwrite",
+            this.clearHandler,
+            undefined
+          )
+            .then((data) => {
+              resolve(data as undefined);
+            })
+            .catch((err) => reject(err));
+        });
+      },
+      rewrite: (newOrders: OrderType[]) => {
+        return new Promise<void>((resolve, reject) => {
+          this.orders
+            .clear()
+            .then(() => {
+              if (!newOrders.length) resolve();
+              newOrders.forEach(async (order, index) => {
+                await this.orders.add(order);
+                if (index === newOrders.length - 1) {
+                  resolve();
+                }
+              });
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        });
+      },
       delete: (range: IDBKeyRange | IDBValidKey) => {
         return new Promise<undefined>((resolve, reject) => {
           this.transactionHandler(
@@ -398,6 +461,11 @@ export class IndexedDB {
 
             let orders = this.db.createObjectStore("orders", {
               keyPath: "id",
+              autoIncrement: false,
+            });
+
+            let user = this.db.createObjectStore("user", {
+              keyPath: "dbID",
               autoIncrement: false,
             });
 

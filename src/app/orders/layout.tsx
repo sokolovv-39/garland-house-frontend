@@ -1,7 +1,7 @@
 import { Header } from "@/fsd/widgets/Header/ui/Header";
 import React from "react";
 import classes from "./layout.module.scss";
-import {IndexedDBProvider } from "@/fsd/shared";
+import { AuthGuard, IndexedDBProvider } from "@/fsd/shared";
 
 export default function WithHeader({
   children,
@@ -10,11 +10,11 @@ export default function WithHeader({
 }>) {
   return (
     <div className={classes.wrapper}>
-      <Header />
       <IndexedDBProvider>
-        <>
-          {children}
-        </>
+        <AuthGuard>
+          <Header />
+          <>{children}</>
+        </AuthGuard>
       </IndexedDBProvider>
     </div>
   );

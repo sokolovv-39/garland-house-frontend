@@ -2,6 +2,7 @@
 
 import { ButtonHTMLAttributes, CSSProperties } from "react";
 import { useRouter } from "nextjs-toploader/app";
+import classes from "./Button.module.scss";
 
 export function Button({
   type = "submit",
@@ -115,7 +116,12 @@ export function Button({
   }
 
   return (
-    <button type={type} style={btnStyle} onClick={onClick}>
+    <button
+      type={type}
+      style={btnStyle}
+      onClick={onClick}
+      className={classes.wrapper}
+    >
       {children}
     </button>
   );

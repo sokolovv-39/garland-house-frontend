@@ -19,6 +19,8 @@ export function Input({
   littleType = false,
   isLink = false,
   wrapperStyles,
+  name,
+  onFocus,
 }: {
   type: "text" | "password" | "search";
   placeholder?: string;
@@ -32,6 +34,8 @@ export function Input({
   littleType?: boolean;
   isLink?: boolean;
   wrapperStyles?: CSSProperties;
+    name?: string;
+  onFocus?: () => void
 }) {
   const [val, setVal] = useState<string>("");
 
@@ -97,6 +101,8 @@ export function Input({
         {littleType && val ? placeholder : ""}
       </span>
       <input
+        onFocus={onFocus}
+        name={name}
         value={
           isPrice
             ? val

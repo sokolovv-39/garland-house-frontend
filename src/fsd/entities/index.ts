@@ -223,3 +223,4 @@ export {
   electricShieldRfp,
 } from "./ElectricShield";
 export type { ElectricShieldType } from "./ElectricShield";
+export type { UserType } from "./User";

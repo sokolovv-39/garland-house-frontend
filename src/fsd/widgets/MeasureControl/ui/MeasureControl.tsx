@@ -1,14 +1,30 @@
 "use client";
 
-import { Button } from "@/fsd/shared";
+import { Button, IDBContext } from "@/fsd/shared";
 import classes from "./MeasureControl.module.scss";
 import ArrowLeft from "./images/arrow-left.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { useContext } from "react";
+import { useRouter } from "nextjs-toploader/app";
 
 export function MeasureControl({ orderId }: { orderId: string }) {
+  const idb = useContext(IDBContext);
+  const router = useRouter();
   const pathname = usePathname();
+  const saveOrderQuery = useMutation({
+    mutationFn: async () => {
+      const order = await idb?.orders.get(orderId);
+      return await new Promise((resolve) => resolve("data"));
+    },
+  });
+
+  function saveOrder() {
+    saveOrderQuery.mutate();
+    router.push("/orders");
+  }
 
   return (
     <div className={classes.wrapper}>
@@ -45,7 +61,7 @@ export function MeasureControl({ orderId }: { orderId: string }) {
           <span>Отчет</span>
         </Link>
       </div>
-      <Button goto="/orders" type="button">
+      <Button click={saveOrder} type="button">
         Сохранить и закрыть
       </Button>
     </div>

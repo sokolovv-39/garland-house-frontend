@@ -16,3 +16,4 @@ export { ErrorPage } from "./ErrorPage";
 export { Photo } from "./Photo";
 export { Toggler } from "./Toggler";
 export { Textarea } from "./Textarea";
+export { AuthGuard } from "./AuthGuard";

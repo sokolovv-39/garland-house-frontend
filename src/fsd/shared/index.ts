@@ -17,6 +17,7 @@ export {
   Toggler,
   Photo,
   Textarea,
+  AuthGuard,
 } from "./ui";
 export {
   IDBContext,
@@ -24,4 +25,7 @@ export {
   DateFormatter,
   debounce,
   splitPrice,
+  userStore,
 } from "./lib";
+export { api } from "./api";
+export type { ApiLoginType, ApiUserType } from "./api";

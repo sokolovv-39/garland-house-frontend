@@ -2,17 +2,32 @@
 
 import Filter from "./images/filter.svg";
 import classes from "./OrdersTable.module.scss";
-import { OrderStatusType, OrderType } from "../../model";
+import { defaultOrder, OrderStatusType, OrderType } from "../../model";
 import Link from "next/link";
-import { DateFormatter, IDBContext, splitPrice, StatusTab } from "@/fsd/shared";
+import {
+  api,
+  DateFormatter,
+  IDBContext,
+  splitPrice,
+  StatusTab,
+} from "@/fsd/shared";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { CheckboxFilter } from "@/fsd/features";
 import Arrow from "./images/arrow.svg";
 import { useRouter } from "nextjs-toploader/app";
 import { generateRFP } from "@/fsd/features/OrderActions/lib";
+import { useQuery } from "@tanstack/react-query";
 
-export function OrdersTable({ searchVal }: { searchVal: string }) {
+export function OrdersTable({
+  searchVal,
+  setIsSynchronized,
+  setIsPendingOrders,
+}: {
+  searchVal: string;
+  setIsSynchronized: (val: boolean) => void;
+  setIsPendingOrders: (val: boolean) => void;
+}) {
   const idb = useContext(IDBContext);
   const router = useRouter();
 
@@ -42,6 +57,37 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
   const [idSort, setIdSort] = useState(false);
   const [createSort, setCreateSort] = useState(false);
   const [budgetSort, setBudgetSort] = useState(false);
+  const {
+    data: dataOrderLoad,
+    error: errorOrderLoad,
+    isFetching: isPendingOrders,
+  } = useQuery({
+    queryKey: ["allOrders"],
+    queryFn: async () => {
+      const userId = (await idb?.user.getUser(0))!.id;
+      const res = await api.get("/order/getcardlist", {
+        params: {
+          userId,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      let data = (await res.data) as OrderType[];
+
+      data = data.map((el) => ({
+        ...defaultOrder,
+        ...el,
+      }));
+
+      const localOrders = (await idb?.orders.getAll()) || [];
+
+      const merged = Array.from(new Set([...data, ...localOrders]));
+
+      return merged;
+    },
+    retry: false,
+  });
 
   async function getOrders() {
     let newOrders = await idb!.orders.getAll();
@@ -229,8 +275,24 @@ export function OrdersTable({ searchVal }: { searchVal: string }) {
   }
 
   useEffect(() => {
+    if (errorOrderLoad) {
+      getOrders();
+      setIsSynchronized(false);
+    } else if (dataOrderLoad) {
+      setIsSynchronized(true);
+      setOrders(dataOrderLoad);
+      idb?.orders.rewrite(dataOrderLoad);
+    }
+  }, [dataOrderLoad, errorOrderLoad]);
+
+  /* useEffect(() => {
     getOrders();
-  }, []);
+  }, []); */
+
+  useEffect(() => {
+    console.log("ispending Go", isPendingOrders);
+    setIsPendingOrders(isPendingOrders);
+  }, [isPendingOrders]);
 
   useEffect(() => {
     let filteredArr = orders;
